@@ -26,14 +26,19 @@ public final class R {
     }
     public static final class drawable {
         public static final int espaco=0x7f020000;
-        public static final int ic_launcher=0x7f020001;
-        public static final int nave=0x7f020002;
-        public static final int torpedo=0x7f020003;
+        public static final int fogo=0x7f020001;
+        public static final int ic_launcher=0x7f020002;
+        public static final int nave=0x7f020003;
+        public static final int nave_atingida=0x7f020004;
+        public static final int nave_inimiga=0x7f020005;
+        public static final int nave_inimiga_atingida=0x7f020006;
+        public static final int torpedo=0x7f020007;
+        public static final int torpedo_inimigo=0x7f020008;
     }
     public static final class id {
         public static final int action_sair=0x7f090003;
         public static final int action_settings=0x7f090002;
-        public static final int campo=0x7f090001;
+        public static final int fundo=0x7f090001;
         public static final int layout_main=0x7f090000;
     }
     public static final class layout {
@@ -46,10 +51,13 @@ public final class R {
         public static final int action_settings=0x7f060001;
         public static final int app_name=0x7f060000;
         public static final int espaco=0x7f060003;
+        public static final int ganhou=0x7f060007;
         public static final int hello_world=0x7f060002;
-        public static final int ok=0x7f060006;
+        public static final int mire=0x7f060006;
+        public static final int ok=0x7f060009;
+        public static final int perdeu=0x7f060008;
         public static final int posicione=0x7f060005;
-        public static final int sair=0x7f060007;
+        public static final int sair=0x7f06000a;
         public static final int sua_vez=0x7f060004;
     }
     public static final class style {
