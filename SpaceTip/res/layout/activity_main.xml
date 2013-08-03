@@ -5,7 +5,7 @@
     tools:context=".MainActivity" 
     android:id="@+id/layout_main">
 
-    
+    <!--
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="fill_parent"
@@ -15,10 +15,11 @@
         android:src="@drawable/espaco" 
         android:contentDescription="@string/espaco"/>
      
-     <!--
-    <com.summercrow.spacetip.Campo android:id="@+id/campo" 
-        android:layout_width="wrap_content" android:layout_height="wrap_content"/>
        --> 
+       
+    <com.summercrow.spacetip.Fundo android:id="@+id/campo" 
+        android:layout_width="wrap_content" android:layout_height="wrap_content"/>
+     
         
 
 </RelativeLayout>

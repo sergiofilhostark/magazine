@@ -21,7 +21,7 @@ import android.widget.RelativeLayout;
 
 public class MainActivity extends Activity {
 	
-	private RelativeLayout relativeLayout;
+	private RelativeLayout meuLayout;
 	private ImageView nave;
 	private ImageView torpedo;
 	private float x;
@@ -33,21 +33,21 @@ public class MainActivity extends Activity {
 		
 		setContentView(R.layout.activity_main);
 		
-		relativeLayout = (RelativeLayout)findViewById(R.id.layout_main);
+		meuLayout = (RelativeLayout)findViewById(R.id.layout_main);
 		
 		nave = new ImageView(this);
 		nave.setImageResource(R.drawable.nave);
 		nave.setX(0);
 		nave.setY(0);
 //		nave.setAlpha(0);
-		relativeLayout.addView(nave);
+		meuLayout.addView(nave);
 		
 		torpedo = new ImageView(this);
 		torpedo.setImageResource(R.drawable.torpedo);
 		torpedo.setX(0);
 		torpedo.setY(0);
 //		torpedo.setAlpha(0);
-		relativeLayout.addView(torpedo);
+		meuLayout.addView(torpedo);
 		
 		Builder dialog = new AlertDialog.Builder(this);
 		
@@ -86,11 +86,11 @@ public class MainActivity extends Activity {
 		y = (int)event.getY();
 		
 		int[] location = {0 , 0};
-		relativeLayout.getLocationOnScreen(location);
+		meuLayout.getLocationOnScreen(location);
 		
 		y = y - location[1];
 		
-		System.out.println(x + " " + y + " "+ relativeLayout.getY());
+		System.out.println(x + " " + y + " "+ meuLayout.getY());
 //		
 //		nave.setX(x);
 //		nave.setY(y);
