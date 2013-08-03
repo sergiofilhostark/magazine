@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">SpaceTip</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="espaco">.</string>
+    <string name="sua_vez">Sua vez</string>
+    <string name="posicione">Posicione suas naves</string>
+    <string name="ok">OK</string>
+    <string name="sair">sair</string>
+
+</resources>
