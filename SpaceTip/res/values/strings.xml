@@ -7,6 +7,9 @@
     <string name="espaco">.</string>
     <string name="sua_vez">Sua vez</string>
     <string name="posicione">Posicione suas naves</string>
+    <string name="mire">Mire no seu lado do campo. O tiro será simétrico.</string>
+    <string name="ganhou">Você ganhou</string>
+    <string name="perdeu">Você perdeu</string>
     <string name="ok">OK</string>
     <string name="sair">sair</string>
 
