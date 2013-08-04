@@ -35,7 +35,7 @@ public class Batalha {
 	private int abatidasMinhas;
 	private int abatidasInimigo;
 	
-	//teste 
+	//teste 2
 	public Batalha(Context context, ViewGroup viewGroup) {
 		NUMERO_NAVES = 4;
 		
