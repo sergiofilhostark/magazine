@@ -4,12 +4,16 @@ public class Nave {
 	
 	private float x;
 	private float y;
+	private float altura;
+	private float largura;
 
 	private boolean atingido;
 	
-	public Nave(float x, float y){
+	public Nave(float x, float y, float largura, float altura){
 		this.x = x;
 		this.y = y;
+		this.altura = altura;
+		this.largura = largura;
 
 		atingido = false;
 	}
@@ -37,7 +41,7 @@ public class Nave {
 		this.atingido = atingido;
 	}
 	
-	public boolean isAcertou(float xTiro, float yTiro, int largura, int altura){
+	public boolean isAcertou(float xTiro, float yTiro ){
 		
 		
 		System.out.println(xTiro+ " " +yTiro+ " " +x+ " " +y+ " " +largura+ " " +altura);

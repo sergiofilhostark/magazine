@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.opengl.Visibility;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +35,17 @@ public class Batalha {
 	
 	private int abatidasMinhas;
 	private int abatidasInimigo;
+	
+	private Drawable drwNave;
+	private Drawable drwFogo;
+	private Drawable drwTorpedo;
+	
+	int alturaNave;
+	int larguraNave;
+	int alturaFogo;
+	int larguraFogo;
+	int alturaTorpedo;
+	int larguraTorpedo;
 	
 	//teste 2
 	public Batalha(Context context, ViewGroup viewGroup) {
@@ -70,6 +82,18 @@ public class Batalha {
 		fogo.setVisibility(View.INVISIBLE);
 		viewGroup.addView(fogo);
 		
+		drwNave = context.getResources().getDrawable(R.drawable.nave);
+		alturaNave = drwNave.getIntrinsicHeight();
+		larguraNave = drwNave.getIntrinsicWidth();
+		
+		drwTorpedo = context.getResources().getDrawable(R.drawable.torpedo);
+		alturaTorpedo = drwTorpedo.getIntrinsicHeight();
+		larguraTorpedo = drwTorpedo.getIntrinsicWidth();
+		
+		drwFogo = context.getResources().getDrawable(R.drawable.fogo);
+		alturaFogo = drwFogo.getIntrinsicHeight();
+		larguraFogo = drwFogo.getIntrinsicWidth();
+		
 //		this.meioCampo = meioCampo;
 	}
 	
@@ -99,12 +123,12 @@ public class Batalha {
 		
 		ImageView naveImg = new ImageView(context);
 		naveImg.setImageResource(id_draw);
-		naveImg.setX(x);
-		naveImg.setY(y);
+		naveImg.setX(x -(larguraNave/2));
+		naveImg.setY(y - (alturaNave/2));
 		viewGroup.addView(naveImg);
 		navesImg.add(naveImg);
 		
-		Nave nave = new Nave(x,y);
+		Nave nave = new Nave(x -(larguraNave/2), y - (alturaNave/2), larguraNave, alturaNave);
 		naves.add(nave);
 		
 		return true;
@@ -126,7 +150,7 @@ public class Batalha {
 		for (int i = 0; i < navesInimigoImg.size(); i++) {
 			ImageView naveImg = navesInimigoImg.get(i);
 			Nave nave = navesInimigo.get(i);
-			if(!nave.isAtingido() && nave.isAcertou(x, y + yT, naveImg.getWidth(), naveImg.getHeight())){
+			if(!nave.isAtingido() && nave.isAcertou(x, y + yT)){
 				nave.setAtingido(true);
 				abatidasInimigo++;
 				naveImg.setImageResource(R.drawable.nave_inimiga_atingida);
@@ -139,8 +163,10 @@ public class Batalha {
 	}
 
 	private void animarTiro(final float x, final float y, final float yT) {
-		torpedo.setX(x);
-		torpedo.setY(y);
+		
+		torpedo.setX(x - (larguraTorpedo/2));
+		torpedo.setY(y - (alturaTorpedo/2));
+		torpedo.bringToFront();
 		
 		AlphaAnimation aparecer = new AlphaAnimation(0, 1);
 		aparecer.setDuration(100);
@@ -162,8 +188,9 @@ public class Batalha {
 		animacao.setFillAfter(true);
 		
 		
-		fogo.setX(x);
-		fogo.setY(y + yT);
+		fogo.setX(x - (larguraFogo/2));
+		fogo.setY(y + yT - (alturaFogo/2));
+		fogo.bringToFront();
 		
 		long tempoExplosao = 1000;
 		
