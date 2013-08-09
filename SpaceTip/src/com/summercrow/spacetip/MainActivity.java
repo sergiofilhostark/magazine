@@ -145,8 +145,8 @@ public class MainActivity extends Activity {
 			return;
 		}
 		
-		float x = (int)event.getX();
-		float y = (int)event.getY();
+		float x = event.getX();
+		float y = event.getY();
 		
 		y = corrigirY(y);
 		
