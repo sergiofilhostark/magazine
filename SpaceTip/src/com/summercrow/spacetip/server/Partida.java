@@ -14,14 +14,18 @@ public class Partida {
 	//TODO colocar numa enum??
 	private final int POSICIONANDO = 1;
 	private final int AGUARDANDO_INICIO = 2;
-	private final int EM_JOGO = 3;
+	private final int JOGO_INICIOU = 3;
+	private final int SUA_VEZ = 4;
 	private final int JOGO_ACABOU = 4;
 	
 	private final int ENTROU = 1;
-	private final int POSICIONOU = 1;
+	private final int POSICIONOU = 2;
+	private final int POSICIONOU_TODOS = 3;
 	
 	private final int OK = 1;
 	private final int NOK = 2;
+	
+	private final int NUMERO_NAVES = 4;
 	
 	public void iniciar(){
 		jogadores = new ArrayList<Jogador>();
@@ -44,7 +48,7 @@ public class Partida {
 		
 		Resposta resposta = new Resposta();
 		resposta.setId(ENTROU);
-		resposta.setId(OK);
+		resposta.setStatus(OK);
 		return resposta;
 	}
 	
@@ -55,9 +59,14 @@ public class Partida {
 		Nave nave = new Nave(x, y, largura, altura);
 		jogador.addNave(nave);
 		
+		int idResposta = POSICIONOU;
+		if (idResposta == NUMERO_NAVES){
+			idResposta = POSICIONOU_TODOS;
+		}
+		
 		Resposta resposta = new Resposta();
-		resposta.setId(POSICIONOU);
-		resposta.setId(OK);
+		resposta.setId(idResposta);
+		resposta.setStatus(OK);
 		return resposta;
 	}
 	
