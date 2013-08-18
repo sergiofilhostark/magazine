@@ -1,15 +1,22 @@
 package com.summercrow.spacetip.cliente;
 
 import com.summercrow.spacetip.R;
+import com.summercrow.spacetip.cliente.proxy.ProxyClienteLocal;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -27,10 +34,15 @@ public class MainActivity extends Activity {
 	private final int EM_JOGO = 3;
 	private final int JOGO_ACABOU = 4;
 	private boolean minhaVez = false;
+	private ProgressDialog aguardeDialog;
+	
+	private ProxyClienteLocal proxyCliente;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		proxyCliente = new ProxyClienteLocal(this);
 		
 		setContentView(R.layout.activity_main);
 		
@@ -52,7 +64,14 @@ public class MainActivity extends Activity {
 //		meuLayout.addView(torpedo);
 		
 		estado = POSICIONANDO;
-		exibirAlerta(R.string.posicione);
+//		exibirAlerta(R.string.posicione);
+		
+		aguardeDialog = new ProgressDialog(this);
+		aguardeDialog.setIndeterminate(true);
+		aguardeDialog.setCancelable(false);
+		aguardeDialog.setMessage(getString(R.string.aguarde));
+		
+		exibirTelaLogin();
 		
 	}
 
@@ -64,6 +83,34 @@ public class MainActivity extends Activity {
 		dialog.setPositiveButton(R.string.ok, null);
 		dialog.show();
 	}
+	
+	private void exibirTelaLogin() {
+		
+		LayoutInflater layoutInflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		View view = layoutInflater.inflate(R.layout.login_dialog, null);
+		
+		final EditText editLoginName = (EditText)view.findViewById(R.id.edit_login_name);
+		
+		Builder dialog = new AlertDialog.Builder(this);
+		
+//		dialog.setTitle(R.string.sua_vez);
+		dialog.setView(view);
+		dialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				String nome = editLoginName.getText().toString();
+				
+				proxyCliente.login(nome);
+				
+				System.out.println(nome);
+				
+				aguardeDialog.show();
+			}
+		});
+		dialog.show();
+	}
+	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

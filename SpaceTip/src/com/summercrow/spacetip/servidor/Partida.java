@@ -80,6 +80,8 @@ public class Partida {
 	 * seguranca dos dados (id do usuario pode ser alterado)
 	 * sincronizacao dos metodos!!
 	 * travar o cliente para multiplos toques. esperar o resultado antes de aceitar outro toque
+	 * 
+	 * a resposta pode ser generica, entao nao compensa criar um protocolo assincrono
 	 */
 
 }

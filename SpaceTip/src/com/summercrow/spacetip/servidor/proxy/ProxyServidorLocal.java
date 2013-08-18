@@ -13,4 +13,8 @@ public class ProxyServidorLocal {
 		this.controlador = new Controlador(this);
 	}
 
+	public void login(String nome) {
+		controlador.login(nome);
+	}
+
 }

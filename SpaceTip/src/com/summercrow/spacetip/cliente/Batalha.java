@@ -51,7 +51,7 @@ public class Batalha {
 	int alturaTorpedo;
 	int larguraTorpedo;
 	
-	private ProxyClienteLocal proxyCliente;
+	
 	
 	//teste 2
 	public Batalha(Context context, ViewGroup viewGroup) {
@@ -102,7 +102,6 @@ public class Batalha {
 		
 //		this.meioCampo = meioCampo;
 		
-		proxyCliente = new ProxyClienteLocal(this);
 	}
 	
 	public boolean posicionarNaveMinha(Context context, float x, float y){

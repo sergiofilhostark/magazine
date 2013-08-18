@@ -12,5 +12,7 @@
     <string name="perdeu">Você perdeu</string>
     <string name="ok">OK</string>
     <string name="sair">sair</string>
+    <string name="escolha_nome">Escolha um nome</string>
+    <string name="aguarde">Por favor, aguarde</string>
 
 </resources>
