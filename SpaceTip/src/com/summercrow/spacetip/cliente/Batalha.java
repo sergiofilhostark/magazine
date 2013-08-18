@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.summercrow.spacetip.R;
+import com.summercrow.spacetip.cliente.proxy.ProxyClienteLocal;
+import com.summercrow.spacetip.servidor.proxy.ProxyServidorLocal;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
@@ -48,6 +50,8 @@ public class Batalha {
 	int larguraFogo;
 	int alturaTorpedo;
 	int larguraTorpedo;
+	
+	private ProxyClienteLocal proxyCliente;
 	
 	//teste 2
 	public Batalha(Context context, ViewGroup viewGroup) {
@@ -97,6 +101,8 @@ public class Batalha {
 		larguraFogo = drwFogo.getIntrinsicWidth();
 		
 //		this.meioCampo = meioCampo;
+		
+		proxyCliente = new ProxyClienteLocal(this);
 	}
 	
 	public boolean posicionarNaveMinha(Context context, float x, float y){
