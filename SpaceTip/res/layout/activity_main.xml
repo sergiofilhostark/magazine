@@ -17,7 +17,7 @@
      
        --> 
        
-    <com.summercrow.spacetip.Fundo android:id="@+id/fundo" 
+    <com.summercrow.spacetip.cliente.Fundo android:id="@+id/fundo" 
         android:layout_width="wrap_content" android:layout_height="wrap_content"/>
      
         

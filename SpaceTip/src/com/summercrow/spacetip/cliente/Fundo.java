@@ -1,4 +1,6 @@
-package com.summercrow.spacetip;
+package com.summercrow.spacetip.cliente;
+
+import com.summercrow.spacetip.R;
 
 import android.content.Context;
 import android.graphics.Canvas;

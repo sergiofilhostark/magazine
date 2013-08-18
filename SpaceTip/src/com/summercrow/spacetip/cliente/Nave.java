@@ -1,4 +1,4 @@
-package com.summercrow.spacetip;
+package com.summercrow.spacetip.cliente;
 
 public class Nave {
 	

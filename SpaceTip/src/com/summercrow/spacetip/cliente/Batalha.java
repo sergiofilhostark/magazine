@@ -1,7 +1,9 @@
-package com.summercrow.spacetip;
+package com.summercrow.spacetip.cliente;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import com.summercrow.spacetip.R;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
