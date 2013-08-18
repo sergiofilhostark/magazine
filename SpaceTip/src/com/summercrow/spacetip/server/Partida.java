@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.summercrow.spacetip.to.Resposta;
+
 public class Partida {
 	
 	private List<Jogador> jogadores;
