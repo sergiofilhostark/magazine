@@ -5,6 +5,8 @@ public class Resposta {
 	private int id;
 	private int status;
 	private String mensagem;
+	
+	//teste
 
 	public int getStatus() {
 		return status;
