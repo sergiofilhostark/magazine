@@ -1,4 +1,4 @@
-package com.summercrow.spacetip.server;
+package com.summercrow.spacetip.servidor;
 
 import com.summercrow.spacetip.ProxyClienteLocal;
 
