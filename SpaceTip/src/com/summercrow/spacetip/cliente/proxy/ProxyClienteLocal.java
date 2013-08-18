@@ -1,6 +1,7 @@
-package com.summercrow.spacetip.cliente;
+package com.summercrow.spacetip.cliente.proxy;
 
-import com.summercrow.spacetip.servidor.ProxyServidorLocal;
+import com.summercrow.spacetip.cliente.Batalha;
+import com.summercrow.spacetip.servidor.proxy.ProxyServidorLocal;
 
 public class ProxyClienteLocal {
 	
