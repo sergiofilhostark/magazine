@@ -2,9 +2,11 @@ package com.summercrow.spacetip.servidor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.summercrow.spacetip.servidor.proxy.ProxyServidorLocal;
 import com.summercrow.spacetip.to.Resposta;
 
 public class Partida {
@@ -29,10 +31,34 @@ public class Partida {
 	
 	private final int NUMERO_NAVES = 4;
 	
-	public void iniciar(){
+	private ProxyServidorLocal proxyServidor;
+	
+	public void setProxyServidor(ProxyServidorLocal proxyServidor) {
+		this.proxyServidor = proxyServidor;
+	}
+
+	public void Partida(){
 		jogadores = new ArrayList<Jogador>();
 		jogadoresId = new HashMap<Long, Jogador>();
 		turno = -1;
+	}
+	
+	public synchronized void entrar(Jogador jogador){
+		jogadores.add(jogador);
+		jogador.setPosicao(jogadores.size() - 1);
+		
+		if(jogadores.size() == 1){
+			proxyServidor.enviarAguardar(jogador);
+		} else {
+			iniciar();
+		}
+	}
+
+	private void iniciar() {
+		turno = 0;
+		for (Jogador cadaJogador: jogadores) {
+			proxyServidor.enviarIniciar(cadaJogador, turno);
+		}
 	}
 	
 	public synchronized Resposta entrar(Long id, String nick){
@@ -43,7 +69,7 @@ public class Partida {
 		
 		Jogador jogador = new Jogador();
 		jogador.setId(id);
-		jogador.setNick(nick);
+		jogador.setNome(nick);
 		
 		jogadores.add(jogador);
 		jogadoresId.put(id, jogador);

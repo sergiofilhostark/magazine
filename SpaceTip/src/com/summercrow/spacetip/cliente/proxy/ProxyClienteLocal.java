@@ -14,10 +14,22 @@ public class ProxyClienteLocal {
 		proxyServidor = new ProxyServidorLocal(this);
 	}
 
-	public void login(String nome) {
+	public void enviarLogin(String nome) {
 		proxyServidor.login(nome);
 		
 	}
+
+	public void aguardar(Long id, int posicao) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void iniciar(Long id, int posicao, int turno) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 	
 	
 

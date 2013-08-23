@@ -5,11 +5,20 @@ import java.util.List;
 
 public class Jogador {
 	
-	private String nick;
+	private String nome;
 	private Long id;
 	private int posicao;
 	private List<Nave> naves = new ArrayList<Nave>();
+	private Partida partida;
 	
+	public Partida getPartida() {
+		return partida;
+	}
+
+	public void setPartida(Partida partida) {
+		this.partida = partida;
+	}
+
 	public int getPosicao() {
 		return posicao;
 	}
@@ -26,12 +35,12 @@ public class Jogador {
 		this.id = id;
 	}
 
-	public String getNick() {
-		return nick;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setNick(String nick) {
-		this.nick = nick;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
 	

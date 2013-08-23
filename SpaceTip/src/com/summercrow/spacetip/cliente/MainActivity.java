@@ -101,7 +101,7 @@ public class MainActivity extends Activity {
 			public void onClick(DialogInterface dialog, int which) {
 				String nome = editLoginName.getText().toString();
 				
-				proxyCliente.login(nome);
+				proxyCliente.enviarLogin(nome);
 				
 				System.out.println(nome);
 				
