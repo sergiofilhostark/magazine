@@ -7,12 +7,14 @@ import java.util.List;
 import java.util.Map;
 
 import com.summercrow.spacetip.servidor.proxy.ProxyServidorLocal;
+import com.summercrow.spacetip.to.DadosNave;
 import com.summercrow.spacetip.to.Resposta;
 
 public class Partida {
 	
 	private List<Jogador> jogadores;
 	private int turno;
+	//TODO ver a necessidade desse mapa
 	private Map<Long, Jogador> jogadoresId;
 	
 	//TODO colocar numa enum??
@@ -50,9 +52,9 @@ public class Partida {
 		proxyServidor.enviarLoginEfetuado(jogador);
 		
 		//REMOVER
-		if(jogador.getId().longValue() > 1){
-			return;
-		}
+//		if(jogador.getId().longValue() > 1){
+//			return;
+//		}
 		
 		
 		if(jogadores.size() > 1){
@@ -98,22 +100,41 @@ public class Partida {
 		return resposta;
 	}
 	
-	public Resposta posicionarNave(Long id, long x, long y, long altura, long largura){
-		
-		Jogador jogador = jogadoresId.get(id);
-		
-		Nave nave = new Nave(x, y, largura, altura);
-		jogador.addNave(nave);
-		
-		int idResposta = POSICIONOU;
-		if (idResposta == NUMERO_NAVES){
-			idResposta = POSICIONOU_TODOS;
+//	public Resposta posicionarNave(Long id, long x, long y, long altura, long largura){
+//		
+//		Jogador jogador = jogadoresId.get(id);
+//		
+//		Nave nave = new Nave(x, y, largura, altura);
+//		jogador.addNave(nave);
+//		
+//		int idResposta = POSICIONOU;
+//		if (idResposta == NUMERO_NAVES){
+//			idResposta = POSICIONOU_TODOS;
+//		}
+//		
+//		Resposta resposta = new Resposta();
+//		resposta.setId(idResposta);
+//		resposta.setStatus(OK);
+//		return resposta;
+//	}
+
+	public void navesPosicionadas(Jogador jogador, List<DadosNave> dadosNaves) {
+		for (DadosNave dadosNave : dadosNaves) {
+			Nave nave = new Nave(dadosNave.getX(), dadosNave.getY(), dadosNave.getLargura(), dadosNave.getAltura());
+			jogador.addNave(nave);
 		}
 		
-		Resposta resposta = new Resposta();
-		resposta.setId(idResposta);
-		resposta.setStatus(OK);
-		return resposta;
+		boolean todasPosicionadas = true;
+		for (Jogador cadaJogador: jogadores) {
+			if(cadaJogador.getNaves().isEmpty()){
+				todasPosicionadas = false;
+				break;
+			}
+		}
+		if(todasPosicionadas){
+			// INICIAR PARTIDA AQUI
+			// ENVIAR OS DADOS DO ADVERSARIO E ESCOLHER UM TURNO
+		}
 	}
 	
 	

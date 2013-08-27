@@ -6,14 +6,20 @@ public class DadosNave {
 	private float y;
 	private float altura;
 	private float largura;
+
 	
-	public DadosNave(float x, float y, float largura, float altura){
-		this.x = x;
-		this.y = y;
+	public float getAltura() {
+		return altura;
+	}
+	public void setAltura(float altura) {
 		this.altura = altura;
+	}
+	public float getLargura() {
+		return largura;
+	}
+	public void setLargura(float largura) {
 		this.largura = largura;
 	}
-	
 	public float getX() {
 		return x;
 	}

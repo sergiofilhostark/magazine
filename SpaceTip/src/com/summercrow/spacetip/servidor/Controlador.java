@@ -11,7 +11,7 @@ public class Controlador {
 	
 	private ProxyServidorLocal proxyServidor;
 	
-	private Map<Long, Jogador> jogadores = new HashMap<Long, Jogador>();
+	
 	
 	private List<Partida> partidasAguardando = new ArrayList<Partida>();
 	

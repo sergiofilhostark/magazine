@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.summercrow.spacetip.R;
 import com.summercrow.spacetip.cliente.proxy.ProxyClienteLocal;
+import com.summercrow.spacetip.to.DadosNave;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -126,8 +127,8 @@ public class MainActivity extends Activity {
 				
 				proxyCliente.enviarLogin(nome);
 				
-				System.out.println(nome);
-				
+				//REMOVER
+				proxyCliente.enviarLogin("Jogador 2");
 				
 			}
 		});
@@ -260,13 +261,57 @@ public class MainActivity extends Activity {
 			estado = AGUARDANDO_INICIO;
 			aguardeDialog.setMessage(getString(R.string.aguardando_inicio));
 			aguardeDialog.show();
+			
+			List<DadosNave> dadosNaves = ajustarDimensoes();
+			
+			proxyCliente.enviarNavesPosicionadas(idJogador, dadosNaves);
 		}
+		
+		
+		
+		
 		
 //		batalha.posicionarNaveMinha(this, x, y);
 //		
 //		if(batalha.isTodasNavesMinhasPosicionadas()){
 //			aguardarInicio();
 //		}
+		
+	}
+
+	private List<DadosNave> ajustarDimensoes() {
+		int larguraJogo = meuLayout.getWidth();
+		int alturaJogo = meuLayout.getHeight();
+		List<DadosNave> dadosNaves = new ArrayList<DadosNave>();
+		for (Nave nave: navesMinhas) {
+			float larguraRelativa = nave.getLargura() / larguraJogo;
+			float xRelativo = nave.getX() / larguraJogo;
+			float alturaRelativa = nave.getAltura() / alturaJogo;
+			float yRelativo = nave.getY() / alturaJogo;
+			
+			DadosNave dados = new DadosNave();
+			dados.setAltura(alturaRelativa);
+			dados.setLargura(larguraRelativa);
+			dados.setX(xRelativo);
+			dados.setY(yRelativo);
+			
+			dadosNaves.add(dados);
+		}
+		return dadosNaves;
+	}
+	
+	private void posicionarNave(float x, float y){
+		
+		
+		ImageView naveImg = new ImageView(this);
+		naveImg.setImageResource(R.drawable.nave);
+		naveImg.setX(x -(larguraNave/2));
+		naveImg.setY(y - (alturaNave/2));
+		meuLayout.addView(naveImg);
+		
+		Nave nave = new Nave(x -(larguraNave/2), y - (alturaNave/2), larguraNave, alturaNave);
+		nave.setImageView(naveImg);
+		navesMinhas.add(nave);
 		
 	}
 
@@ -310,8 +355,7 @@ public class MainActivity extends Activity {
 		aguardeDialog.setMessage(getString(R.string.aguardando_adversario));
 		aguardeDialog.show();
 		
-		//REMOVER
-		proxyCliente.enviarLogin("Jogador 2");
+		
 	}
 
 	public void pedirPosicionamento() {
@@ -320,20 +364,7 @@ public class MainActivity extends Activity {
 		exibirAlerta(R.string.posicione);
 	}
 	
-	private void posicionarNave(float x, float y){
-		
-		
-		ImageView naveImg = new ImageView(this);
-		naveImg.setImageResource(R.drawable.nave);
-		naveImg.setX(x -(larguraNave/2));
-		naveImg.setY(y - (alturaNave/2));
-		meuLayout.addView(naveImg);
-		
-		Nave nave = new Nave(x -(larguraNave/2), y - (alturaNave/2), larguraNave, alturaNave);
-		nave.setImageView(naveImg);
-		navesMinhas.add(nave);
-		
-	}
+	
 	
 	
 

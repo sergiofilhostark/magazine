@@ -4,6 +4,34 @@ import android.widget.ImageView;
 
 public class Nave {
 	
+	public float getAltura() {
+		return altura;
+	}
+
+
+
+
+
+	public void setAltura(float altura) {
+		this.altura = altura;
+	}
+
+
+
+
+
+	public float getLargura() {
+		return largura;
+	}
+
+
+
+
+
+	public void setLargura(float largura) {
+		this.largura = largura;
+	}
+
 	private float x;
 	private float y;
 	private float altura;

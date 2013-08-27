@@ -1,8 +1,11 @@
 package com.summercrow.spacetip.cliente.proxy;
 
+import java.util.List;
+
 import com.summercrow.spacetip.cliente.Batalha;
 import com.summercrow.spacetip.cliente.MainActivity;
 import com.summercrow.spacetip.servidor.proxy.ProxyServidorLocal;
+import com.summercrow.spacetip.to.DadosNave;
 
 public class ProxyClienteLocal {
 	
@@ -35,6 +38,10 @@ public class ProxyClienteLocal {
 
 	public void pedirPosicionamento() {
 		activity.pedirPosicionamento();
+	}
+
+	public void enviarNavesPosicionadas(Long idJogador, List<DadosNave> dadosNaves) {
+		proxyServidor.navesPosicionadas(idJogador, dadosNaves);
 	}
 
 	
