@@ -37,7 +37,7 @@ public class Partida {
 		this.proxyServidor = proxyServidor;
 	}
 
-	public void Partida(){
+	public Partida(){
 		jogadores = new ArrayList<Jogador>();
 		jogadoresId = new HashMap<Long, Jogador>();
 		turno = -1;
@@ -47,10 +47,28 @@ public class Partida {
 		jogadores.add(jogador);
 		jogador.setPosicao(jogadores.size() - 1);
 		
-		if(jogadores.size() == 1){
-			proxyServidor.enviarAguardar(jogador);
-		} else {
-			iniciar();
+		proxyServidor.enviarLoginEfetuado(jogador);
+		
+		//REMOVER
+		if(jogador.getId().longValue() > 1){
+			return;
+		}
+		
+		
+		if(jogadores.size() > 1){
+			pedirPosicionamento();
+		}
+		
+//		if(jogadores.size() == 1){
+//			proxyServidor.enviarAguardar(jogador);
+//		} else {
+//			pedirPosicionamento();
+//		}
+	}
+	
+	private void pedirPosicionamento() {
+		for (Jogador cadaJogador: jogadores) {
+			proxyServidor.enviarPedidoPosicionamento(cadaJogador);
 		}
 	}
 

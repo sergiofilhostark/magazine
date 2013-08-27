@@ -39,6 +39,7 @@ public class Controlador {
 		}
 		else {
 			Partida partida = new Partida();
+			partida.setProxyServidor(proxyServidor);
 			partidasAguardando.add(partida);
 			return partida;
 		}

@@ -1,5 +1,8 @@
 package com.summercrow.spacetip.cliente;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.summercrow.spacetip.R;
 import com.summercrow.spacetip.cliente.proxy.ProxyClienteLocal;
 
@@ -9,6 +12,7 @@ import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.LayoutInflater;
@@ -28,16 +32,28 @@ public class MainActivity extends Activity {
 	private ImageView torpedo;
 	
 	private Batalha batalha;
+	
+	
+	//TODO organizar estado do cliente
 	private int estado;
 	private final int POSICIONANDO = 1;
 	private final int AGUARDANDO_INICIO = 2;
 	private final int EM_JOGO = 3;
 	private final int JOGO_ACABOU = 4;
+	
+	
 	private boolean minhaVez = false;
 	private ProgressDialog aguardeDialog;
 	
 	private ProxyClienteLocal proxyCliente;
+	
+	private Long idJogador;
+	private Integer posicaoJogador;
 
+	private List<Nave> navesMinhas;
+	private int alturaNave;
+	private int larguraNave;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -48,6 +64,11 @@ public class MainActivity extends Activity {
 		
 		meuLayout = (RelativeLayout)findViewById(R.id.layout_main);
 		
+		navesMinhas = new ArrayList<Nave>();
+		
+		Drawable drwNave = this.getResources().getDrawable(R.drawable.nave);
+		alturaNave = drwNave.getIntrinsicHeight();
+		larguraNave = drwNave.getIntrinsicWidth();
 		
 		batalha = new Batalha(this, meuLayout);
 		
@@ -63,7 +84,7 @@ public class MainActivity extends Activity {
 //		torpedo.setY(0);
 //		meuLayout.addView(torpedo);
 		
-		estado = POSICIONANDO;
+//		estado = POSICIONANDO;
 //		exibirAlerta(R.string.posicione);
 		
 		aguardeDialog = new ProgressDialog(this);
@@ -101,11 +122,13 @@ public class MainActivity extends Activity {
 			public void onClick(DialogInterface dialog, int which) {
 				String nome = editLoginName.getText().toString();
 				
+				aguardeDialog.show();
+				
 				proxyCliente.enviarLogin(nome);
 				
 				System.out.println(nome);
 				
-				aguardeDialog.show();
+				
 			}
 		});
 		dialog.show();
@@ -133,12 +156,12 @@ public class MainActivity extends Activity {
 	public boolean onTouchEvent(MotionEvent event) {
 		
 		switch (event.getAction()) {
-		case MotionEvent.ACTION_UP:
-			tratarEstado(event);
-			break;
-
-		default:
-			break;
+			case MotionEvent.ACTION_UP:
+				tratarEstado(event);
+				break;
+	
+			default:
+				break;
 		}
 		
 		
@@ -230,11 +253,20 @@ public class MainActivity extends Activity {
 			return;
 		}
 		
-		batalha.posicionarNaveMinha(this, x, y);
 		
-		if(batalha.isTodasNavesMinhasPosicionadas()){
-			aguardarInicio();
+		posicionarNave(x, y);
+		
+		if(navesMinhas.size() >= 4){
+			estado = AGUARDANDO_INICIO;
+			aguardeDialog.setMessage(getString(R.string.aguardando_inicio));
+			aguardeDialog.show();
 		}
+		
+//		batalha.posicionarNaveMinha(this, x, y);
+//		
+//		if(batalha.isTodasNavesMinhasPosicionadas()){
+//			aguardarInicio();
+//		}
 		
 	}
 
@@ -267,6 +299,40 @@ public class MainActivity extends Activity {
 		estado = EM_JOGO;
 		exibirAlerta(R.string.mire);
 		minhaVez = true;
+	}
+
+	public void loginEfetuado(Long id, int posicao) {
+		
+		this.idJogador = id;
+		this.posicaoJogador = posicao;
+		
+		aguardeDialog.hide();
+		aguardeDialog.setMessage(getString(R.string.aguardando_adversario));
+		aguardeDialog.show();
+		
+		//REMOVER
+		proxyCliente.enviarLogin("Jogador 2");
+	}
+
+	public void pedirPosicionamento() {
+		estado = POSICIONANDO;
+		aguardeDialog.hide();
+		exibirAlerta(R.string.posicione);
+	}
+	
+	private void posicionarNave(float x, float y){
+		
+		
+		ImageView naveImg = new ImageView(this);
+		naveImg.setImageResource(R.drawable.nave);
+		naveImg.setX(x -(larguraNave/2));
+		naveImg.setY(y - (alturaNave/2));
+		meuLayout.addView(naveImg);
+		
+		Nave nave = new Nave(x -(larguraNave/2), y - (alturaNave/2), larguraNave, alturaNave);
+		nave.setImageView(naveImg);
+		navesMinhas.add(nave);
+		
 	}
 	
 	

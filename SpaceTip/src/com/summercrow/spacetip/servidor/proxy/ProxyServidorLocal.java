@@ -26,4 +26,18 @@ public class ProxyServidorLocal {
 		proxyCliente.iniciar(jogador.getId(), jogador.getPosicao(), turno);
 	}
 
+	public void enviarPedidoPosicionamento(Jogador jogador) {
+		if(jogador.getId().longValue() > 1){
+			return;
+		}
+		proxyCliente.pedirPosicionamento();
+	}
+
+	public void enviarLoginEfetuado(Jogador jogador) {
+		if(jogador.getId().longValue() > 1){
+			return;
+		}
+		proxyCliente.loginEfetuado(jogador.getId(), jogador.getPosicao());
+	}
+
 }

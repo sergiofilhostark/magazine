@@ -29,6 +29,14 @@ public class ProxyClienteLocal {
 		
 	}
 
+	public void loginEfetuado(Long id, int posicao) {
+		activity.loginEfetuado(id, posicao);
+	}
+
+	public void pedirPosicionamento() {
+		activity.pedirPosicionamento();
+	}
+
 	
 	
 	
