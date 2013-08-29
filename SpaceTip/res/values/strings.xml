@@ -15,6 +15,7 @@
     <string name="escolha_nome">Escolha um nome</string>
     <string name="aguarde">Por favor, aguarde</string>
     <string name="aguardando_adversario">Aguardando adversário</string>
+    <string name="aguardando_jogada_adversario">Aguardando jogada do adversário</string>
     <string name="aguardando_inicio">Aguardando inicio</string>
 
 </resources>

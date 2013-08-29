@@ -6,6 +6,7 @@ import java.util.List;
 import com.summercrow.spacetip.R;
 import com.summercrow.spacetip.cliente.proxy.ProxyClienteLocal;
 import com.summercrow.spacetip.to.DadosNave;
+import com.summercrow.spacetip.to.InicioDeJogo;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -43,7 +44,7 @@ public class MainActivity extends Activity {
 	private final int JOGO_ACABOU = 4;
 	
 	
-	private boolean minhaVez = false;
+	private boolean meuTurno = false;
 	private ProgressDialog aguardeDialog;
 	
 	private ProxyClienteLocal proxyCliente;
@@ -52,8 +53,13 @@ public class MainActivity extends Activity {
 	private Integer posicaoJogador;
 
 	private List<Nave> navesMinhas;
+	private List<Nave> navesAdversario;
+	
+	//TODO sera que precisa dessas variaveis globais??
 	private int alturaNave;
 	private int larguraNave;
+	private int alturaNaveInimiga;
+	private int larguraNaveInimiga;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +76,10 @@ public class MainActivity extends Activity {
 		Drawable drwNave = this.getResources().getDrawable(R.drawable.nave);
 		alturaNave = drwNave.getIntrinsicHeight();
 		larguraNave = drwNave.getIntrinsicWidth();
+		
+		Drawable drwNaveInimiga = this.getResources().getDrawable(R.drawable.nave_inimiga);
+		alturaNaveInimiga = drwNaveInimiga.getIntrinsicHeight();
+		larguraNaveInimiga = drwNaveInimiga.getIntrinsicWidth();
 		
 		batalha = new Batalha(this, meuLayout);
 		
@@ -125,10 +135,7 @@ public class MainActivity extends Activity {
 				
 				aguardeDialog.show();
 				
-				proxyCliente.enviarLogin(nome);
-				
-				//REMOVER
-				proxyCliente.enviarLogin("Jogador 2");
+				enviarLogin(nome);
 				
 			}
 		});
@@ -212,7 +219,7 @@ public class MainActivity extends Activity {
 	}
 
 	private void jogar(MotionEvent event) {
-		if(!minhaVez){
+		if(!meuTurno){
 			Toast toast = Toast.makeText(this, "Aguarde a sua vez", Toast.LENGTH_SHORT);
 			toast.show();
 			return;
@@ -255,16 +262,10 @@ public class MainActivity extends Activity {
 		}
 		
 		
-		posicionarNave(x, y);
+		posicionarNave(x, y, navesMinhas, R.drawable.nave, larguraNave, alturaNave);
 		
 		if(navesMinhas.size() >= 4){
-			estado = AGUARDANDO_INICIO;
-			aguardeDialog.setMessage(getString(R.string.aguardando_inicio));
-			aguardeDialog.show();
-			
-			List<DadosNave> dadosNaves = ajustarDimensoes();
-			
-			proxyCliente.enviarNavesPosicionadas(idJogador, dadosNaves);
+			enviarNavesPosicionadas();
 		}
 		
 		
@@ -279,40 +280,43 @@ public class MainActivity extends Activity {
 		
 	}
 
-	private List<DadosNave> ajustarDimensoes() {
-		int larguraJogo = meuLayout.getWidth();
-		int alturaJogo = meuLayout.getHeight();
-		List<DadosNave> dadosNaves = new ArrayList<DadosNave>();
-		for (Nave nave: navesMinhas) {
-			float larguraRelativa = nave.getLargura() / larguraJogo;
-			float xRelativo = nave.getX() / larguraJogo;
-			float alturaRelativa = nave.getAltura() / alturaJogo;
-			float yRelativo = nave.getY() / alturaJogo;
-			
-			DadosNave dados = new DadosNave();
-			dados.setAltura(alturaRelativa);
-			dados.setLargura(larguraRelativa);
-			dados.setX(xRelativo);
-			dados.setY(yRelativo);
-			
-			dadosNaves.add(dados);
-		}
-		return dadosNaves;
-	}
-	
-	private void posicionarNave(float x, float y){
+	private void enviarNavesPosicionadas() {
+		estado = AGUARDANDO_INICIO;
+		aguardeDialog.setMessage(getString(R.string.aguardando_inicio));
+		aguardeDialog.show();
 		
+		List<DadosNave> dadosNaves = ajustarDimensoes(navesMinhas);
+		
+		
+		proxyCliente.enviarNavesPosicionadas(idJogador, dadosNaves);
+		
+		//REMOVER		
+		List<Nave> navesAdversarioTemp = new ArrayList<Nave>();
+		Nave nave1 = new Nave(80 -(larguraNave/2), 80 - (alturaNave/2), larguraNave, alturaNave);
+		navesAdversarioTemp.add(nave1);
+		Nave nave2 = new Nave(160 -(larguraNave/2), 160 - (alturaNave/2), larguraNave, alturaNave);
+		navesAdversarioTemp.add(nave2);
+		Nave nave3 = new Nave(240 -(larguraNave/2), 240 - (alturaNave/2), larguraNave, alturaNave);
+		navesAdversarioTemp.add(nave3);
+		Nave nave4 = new Nave(320 -(larguraNave/2), 320 - (alturaNave/2), larguraNave, alturaNave);
+		navesAdversarioTemp.add(nave4);
+		List<DadosNave> dadosAdversario = ajustarDimensoes(navesAdversarioTemp);
+		proxyCliente.enviarNavesPosicionadas(idJogador + 1, dadosAdversario);
+	}
+
+	
+	
+	private void posicionarNave(float x, float y, List<Nave> naves, int imageId, int largura, int altura){
 		
 		ImageView naveImg = new ImageView(this);
-		naveImg.setImageResource(R.drawable.nave);
-		naveImg.setX(x -(larguraNave/2));
-		naveImg.setY(y - (alturaNave/2));
+		naveImg.setImageResource(imageId);
+		naveImg.setX(x -(largura/2));
+		naveImg.setY(y - (altura/2));
 		meuLayout.addView(naveImg);
 		
-		Nave nave = new Nave(x -(larguraNave/2), y - (alturaNave/2), larguraNave, alturaNave);
+		Nave nave = new Nave(x -(largura/2), y - (altura/2), largura, altura);
 		nave.setImageView(naveImg);
-		navesMinhas.add(nave);
-		
+		naves.add(nave);
 	}
 
 	private float getMetade() {
@@ -343,7 +347,7 @@ public class MainActivity extends Activity {
 	private void iniciarJogo() {
 		estado = EM_JOGO;
 		exibirAlerta(R.string.mire);
-		minhaVez = true;
+		meuTurno = true;
 	}
 
 	public void loginEfetuado(Long id, int posicao) {
@@ -357,11 +361,92 @@ public class MainActivity extends Activity {
 		
 		
 	}
+	
+	private List<DadosNave> ajustarDimensoes(List<Nave> naves) {
+		int larguraJogo = meuLayout.getWidth();
+		int alturaJogo = meuLayout.getHeight();
+		List<DadosNave> dadosNaves = new ArrayList<DadosNave>();
+		for (Nave nave: naves) {
+			float larguraRelativa = nave.getLargura() / larguraJogo;
+			float xRelativo = nave.getX() / larguraJogo;
+			float alturaRelativa = nave.getAltura() / alturaJogo;
+			float yRelativo = nave.getY() / alturaJogo;
+			
+			DadosNave dados = new DadosNave();
+			dados.setAltura(alturaRelativa);
+			dados.setLargura(larguraRelativa);
+			dados.setX(xRelativo);
+			dados.setY(yRelativo);
+			
+			dadosNaves.add(dados);
+		}
+		return dadosNaves;
+	}
+	
+	private List<Nave> ajustarDimensoesAdversario(List<DadosNave> dadosNavesAdversario) {
+		int larguraJogo = meuLayout.getWidth();
+		int alturaJogo = meuLayout.getHeight();
+		List<Nave> naves = new ArrayList<Nave>();
+		for (DadosNave dados: dadosNavesAdversario) {
+			float largura = dados.getLargura() * larguraJogo;
+			float x = dados.getX() * larguraJogo;
+			float altura = dados.getAltura() * alturaJogo;
+			float y = dados.getY() * alturaJogo;
+			
+			Nave nave = new Nave(x, y, largura, altura);
+			
+			naves.add(nave);
+		}
+		return naves;
+	}
 
+	//TODO criar uma nomenclatura para os metodos de envio e de recebimento
+	//TODO melhorar esse aguarde, criar metodos como o exibirAlerta
 	public void pedirPosicionamento() {
 		estado = POSICIONANDO;
 		aguardeDialog.hide();
 		exibirAlerta(R.string.posicione);
+	}
+	
+	private void posicionarImagemNaveAdversario(float x, float y, int imageId){
+		
+		ImageView naveImg = new ImageView(this);
+		naveImg.setImageResource(imageId);
+		naveImg.setX(x);
+		naveImg.setY(y);
+		meuLayout.addView(naveImg);
+	}
+
+	public void inicioDeJogo(InicioDeJogo inicioDeJogo) {
+		estado = EM_JOGO;
+		
+		List<DadosNave> dadosNavesAdversario = inicioDeJogo.getNavesAdversario();
+		navesAdversario = ajustarDimensoesAdversario(dadosNavesAdversario);
+		for (Nave nave : navesAdversario) {
+			posicionarImagemNaveAdversario(nave.getX(), nave.getY(), R.drawable.nave_inimiga);
+		}
+		
+		aguardeDialog.hide();
+		
+		if(inicioDeJogo.isSeuTurno()){
+			meuTurno = true;
+			exibirAlerta(R.string.mire);
+		} else {
+			meuTurno = false;
+			aguardeDialog.setMessage(getString(R.string.aguardando_jogada_adversario));
+			aguardeDialog.show();
+		}
+		
+		
+		
+		
+	}
+
+	private void enviarLogin(String nome) {
+		proxyCliente.enviarLogin(nome);
+		
+		//REMOVER
+		proxyCliente.enviarLogin("Jogador 2");
 	}
 	
 	

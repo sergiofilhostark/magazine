@@ -2,6 +2,15 @@ package com.summercrow.spacetip.servidor;
 
 public class Nave {
 	
+	public float getAltura() {
+		return altura;
+	}
+
+
+	public float getLargura() {
+		return largura;
+	}
+
 	private float x;
 	private float y;
 	private float altura;

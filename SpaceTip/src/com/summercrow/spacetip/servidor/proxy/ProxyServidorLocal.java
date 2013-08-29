@@ -9,6 +9,7 @@ import com.summercrow.spacetip.servidor.Controlador;
 import com.summercrow.spacetip.servidor.Jogador;
 import com.summercrow.spacetip.servidor.Partida;
 import com.summercrow.spacetip.to.DadosNave;
+import com.summercrow.spacetip.to.InicioDeJogo;
 
 public class ProxyServidorLocal {
 	
@@ -47,6 +48,7 @@ public class ProxyServidorLocal {
 	}
 
 	public void enviarPedidoPosicionamento(Jogador jogador) {
+		//REMOVER
 		if(jogador.getId().longValue() > 1){
 			return;
 		}
@@ -54,6 +56,7 @@ public class ProxyServidorLocal {
 	}
 
 	public void enviarLoginEfetuado(Jogador jogador) {
+		//REMOVER
 		if(jogador.getId().longValue() > 1){
 			return;
 		}
@@ -64,6 +67,14 @@ public class ProxyServidorLocal {
 		Jogador jogador = getJogador(idJogador);
 		Partida partida = jogador.getPartida();
 		partida.navesPosicionadas(jogador, dadosNaves);
+	}
+
+	public void enviarInicioDeJogo(Jogador jogador, InicioDeJogo inicioDeJogo) {
+		//REMOVER
+		if(jogador.getId().longValue() > 1){
+			return;
+		}
+		proxyCliente.inicioDeJogo(inicioDeJogo);
 	}
 
 }

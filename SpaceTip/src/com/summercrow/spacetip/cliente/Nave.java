@@ -3,59 +3,13 @@ package com.summercrow.spacetip.cliente;
 import android.widget.ImageView;
 
 public class Nave {
-	
-	public float getAltura() {
-		return altura;
-	}
-
-
-
-
-
-	public void setAltura(float altura) {
-		this.altura = altura;
-	}
-
-
-
-
-
-	public float getLargura() {
-		return largura;
-	}
-
-
-
-
-
-	public void setLargura(float largura) {
-		this.largura = largura;
-	}
 
 	private float x;
 	private float y;
 	private float altura;
 	private float largura;
-
 	private boolean atingido;
-	
 	private ImageView imageView;
-	
-	public ImageView getImageView() {
-		return imageView;
-	}
-
-
-
-
-
-	public void setImageView(ImageView imageView) {
-		this.imageView = imageView;
-	}
-
-
-
-
 
 	public Nave(float x, float y, float largura, float altura){
 		this.x = x;
@@ -65,10 +19,6 @@ public class Nave {
 
 		atingido = false;
 	}
-	
-
-
-	
 	
 	public float getX() {
 		return x;
@@ -87,6 +37,30 @@ public class Nave {
 	}
 	public void setAtingido(boolean atingido) {
 		this.atingido = atingido;
+	}
+	
+	public float getAltura() {
+		return altura;
+	}
+
+	public void setAltura(float altura) {
+		this.altura = altura;
+	}
+
+	public float getLargura() {
+		return largura;
+	}
+
+	public void setLargura(float largura) {
+		this.largura = largura;
+	}
+	
+	public ImageView getImageView() {
+		return imageView;
+	}
+
+	public void setImageView(ImageView imageView) {
+		this.imageView = imageView;
 	}
 	
 	public boolean isAcertou(float xTiro, float yTiro ){

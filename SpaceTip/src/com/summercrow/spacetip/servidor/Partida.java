@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.summercrow.spacetip.servidor.proxy.ProxyServidorLocal;
 import com.summercrow.spacetip.to.DadosNave;
+import com.summercrow.spacetip.to.InicioDeJogo;
 import com.summercrow.spacetip.to.Resposta;
 
 public class Partida {
@@ -132,9 +133,37 @@ public class Partida {
 			}
 		}
 		if(todasPosicionadas){
-			// INICIAR PARTIDA AQUI
-			// ENVIAR OS DADOS DO ADVERSARIO E ESCOLHER UM TURNO
+			
+			Jogador jogador1 = jogadores.get(0);
+			Jogador jogador2 = jogadores.get(1);
+			
+			enviarInicioDeJogo(jogador1, true, jogador2);
+			enviarInicioDeJogo(jogador2, false, jogador1);
+			
+			turno = 0;
 		}
+	}
+
+	private void enviarInicioDeJogo(Jogador jogador, boolean seuTurno, Jogador adversario) {
+		InicioDeJogo inicioDeJogo = new InicioDeJogo();
+		inicioDeJogo.setSeuTurno(seuTurno);
+		List<DadosNave> dadosNavesAdversario = montarDadosNaveAdversario(adversario);
+		inicioDeJogo.setNavesAdversario(dadosNavesAdversario);
+		proxyServidor.enviarInicioDeJogo(jogador, inicioDeJogo);
+	}
+
+	private List<DadosNave> montarDadosNaveAdversario(Jogador jogador) {
+		List<DadosNave> dadosNavesAdversario = new ArrayList<DadosNave>();
+		List<Nave> naves = jogador.getNaves();
+		for (Nave nave : naves) {
+			DadosNave dadosNave = new DadosNave();
+			dadosNave.setAltura(nave.getAltura());
+			dadosNave.setLargura(nave.getLargura());
+			dadosNave.setX(nave.getX());
+			dadosNave.setY(nave.getY());
+			dadosNavesAdversario.add(dadosNave);
+		}
+		return dadosNavesAdversario;
 	}
 	
 	
@@ -147,6 +176,13 @@ public class Partida {
 	 * travar o cliente para multiplos toques. esperar o resultado antes de aceitar outro toque
 	 * 
 	 * a resposta pode ser generica, entao nao compensa criar um protocolo assincrono
+	 * 
+	 * turno em variaves locais, ruim mas necessario
+	 * MVC (todos os dados no cliente e pacote sendo enviado sempre, embora seja dificil de fazer aqui)
+	 * 
+	 * conversao das dimensoes para valores relativos (ver se isso eh mesmo necessario pois as vezes as dimensoes 
+	 * ja sao relativas (ou tem algo que faz isso)
+	 * 
 	 */
 
 }
