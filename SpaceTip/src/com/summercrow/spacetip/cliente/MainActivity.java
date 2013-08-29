@@ -240,11 +240,18 @@ public class MainActivity extends Activity {
 		
 		float distancia = -2 * (y - metade);
 		
-		batalha.atirar(x, y, distancia);
-		if(batalha.isGanhei()){
-			estado = JOGO_ACABOU;
-			exibirAlerta(R.string.ganhou);
-		}
+		int larguraJogo = meuLayout.getWidth();
+		int alturaJogo = meuLayout.getHeight();
+		
+		float xRelativo = x / larguraJogo;
+		float distanciaRelativa = distancia / alturaJogo;
+		float yRelativo = y / alturaJogo;
+		
+//		batalha.atirar(x, y, distancia);
+//		if(batalha.isGanhei()){
+//			estado = JOGO_ACABOU;
+//			exibirAlerta(R.string.ganhou);
+//		}
 	}
 
 	private void posicionarNaveMinha(MotionEvent event) {
