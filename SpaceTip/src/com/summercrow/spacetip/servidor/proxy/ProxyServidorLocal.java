@@ -10,6 +10,7 @@ import com.summercrow.spacetip.servidor.Jogador;
 import com.summercrow.spacetip.servidor.Partida;
 import com.summercrow.spacetip.to.DadosNave;
 import com.summercrow.spacetip.to.InicioDeJogo;
+import com.summercrow.spacetip.to.Tiro;
 
 public class ProxyServidorLocal {
 	
@@ -75,6 +76,12 @@ public class ProxyServidorLocal {
 			return;
 		}
 		proxyCliente.inicioDeJogo(inicioDeJogo);
+	}
+
+	public void atirar(Long idJogador, Tiro tiro) {
+		Jogador jogador = getJogador(idJogador);
+		Partida partida = jogador.getPartida();
+		partida.atirar(jogador, tiro);
 	}
 
 }

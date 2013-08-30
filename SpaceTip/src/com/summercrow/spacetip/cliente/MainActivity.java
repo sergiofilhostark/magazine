@@ -7,6 +7,7 @@ import com.summercrow.spacetip.R;
 import com.summercrow.spacetip.cliente.proxy.ProxyClienteLocal;
 import com.summercrow.spacetip.to.DadosNave;
 import com.summercrow.spacetip.to.InicioDeJogo;
+import com.summercrow.spacetip.to.Tiro;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -240,6 +241,16 @@ public class MainActivity extends Activity {
 		
 		float distancia = -2 * (y - metade);
 		
+		enviarAtirar(x, y, distancia);
+		
+//		batalha.atirar(x, y, distancia);
+//		if(batalha.isGanhei()){
+//			estado = JOGO_ACABOU;
+//			exibirAlerta(R.string.ganhou);
+//		}
+	}
+
+	private void enviarAtirar(float x, float y, float distancia) {
 		int larguraJogo = meuLayout.getWidth();
 		int alturaJogo = meuLayout.getHeight();
 		
@@ -247,11 +258,12 @@ public class MainActivity extends Activity {
 		float distanciaRelativa = distancia / alturaJogo;
 		float yRelativo = y / alturaJogo;
 		
-//		batalha.atirar(x, y, distancia);
-//		if(batalha.isGanhei()){
-//			estado = JOGO_ACABOU;
-//			exibirAlerta(R.string.ganhou);
-//		}
+		Tiro tiro = new Tiro();
+		tiro.setX(xRelativo);
+		tiro.setY(yRelativo);
+		tiro.setDistancia(distanciaRelativa);
+		
+		proxyCliente.atirar(idJogador, tiro);
 	}
 
 	private void posicionarNaveMinha(MotionEvent event) {
@@ -435,7 +447,7 @@ public class MainActivity extends Activity {
 		
 		aguardeDialog.hide();
 		
-		if(inicioDeJogo.isSeuTurno()){
+		if(inicioDeJogo.isMeuTurno()){
 			meuTurno = true;
 			exibirAlerta(R.string.mire);
 		} else {

@@ -6,10 +6,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import android.widget.ImageView;
+
+import com.summercrow.spacetip.R;
 import com.summercrow.spacetip.servidor.proxy.ProxyServidorLocal;
 import com.summercrow.spacetip.to.DadosNave;
 import com.summercrow.spacetip.to.InicioDeJogo;
 import com.summercrow.spacetip.to.Resposta;
+import com.summercrow.spacetip.to.Tiro;
 
 public class Partida {
 	
@@ -144,9 +148,9 @@ public class Partida {
 		}
 	}
 
-	private void enviarInicioDeJogo(Jogador jogador, boolean seuTurno, Jogador adversario) {
+	private void enviarInicioDeJogo(Jogador jogador, boolean meuTurno, Jogador adversario) {
 		InicioDeJogo inicioDeJogo = new InicioDeJogo();
-		inicioDeJogo.setSeuTurno(seuTurno);
+		inicioDeJogo.setMeuTurno(meuTurno);
 		List<DadosNave> dadosNavesAdversario = montarDadosNaveAdversario(adversario);
 		inicioDeJogo.setNavesAdversario(dadosNavesAdversario);
 		proxyServidor.enviarInicioDeJogo(jogador, inicioDeJogo);
@@ -165,6 +169,31 @@ public class Partida {
 		}
 		return dadosNavesAdversario;
 	}
+
+	public void atirar(Jogador jogador, Tiro tiro) {
+		int posicao = jogador.getPosicao();
+		Jogador adversario;
+		if(posicao == 0){
+			adversario = jogadores.get(1);
+		} else {
+			adversario = jogadores.get(0);
+		}
+		List<Integer> navesAtingidas = verificarAcerto(tiro.getX(), tiro.getY(), tiro.getDistancia(), adversario);
+	}
+	
+	private List<Integer> verificarAcerto(float x, float y, float yT, Jogador adversario) {
+		List<Integer> navesAtingidas = new ArrayList<Integer>();
+		List<Nave> navesInimigas = adversario.getNaves();
+		for (int i = 0; i < navesInimigas.size(); i++) {
+			Nave nave = navesInimigas.get(i);
+			if(!nave.isAtingido() && nave.isAcertou(x, y + yT)){
+				nave.setAtingido(true);
+				adversario.incrementarNavesAbatidas();
+				navesAtingidas.add(i);
+			}
+		}
+		return navesAtingidas;
+	}
 	
 	
 	/**
@@ -182,6 +211,10 @@ public class Partida {
 	 * 
 	 * conversao das dimensoes para valores relativos (ver se isso eh mesmo necessario pois as vezes as dimensoes 
 	 * ja sao relativas (ou tem algo que faz isso)
+	 * 
+	 * verificacoes no lado cliente para saber se o turno é dele mesmo (nao estao feitas ainda)
+	 * 
+	 * protocolo de mensagens para o cliente e trantamento de excessao
 	 * 
 	 */
 

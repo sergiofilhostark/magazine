@@ -7,6 +7,7 @@ import com.summercrow.spacetip.cliente.MainActivity;
 import com.summercrow.spacetip.servidor.proxy.ProxyServidorLocal;
 import com.summercrow.spacetip.to.DadosNave;
 import com.summercrow.spacetip.to.InicioDeJogo;
+import com.summercrow.spacetip.to.Tiro;
 
 public class ProxyClienteLocal {
 	
@@ -47,6 +48,10 @@ public class ProxyClienteLocal {
 
 	public void inicioDeJogo(InicioDeJogo inicioDeJogo) {
 		activity.inicioDeJogo(inicioDeJogo);
+	}
+
+	public void atirar(Long idJogador, Tiro tiro) {
+		proxyServidor.atirar(idJogador, tiro);
 	}
 
 	

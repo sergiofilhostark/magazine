@@ -4,14 +4,14 @@ import java.util.List;
 
 public class InicioDeJogo {
 	
-	private boolean seuTurno;
+	private boolean meuTurno;
 	private List<DadosNave> navesAdversario;
 	
-	public boolean isSeuTurno() {
-		return seuTurno;
+	public boolean isMeuTurno() {
+		return meuTurno;
 	}
-	public void setSeuTurno(boolean seuTurno) {
-		this.seuTurno = seuTurno;
+	public void setMeuTurno(boolean meuTurno) {
+		this.meuTurno = meuTurno;
 	}
 	public List<DadosNave> getNavesAdversario() {
 		return navesAdversario;

@@ -10,7 +10,24 @@ public class Jogador {
 	private int posicao;
 	private List<Nave> naves = new ArrayList<Nave>();
 	private Partida partida;
+	private int navesAbatidas;
 	
+	public int getNavesAbatidas() {
+		return navesAbatidas;
+	}
+
+	public void setNavesAbatidas(int navesAbatidas) {
+		this.navesAbatidas = navesAbatidas;
+	}
+	
+	public void incrementarNavesAbatidas() {
+		this.navesAbatidas++;
+	}
+
+	public void setNaves(List<Nave> naves) {
+		this.naves = naves;
+	}
+
 	public Partida getPartida() {
 		return partida;
 	}
