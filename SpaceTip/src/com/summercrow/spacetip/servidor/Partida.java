@@ -13,6 +13,7 @@ import com.summercrow.spacetip.servidor.proxy.ProxyServidorLocal;
 import com.summercrow.spacetip.to.DadosNave;
 import com.summercrow.spacetip.to.InicioDeJogo;
 import com.summercrow.spacetip.to.Resposta;
+import com.summercrow.spacetip.to.ResultadoTiro;
 import com.summercrow.spacetip.to.Tiro;
 
 public class Partida {
@@ -178,21 +179,30 @@ public class Partida {
 		} else {
 			adversario = jogadores.get(0);
 		}
-		List<Integer> navesAtingidas = verificarAcerto(tiro.getX(), tiro.getY(), tiro.getDistancia(), adversario);
+		Integer naveAtingida = verificarAcerto(tiro.getX(), tiro.getY(), tiro.getDistancia(), adversario);
+		
+		ResultadoTiro resultadoTiro = new ResultadoTiro();
+		resultadoTiro.setTiro(tiro);
+		resultadoTiro.setNaveAtingida(naveAtingida);
+		
+		resultadoTiro.setMeuTiro(true);
+		proxyServidor.enviarResultadoTiro(jogador, resultadoTiro);
+		
+		resultadoTiro.setMeuTiro(false);
+		proxyServidor.enviarResultadoTiro(adversario, resultadoTiro);
 	}
 	
-	private List<Integer> verificarAcerto(float x, float y, float yT, Jogador adversario) {
-		List<Integer> navesAtingidas = new ArrayList<Integer>();
+	private Integer verificarAcerto(float x, float y, float yT, Jogador adversario) {
 		List<Nave> navesInimigas = adversario.getNaves();
 		for (int i = 0; i < navesInimigas.size(); i++) {
 			Nave nave = navesInimigas.get(i);
 			if(!nave.isAtingido() && nave.isAcertou(x, y + yT)){
 				nave.setAtingido(true);
 				adversario.incrementarNavesAbatidas();
-				navesAtingidas.add(i);
+				return i;
 			}
 		}
-		return navesAtingidas;
+		return null;
 	}
 	
 	

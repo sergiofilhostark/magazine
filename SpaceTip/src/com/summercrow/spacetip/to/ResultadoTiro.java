@@ -4,9 +4,11 @@ import java.util.List;
 
 public class ResultadoTiro {
 	
+	private Tiro tiro;
 	private boolean meuTiro;
-	private boolean meuTurno;
-	private List<Integer> navesAtingidas;
+	private Integer naveAtingida;
+
+	
 	
 	public boolean isMeuTiro() {
 		return meuTiro;
@@ -14,17 +16,19 @@ public class ResultadoTiro {
 	public void setMeuTiro(boolean meuTiro) {
 		this.meuTiro = meuTiro;
 	}
-	public boolean isMeuTurno() {
-		return meuTurno;
+
+	
+	public Tiro getTiro() {
+		return tiro;
 	}
-	public void setMeuTurno(boolean meuTurno) {
-		this.meuTurno = meuTurno;
+	public void setTiro(Tiro tiro) {
+		this.tiro = tiro;
 	}
-	public List<Integer> getNavesAtingidas() {
-		return navesAtingidas;
+	public Integer getNaveAtingida() {
+		return naveAtingida;
 	}
-	public void setNavesAtingidas(List<Integer> navesAtingidas) {
-		this.navesAtingidas = navesAtingidas;
+	public void setNaveAtingida(Integer naveAtingida) {
+		this.naveAtingida = naveAtingida;
 	}
 
 }

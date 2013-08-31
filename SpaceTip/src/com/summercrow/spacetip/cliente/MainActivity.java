@@ -7,6 +7,7 @@ import com.summercrow.spacetip.R;
 import com.summercrow.spacetip.cliente.proxy.ProxyClienteLocal;
 import com.summercrow.spacetip.to.DadosNave;
 import com.summercrow.spacetip.to.InicioDeJogo;
+import com.summercrow.spacetip.to.ResultadoTiro;
 import com.summercrow.spacetip.to.Tiro;
 
 import android.app.Activity;
@@ -23,6 +24,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.TranslateAnimation;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -32,7 +37,7 @@ public class MainActivity extends Activity {
 	
 	private RelativeLayout meuLayout;
 	private ImageView nave;
-	private ImageView torpedo;
+	
 	
 	private Batalha batalha;
 	
@@ -61,6 +66,14 @@ public class MainActivity extends Activity {
 	private int larguraNave;
 	private int alturaNaveInimiga;
 	private int larguraNaveInimiga;
+	private int alturaTorpedo;
+	private int larguraTorpedo;
+	private int alturaFogo;
+	private int larguraFogo;
+	
+	private ImageView torpedo;
+	private ImageView torpedoInimigo;
+	private ImageView fogo;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -81,6 +94,35 @@ public class MainActivity extends Activity {
 		Drawable drwNaveInimiga = this.getResources().getDrawable(R.drawable.nave_inimiga);
 		alturaNaveInimiga = drwNaveInimiga.getIntrinsicHeight();
 		larguraNaveInimiga = drwNaveInimiga.getIntrinsicWidth();
+		
+		Drawable drwTorpedo = this.getResources().getDrawable(R.drawable.torpedo);
+		alturaTorpedo = drwTorpedo.getIntrinsicHeight();
+		larguraTorpedo = drwTorpedo.getIntrinsicWidth();
+		
+		Drawable drwFogo = this.getResources().getDrawable(R.drawable.fogo);
+		alturaFogo = drwFogo.getIntrinsicHeight();
+		larguraFogo = drwFogo.getIntrinsicWidth();
+		
+		torpedo = new ImageView(this);
+		torpedo.setImageResource(R.drawable.torpedo);
+		torpedo.setX(0);
+		torpedo.setY(0);
+		torpedo.setVisibility(View.INVISIBLE);
+		meuLayout.addView(torpedo);
+		
+		torpedoInimigo = new ImageView(this);
+		torpedoInimigo.setImageResource(R.drawable.torpedo_inimigo);
+		torpedoInimigo.setX(0);
+		torpedoInimigo.setY(0);
+		torpedoInimigo.setVisibility(View.INVISIBLE);
+		meuLayout.addView(torpedoInimigo);
+		
+		fogo = new ImageView(this);
+		fogo.setImageResource(R.drawable.fogo);
+		fogo.setX(0);
+		fogo.setY(0);
+		fogo.setVisibility(View.INVISIBLE);
+		meuLayout.addView(fogo);
 		
 		batalha = new Batalha(this, meuLayout);
 		
@@ -255,8 +297,8 @@ public class MainActivity extends Activity {
 		int alturaJogo = meuLayout.getHeight();
 		
 		float xRelativo = x / larguraJogo;
-		float distanciaRelativa = distancia / alturaJogo;
 		float yRelativo = y / alturaJogo;
+		float distanciaRelativa = distancia / alturaJogo;
 		
 		Tiro tiro = new Tiro();
 		tiro.setX(xRelativo);
@@ -427,13 +469,14 @@ public class MainActivity extends Activity {
 		exibirAlerta(R.string.posicione);
 	}
 	
-	private void posicionarImagemNaveAdversario(float x, float y, int imageId){
+	private ImageView posicionarImagemNaveAdversario(float x, float y, int imageId){
 		
 		ImageView naveImg = new ImageView(this);
 		naveImg.setImageResource(imageId);
 		naveImg.setX(x);
 		naveImg.setY(y);
 		meuLayout.addView(naveImg);
+		return naveImg;
 	}
 
 	public void inicioDeJogo(InicioDeJogo inicioDeJogo) {
@@ -442,7 +485,8 @@ public class MainActivity extends Activity {
 		List<DadosNave> dadosNavesAdversario = inicioDeJogo.getNavesAdversario();
 		navesAdversario = ajustarDimensoesAdversario(dadosNavesAdversario);
 		for (Nave nave : navesAdversario) {
-			posicionarImagemNaveAdversario(nave.getX(), nave.getY(), R.drawable.nave_inimiga);
+			ImageView imageView = posicionarImagemNaveAdversario(nave.getX(), nave.getY(), R.drawable.nave_inimiga);
+			nave.setImageView(imageView);
 		}
 		
 		aguardeDialog.hide();
@@ -460,12 +504,145 @@ public class MainActivity extends Activity {
 		
 		
 	}
+	
+	private void animarTiro(float x, float y, float distancia, final boolean meuTiro, final Integer idAtingida) {
+		
+		ImageView imageTorpedo;
+		
+		if(meuTiro){
+			imageTorpedo = torpedo;
+		} else {
+			imageTorpedo = torpedoInimigo;
+			distancia = distancia * -1;
+		}
+		
+		imageTorpedo.setX(x - (larguraTorpedo/2));
+		imageTorpedo.setY(y - (alturaTorpedo/2));
+		imageTorpedo.bringToFront();
+		
+		AlphaAnimation aparecer = new AlphaAnimation(0, 1);
+		aparecer.setDuration(100);
+		
+		long tempoTiro = 2000;
+		
+		Animation movimento = new TranslateAnimation(0, 0 ,0, distancia);
+		movimento.setDuration(tempoTiro);
+		
+		AlphaAnimation desaparecer = new AlphaAnimation(1, 0);
+		desaparecer.setDuration(1000);
+		desaparecer.setStartOffset(tempoTiro);
+		
+		
+		AnimationSet animacao = new AnimationSet(false);
+		animacao.addAnimation(aparecer);
+		animacao.addAnimation(movimento);
+		animacao.addAnimation(desaparecer);
+		animacao.setFillAfter(true);
+		
+		fogo.setX(x - (larguraFogo/2));
+		fogo.setY(y + distancia - (alturaFogo/2));
+		fogo.bringToFront();
+		
+		long tempoExplosao = 1000;
+		
+		AlphaAnimation explosao1 = new AlphaAnimation(0, 1);
+		explosao1.setDuration(tempoExplosao);
+		explosao1.setStartOffset(tempoTiro);
+		
+		AlphaAnimation explosao2 = new AlphaAnimation(1, 0);
+		explosao2.setDuration(tempoExplosao);
+		explosao2.setStartOffset(tempoTiro + tempoExplosao);
+		
+		AnimationSet explosao = new AnimationSet(false);
+		explosao.addAnimation(explosao1);
+		explosao.addAnimation(explosao2);
+		explosao.setAnimationListener(new Animation.AnimationListener() {
+			@Override
+			public void onAnimationStart(Animation animation) {
+			}
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+			
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				trocarNaveAtingida(idAtingida, meuTiro);
+				
+				
+				//REMOVER
+				if(meuTiro){
+					float x = 200;
+					float y = 200;				
+					float metade = getMetade();				
+					float distancia = 2 * (y - metade);				
+					int larguraJogo = meuLayout.getWidth();
+					int alturaJogo = meuLayout.getHeight();
+					
+					float xRelativo = x / larguraJogo;
+					float distanciaRelativa = distancia / alturaJogo;
+					float yRelativo = y / alturaJogo;
+					
+					Tiro tiro = new Tiro();
+					tiro.setX(xRelativo);
+					tiro.setY(yRelativo);
+					tiro.setDistancia(distanciaRelativa);
+
+					proxyCliente.atirar(idJogador + 1, tiro);
+				}
+				
+				
+			}
+		});
+		
+		imageTorpedo.startAnimation(animacao);
+		fogo.startAnimation(explosao);
+	}
 
 	private void enviarLogin(String nome) {
 		proxyCliente.enviarLogin(nome);
 		
 		//REMOVER
 		proxyCliente.enviarLogin("Jogador 2");
+	}
+
+	public void resultadoTiro(ResultadoTiro resultadoTiro) {
+		Tiro tiro = resultadoTiro.getTiro();
+		
+		int larguraJogo = meuLayout.getWidth();
+		int alturaJogo = meuLayout.getHeight();
+		
+		float x = tiro.getX() * larguraJogo;
+		float y = tiro.getY() * alturaJogo;
+		float distancia = tiro.getDistancia() * alturaJogo;
+		
+		animarTiro(x, y, distancia, resultadoTiro.isMeuTiro(), resultadoTiro.getNaveAtingida());
+		
+		//TODO tirar esse if se nao tiver mais nada
+		if(resultadoTiro.isMeuTiro()){
+			meuTurno = false;
+		}
+		else {
+			meuTurno = true;
+		}
+	}
+
+	private void trocarNaveAtingida(Integer idAtingida, boolean meuTiro) {
+		if(idAtingida != null){
+			
+			List<Nave> naves;
+			int idImgNaveAtingida;
+			if(meuTiro){
+				naves = navesAdversario;
+				idImgNaveAtingida = R.drawable.nave_inimiga_atingida;
+			} else {
+				naves = navesMinhas;
+				idImgNaveAtingida = R.drawable.nave_atingida;
+			}
+			
+			Nave naveAtingida = naves.get(idAtingida);
+			naveAtingida.setAtingido(true);
+			naveAtingida.getImageView().setImageResource(idImgNaveAtingida);
+		}
 	}
 	
 	
