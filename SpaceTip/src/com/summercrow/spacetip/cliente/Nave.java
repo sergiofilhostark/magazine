@@ -63,7 +63,7 @@ public class Nave {
 		this.imageView = imageView;
 	}
 	
-	public boolean isAcertou(float xTiro, float yTiro ){
+	public boolean isAcertou(float xTiro, float yTiro){
 		
 		
 		System.out.println(xTiro+ " " +yTiro+ " " +x+ " " +y+ " " +largura+ " " +altura);

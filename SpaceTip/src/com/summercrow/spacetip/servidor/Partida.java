@@ -196,7 +196,7 @@ public class Partida {
 		List<Nave> navesInimigas = adversario.getNaves();
 		for (int i = 0; i < navesInimigas.size(); i++) {
 			Nave nave = navesInimigas.get(i);
-			if(!nave.isAtingido() && nave.isAcertou(x, y + yT)){
+			if(!nave.isAtingido() && nave.isAcertou(x, y)){
 				nave.setAtingido(true);
 				adversario.incrementarNavesAbatidas();
 				return i;
@@ -222,7 +222,7 @@ public class Partida {
 	 * conversao das dimensoes para valores relativos (ver se isso eh mesmo necessario pois as vezes as dimensoes 
 	 * ja sao relativas (ou tem algo que faz isso)
 	 * 
-	 * verificacoes no lado cliente para saber se o turno é dele mesmo (nao estao feitas ainda)
+	 * verificacoes no lado cliente para saber se o turno ï¿½ dele mesmo (nao estao feitas ainda)
 	 * 
 	 * protocolo de mensagens para o cliente e trantamento de excessao
 	 * 

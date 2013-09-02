@@ -322,6 +322,7 @@ public class MainActivity extends Activity {
 			return;
 		}
 		
+		System.out.println(x +" " + y);
 		
 		posicionarNave(x, y, navesMinhas, R.drawable.nave, larguraNave, alturaNave);
 		
@@ -351,15 +352,16 @@ public class MainActivity extends Activity {
 		
 		proxyCliente.enviarNavesPosicionadas(idJogador, dadosNaves);
 		
-		//REMOVER		
+		//REMOVER
+		
 		List<Nave> navesAdversarioTemp = new ArrayList<Nave>();
-		Nave nave1 = new Nave(80 -(larguraNave/2), 80 - (alturaNave/2), larguraNave, alturaNave);
+		Nave nave1 = new Nave(60 -(larguraNave/2), 450 - (alturaNave/2), larguraNave, alturaNave);
 		navesAdversarioTemp.add(nave1);
-		Nave nave2 = new Nave(160 -(larguraNave/2), 160 - (alturaNave/2), larguraNave, alturaNave);
+		Nave nave2 = new Nave(180 -(larguraNave/2), 500 - (alturaNave/2), larguraNave, alturaNave);
 		navesAdversarioTemp.add(nave2);
-		Nave nave3 = new Nave(240 -(larguraNave/2), 240 - (alturaNave/2), larguraNave, alturaNave);
+		Nave nave3 = new Nave(320 -(larguraNave/2), 580 - (alturaNave/2), larguraNave, alturaNave);
 		navesAdversarioTemp.add(nave3);
-		Nave nave4 = new Nave(320 -(larguraNave/2), 320 - (alturaNave/2), larguraNave, alturaNave);
+		Nave nave4 = new Nave(450 -(larguraNave/2), 660 - (alturaNave/2), larguraNave, alturaNave);
 		navesAdversarioTemp.add(nave4);
 		List<DadosNave> dadosAdversario = ajustarDimensoes(navesAdversarioTemp);
 		proxyCliente.enviarNavesPosicionadas(idJogador + 1, dadosAdversario);
@@ -452,7 +454,10 @@ public class MainActivity extends Activity {
 			float largura = dados.getLargura() * larguraJogo;
 			float x = dados.getX() * larguraJogo;
 			float altura = dados.getAltura() * alturaJogo;
-			float y = dados.getY() * alturaJogo;
+			
+			float y = dados.getY() - 2 * (dados.getY() - 0.5F) - dados.getAltura();
+			
+			y = y * alturaJogo;
 			
 			Nave nave = new Nave(x, y, largura, altura);
 			
@@ -511,7 +516,10 @@ public class MainActivity extends Activity {
 		
 		if(meuTiro){
 			imageTorpedo = torpedo;
+			
 		} else {
+			float metade = getMetade();
+			y = y - 2 * (y - metade);
 			imageTorpedo = torpedoInimigo;
 			distancia = distancia * -1;
 		}
@@ -572,9 +580,10 @@ public class MainActivity extends Activity {
 				//REMOVER
 				if(meuTiro){
 					float x = 200;
-					float y = 200;				
+					float y = 600;				
 					float metade = getMetade();				
-					float distancia = 2 * (y - metade);				
+					float distancia = -2 * (y - metade);
+					
 					int larguraJogo = meuLayout.getWidth();
 					int alturaJogo = meuLayout.getHeight();
 					
