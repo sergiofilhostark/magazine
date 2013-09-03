@@ -254,14 +254,14 @@ public class MainActivity extends Activity {
 				break;
 				
 			case EM_JOGO:
-				jogar(event);
+				atirar(event);
 	
 			default:
 				break;
 		}
 	}
 
-	private void jogar(MotionEvent event) {
+	private void atirar(MotionEvent event) {
 		if(!meuTurno){
 			Toast toast = Toast.makeText(this, "Aguarde a sua vez", Toast.LENGTH_SHORT);
 			toast.show();
@@ -510,7 +510,7 @@ public class MainActivity extends Activity {
 		
 	}
 	
-	private void animarTiro(float x, float y, float distancia, final boolean meuTiro, final Integer idAtingida) {
+	private void animarTiro(float x, float y, float distancia, final boolean meuTiro, final Integer idAtingida, final boolean derrotou) {
 		
 		ImageView imageTorpedo;
 		
@@ -576,9 +576,16 @@ public class MainActivity extends Activity {
 			public void onAnimationEnd(Animation animation) {
 				trocarNaveAtingida(idAtingida, meuTiro);
 				
+				if(derrotou){
+					if(meuTiro){
+						exibirAlerta(R.string.voce_venceu);
+					} else {
+						exibirAlerta(R.string.voce_perdeu);
+					}
+				}
 				
 				//REMOVER
-				if(meuTiro){
+				else if(meuTiro){
 					float x = 200;
 					float y = 600;				
 					float metade = getMetade();				
@@ -624,7 +631,7 @@ public class MainActivity extends Activity {
 		float y = tiro.getY() * alturaJogo;
 		float distancia = tiro.getDistancia() * alturaJogo;
 		
-		animarTiro(x, y, distancia, resultadoTiro.isMeuTiro(), resultadoTiro.getNaveAtingida());
+		animarTiro(x, y, distancia, resultadoTiro.isMeuTiro(), resultadoTiro.getNaveAtingida(), resultadoTiro.isDerrotou());
 		
 		//TODO tirar esse if se nao tiver mais nada
 		if(resultadoTiro.isMeuTiro()){

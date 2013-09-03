@@ -7,17 +7,21 @@ public class ResultadoTiro {
 	private Tiro tiro;
 	private boolean meuTiro;
 	private Integer naveAtingida;
-
+	private boolean derrotou;
 	
 	
+	public boolean isDerrotou() {
+		return derrotou;
+	}
+	public void setDerrotou(boolean derrotou) {
+		this.derrotou = derrotou;
+	}
 	public boolean isMeuTiro() {
 		return meuTiro;
 	}
 	public void setMeuTiro(boolean meuTiro) {
 		this.meuTiro = meuTiro;
 	}
-
-	
 	public Tiro getTiro() {
 		return tiro;
 	}

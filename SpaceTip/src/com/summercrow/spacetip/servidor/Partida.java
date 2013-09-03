@@ -184,6 +184,7 @@ public class Partida {
 		ResultadoTiro resultadoTiro = new ResultadoTiro();
 		resultadoTiro.setTiro(tiro);
 		resultadoTiro.setNaveAtingida(naveAtingida);
+		resultadoTiro.setDerrotou(adversario.isDerrotado());
 		
 		resultadoTiro.setMeuTiro(true);
 		proxyServidor.enviarResultadoTiro(jogador, resultadoTiro);

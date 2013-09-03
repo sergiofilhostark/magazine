@@ -70,5 +70,9 @@ public class Jogador {
 		naves.add(nave);
 	}
 	
+	public boolean isDerrotado(){
+		return (navesAbatidas >= naves.size());
+	}
+	
 
 }
