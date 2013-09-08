@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.summercrow.spacetip.R;
 import com.summercrow.spacetip.cliente.proxy.ProxyCliente;
-import com.summercrow.spacetip.cliente.proxy.ProxyClienteLocal;
+import com.summercrow.spacetip.cliente.proxy.local.ProxyClienteLocal;
 import com.summercrow.spacetip.to.DadosNave;
 import com.summercrow.spacetip.to.InicioDeJogo;
 import com.summercrow.spacetip.to.ResultadoTiro;

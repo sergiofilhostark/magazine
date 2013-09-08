@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.summercrow.spacetip.R;
-import com.summercrow.spacetip.cliente.proxy.ProxyClienteLocal;
+import com.summercrow.spacetip.cliente.proxy.local.ProxyClienteLocal;
 import com.summercrow.spacetip.servidor.proxy.local.ProxyServidorLocal;
 
 import android.content.Context;

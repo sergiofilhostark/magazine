@@ -1,9 +1,10 @@
-package com.summercrow.spacetip.cliente.proxy;
+package com.summercrow.spacetip.cliente.proxy.local;
 
 import java.util.List;
 
 import com.summercrow.spacetip.cliente.Batalha;
 import com.summercrow.spacetip.cliente.MainActivity;
+import com.summercrow.spacetip.cliente.proxy.ProxyCliente;
 import com.summercrow.spacetip.servidor.proxy.local.ProxyServidorLocal;
 import com.summercrow.spacetip.to.DadosNave;
 import com.summercrow.spacetip.to.InicioDeJogo;
