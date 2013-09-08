@@ -224,6 +224,8 @@ public class Partida {
 	 * 
 	 * protocolo de mensagens para o cliente e trantamento de excessao
 	 * 
+	 * Projetos referenciar projetos no Android
+	 * 
 	 */
 
 }
