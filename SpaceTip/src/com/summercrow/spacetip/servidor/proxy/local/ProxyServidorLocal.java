@@ -1,4 +1,4 @@
-package com.summercrow.spacetip.servidor.proxy;
+package com.summercrow.spacetip.servidor.proxy.local;
 
 import java.util.HashMap;
 import java.util.List;
@@ -8,6 +8,7 @@ import com.summercrow.spacetip.cliente.proxy.ProxyCliente;
 import com.summercrow.spacetip.servidor.Controlador;
 import com.summercrow.spacetip.servidor.Jogador;
 import com.summercrow.spacetip.servidor.Partida;
+import com.summercrow.spacetip.servidor.proxy.ProxyServidor;
 import com.summercrow.spacetip.to.DadosNave;
 import com.summercrow.spacetip.to.InicioDeJogo;
 import com.summercrow.spacetip.to.ResultadoTiro;

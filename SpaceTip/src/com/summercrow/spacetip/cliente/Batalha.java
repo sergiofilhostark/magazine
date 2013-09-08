@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.summercrow.spacetip.R;
 import com.summercrow.spacetip.cliente.proxy.ProxyClienteLocal;
-import com.summercrow.spacetip.servidor.proxy.ProxyServidorLocal;
+import com.summercrow.spacetip.servidor.proxy.local.ProxyServidorLocal;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
