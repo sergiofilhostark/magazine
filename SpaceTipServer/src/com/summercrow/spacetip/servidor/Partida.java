@@ -6,10 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import android.widget.ImageView;
-
-import com.summercrow.spacetip.R;
-import com.summercrow.spacetip.servidor.proxy.ProxyServidorLocal;
+import com.summercrow.spacetip.servidor.proxy.ProxyServidor;
 import com.summercrow.spacetip.to.DadosNave;
 import com.summercrow.spacetip.to.InicioDeJogo;
 import com.summercrow.spacetip.to.Resposta;
@@ -39,9 +36,9 @@ public class Partida {
 	
 	private final int NUMERO_NAVES = 4;
 	
-	private ProxyServidorLocal proxyServidor;
+	private ProxyServidor proxyServidor;
 	
-	public void setProxyServidor(ProxyServidorLocal proxyServidor) {
+	public void setProxyServidor(ProxyServidor proxyServidor) {
 		this.proxyServidor = proxyServidor;
 	}
 

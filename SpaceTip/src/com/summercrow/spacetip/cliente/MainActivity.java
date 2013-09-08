@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.summercrow.spacetip.R;
+import com.summercrow.spacetip.cliente.proxy.ProxyCliente;
 import com.summercrow.spacetip.cliente.proxy.ProxyClienteLocal;
 import com.summercrow.spacetip.to.DadosNave;
 import com.summercrow.spacetip.to.InicioDeJogo;
@@ -53,7 +54,7 @@ public class MainActivity extends Activity {
 	private boolean meuTurno = false;
 	private ProgressDialog aguardeDialog;
 	
-	private ProxyClienteLocal proxyCliente;
+	private ProxyCliente proxyCliente;
 	
 	private Long idJogador;
 	private Integer posicaoJogador;

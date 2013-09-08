@@ -5,11 +5,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.summercrow.spacetip.servidor.proxy.ProxyServidorLocal;
+import com.summercrow.spacetip.servidor.proxy.ProxyServidor;
+
+
 
 public class Controlador {
 	
-	private ProxyServidorLocal proxyServidor;
+	private ProxyServidor proxyServidor;
 	
 	
 	
@@ -17,7 +19,7 @@ public class Controlador {
 	
 	private long idJogadores = 1;
 	
-	public Controlador(ProxyServidorLocal proxyServidor) {
+	public Controlador(ProxyServidor proxyServidor) {
 		this.proxyServidor = proxyServidor;
 	}
 
