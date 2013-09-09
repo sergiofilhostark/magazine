@@ -11,6 +11,7 @@ import com.summercrow.spacetip.servidor.Partida;
 import com.summercrow.spacetip.servidor.proxy.ProxyServidor;
 import com.summercrow.spacetip.to.DadosNave;
 import com.summercrow.spacetip.to.InicioDeJogo;
+import com.summercrow.spacetip.to.NavesPosicionadas;
 import com.summercrow.spacetip.to.ResultadoTiro;
 import com.summercrow.spacetip.to.Tiro;
 
@@ -39,7 +40,8 @@ public class ProxyServidorLocal implements ProxyServidor {
 
 	@Override
 	public void login(String nome) {
-		Jogador jogador = controlador.login(nome);
+		Jogador jogador = controlador.criarJogador(nome);
+		controlador.entrarPartida(jogador);
 		jogadores.put(jogador.getId(), jogador);
 	}
 
@@ -72,10 +74,10 @@ public class ProxyServidorLocal implements ProxyServidor {
 	}
 
 	@Override
-	public void navesPosicionadas(Long idJogador, List<DadosNave> dadosNaves) {
-		Jogador jogador = getJogador(idJogador);
+	public void navesPosicionadas(NavesPosicionadas navesPosicionadas) {
+		Jogador jogador = getJogador(navesPosicionadas.getIdJogador());
 		Partida partida = jogador.getPartida();
-		partida.navesPosicionadas(jogador, dadosNaves);
+		partida.navesPosicionadas(jogador, navesPosicionadas.getDadosNaves());
 	}
 
 	@Override
@@ -88,8 +90,8 @@ public class ProxyServidorLocal implements ProxyServidor {
 	}
 
 	@Override
-	public void atirar(Long idJogador, Tiro tiro) {
-		Jogador jogador = getJogador(idJogador);
+	public void atirar(Tiro tiro) {
+		Jogador jogador = getJogador(tiro.getIdJogador());
 		Partida partida = jogador.getPartida();
 		partida.atirar(jogador, tiro);
 	}

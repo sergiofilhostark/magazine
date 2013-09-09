@@ -1,8 +1,9 @@
 package com.summercrow.spacetip.to;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class InicioDeJogo {
+public class InicioDeJogo implements Serializable{
 	
 	private boolean meuTurno;
 	private List<DadosNave> navesAdversario;

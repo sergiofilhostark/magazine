@@ -1,7 +1,16 @@
 package com.summercrow.spacetip.to;
 
-public class Tiro {
+import java.io.Serializable;
+
+public class Tiro implements Serializable{
 	
+	private Long idJogador;
+	public Long getIdJogador() {
+		return idJogador;
+	}
+	public void setIdJogador(Long idJogador) {
+		this.idJogador = idJogador;
+	}
 	private float x;
 	private float distancia;
 	private float y;

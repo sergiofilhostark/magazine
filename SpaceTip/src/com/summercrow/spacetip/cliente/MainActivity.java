@@ -3,14 +3,6 @@ package com.summercrow.spacetip.cliente;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.summercrow.spacetip.R;
-import com.summercrow.spacetip.cliente.proxy.ProxyCliente;
-import com.summercrow.spacetip.cliente.proxy.local.ProxyClienteLocal;
-import com.summercrow.spacetip.to.DadosNave;
-import com.summercrow.spacetip.to.InicioDeJogo;
-import com.summercrow.spacetip.to.ResultadoTiro;
-import com.summercrow.spacetip.to.Tiro;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -19,7 +11,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Editable;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,6 +24,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+
+import com.summercrow.spacetip.R;
+import com.summercrow.spacetip.cliente.proxy.ProxyCliente;
+import com.summercrow.spacetip.cliente.proxy.ProxyClienteBuilder;
+import com.summercrow.spacetip.to.DadosNave;
+import com.summercrow.spacetip.to.InicioDeJogo;
+import com.summercrow.spacetip.to.NavesPosicionadas;
+import com.summercrow.spacetip.to.ResultadoTiro;
+import com.summercrow.spacetip.to.Tiro;
 
 public class MainActivity extends Activity {
 	
@@ -80,7 +80,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		proxyCliente = new ProxyClienteLocal(this);
+		proxyCliente = ProxyClienteBuilder.buildProxyCliente(this);
 		
 		setContentView(R.layout.activity_main);
 		
@@ -305,8 +305,9 @@ public class MainActivity extends Activity {
 		tiro.setX(xRelativo);
 		tiro.setY(yRelativo);
 		tiro.setDistancia(distanciaRelativa);
+		tiro.setIdJogador(idJogador);
 		
-		proxyCliente.atirar(idJogador, tiro);
+		proxyCliente.enviarAtirar(tiro);
 	}
 
 	private void posicionarNaveMinha(MotionEvent event) {
@@ -350,8 +351,11 @@ public class MainActivity extends Activity {
 		
 		List<DadosNave> dadosNaves = ajustarDimensoes(navesMinhas);
 		
+		NavesPosicionadas navesPosicionadas = new NavesPosicionadas();
+		navesPosicionadas.setIdJogador(idJogador);
+		navesPosicionadas.setDadosNaves(dadosNaves);
 		
-		proxyCliente.enviarNavesPosicionadas(idJogador, dadosNaves);
+		proxyCliente.enviarNavesPosicionadas(navesPosicionadas);
 		
 		//REMOVER
 		
@@ -365,7 +369,13 @@ public class MainActivity extends Activity {
 		Nave nave4 = new Nave(450 -(larguraNave/2), 660 - (alturaNave/2), larguraNave, alturaNave);
 		navesAdversarioTemp.add(nave4);
 		List<DadosNave> dadosAdversario = ajustarDimensoes(navesAdversarioTemp);
-		proxyCliente.enviarNavesPosicionadas(idJogador + 1, dadosAdversario);
+		
+		NavesPosicionadas navesPosicionadasAdversario = new NavesPosicionadas();
+		navesPosicionadasAdversario.setIdJogador(idJogador + 1);
+		navesPosicionadasAdversario.setDadosNaves(dadosAdversario);
+		
+		
+		proxyCliente.enviarNavesPosicionadas(navesPosicionadasAdversario);
 	}
 
 	
@@ -603,8 +613,9 @@ public class MainActivity extends Activity {
 					tiro.setX(xRelativo);
 					tiro.setY(yRelativo);
 					tiro.setDistancia(distanciaRelativa);
+					tiro.setIdJogador(idJogador + 1);
 
-					proxyCliente.atirar(idJogador + 1, tiro);
+					proxyCliente.enviarAtirar(tiro);
 				}
 				
 				

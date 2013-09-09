@@ -1,6 +1,8 @@
 package com.summercrow.spacetip.to;
 
-public class DadosNave {
+import java.io.Serializable;
+
+public class DadosNave implements Serializable{
 	
 	private float x;
 	private float y;

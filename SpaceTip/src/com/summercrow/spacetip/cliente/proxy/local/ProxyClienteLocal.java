@@ -1,13 +1,10 @@
 package com.summercrow.spacetip.cliente.proxy.local;
 
-import java.util.List;
-
-import com.summercrow.spacetip.cliente.Batalha;
 import com.summercrow.spacetip.cliente.MainActivity;
 import com.summercrow.spacetip.cliente.proxy.ProxyCliente;
 import com.summercrow.spacetip.servidor.proxy.local.ProxyServidorLocal;
-import com.summercrow.spacetip.to.DadosNave;
 import com.summercrow.spacetip.to.InicioDeJogo;
+import com.summercrow.spacetip.to.NavesPosicionadas;
 import com.summercrow.spacetip.to.ResultadoTiro;
 import com.summercrow.spacetip.to.Tiro;
 
@@ -26,6 +23,18 @@ public class ProxyClienteLocal implements ProxyCliente {
 		proxyServidor.login(nome);
 		
 	}
+	
+	@Override
+	public void enviarNavesPosicionadas(NavesPosicionadas navesPosicionadas) {
+		proxyServidor.navesPosicionadas(navesPosicionadas);
+	}
+	
+	@Override
+	public void enviarAtirar(Tiro tiro) {
+		proxyServidor.atirar(tiro);
+	}
+	
+	
 
 	@Override
 	public void aguardar(Long id, int posicao) {
@@ -49,20 +58,14 @@ public class ProxyClienteLocal implements ProxyCliente {
 		activity.pedirPosicionamento();
 	}
 
-	@Override
-	public void enviarNavesPosicionadas(Long idJogador, List<DadosNave> dadosNaves) {
-		proxyServidor.navesPosicionadas(idJogador, dadosNaves);
-	}
+	
 
 	@Override
 	public void inicioDeJogo(InicioDeJogo inicioDeJogo) {
 		activity.inicioDeJogo(inicioDeJogo);
 	}
 
-	@Override
-	public void atirar(Long idJogador, Tiro tiro) {
-		proxyServidor.atirar(idJogador, tiro);
-	}
+	
 
 	@Override
 	public void resultadoTiro(ResultadoTiro resultadoTiro) {

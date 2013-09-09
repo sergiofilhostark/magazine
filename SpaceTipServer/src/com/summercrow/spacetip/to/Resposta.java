@@ -1,6 +1,8 @@
 package com.summercrow.spacetip.to;
 
-public class Resposta {
+import java.io.Serializable;
+
+public class Resposta implements Serializable{
 	
 	private int id;
 	private int status;

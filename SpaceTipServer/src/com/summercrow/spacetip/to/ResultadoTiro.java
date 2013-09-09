@@ -1,8 +1,9 @@
 package com.summercrow.spacetip.to;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class ResultadoTiro {
+public class ResultadoTiro implements Serializable{
 	
 	private Tiro tiro;
 	private boolean meuTiro;

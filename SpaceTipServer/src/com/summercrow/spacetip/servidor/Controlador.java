@@ -23,16 +23,19 @@ public class Controlador {
 		this.proxyServidor = proxyServidor;
 	}
 
-	public Jogador login(String nome) {
+	public Jogador criarJogador(String nome) {
 		Jogador jogador = new Jogador();
 		jogador.setNome(nome);
 		jogador.setId(proximoIdJogador());
 		Partida partida = getPartida();
 		jogador.setPartida(partida);
 		
-		partida.entrar(jogador);
-		
 		return jogador;
+	}
+	
+	public void entrarPartida(Jogador jogador) {
+		Partida partida = jogador.getPartida();
+		partida.entrar(jogador);
 	}
 	
 	private synchronized Partida getPartida(){
