@@ -106,7 +106,13 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 	public void run() {
 		
 		try {
-			socket = new Socket("192.168.0.7", 5555);
+			
+			String ip;
+			
+//			ip = "192.168.0.7";
+			ip = "10.0.1.162";
+			
+			socket = new Socket(ip, 5555);
 			
 			out = new ObjectOutputStream(socket.getOutputStream());
 		
