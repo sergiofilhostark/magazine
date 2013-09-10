@@ -17,13 +17,13 @@ import com.summercrow.spacetip.to.NavesPosicionadas;
 import com.summercrow.spacetip.to.ResultadoTiro;
 import com.summercrow.spacetip.to.Tiro;
 
-public class ProxyServidorSocket{
+public class FrontControlerSocket{
 	
 	private ServerSocket serverSocket;
 	private Controlador controlador;
 	
 	
-	public ProxyServidorSocket(){
+	public FrontControlerSocket(){
 		
 		this.controlador = new Controlador();
 		
@@ -58,7 +58,7 @@ public class ProxyServidorSocket{
 	
 	public static void main(String[] args) {
 		System.out.println("Iniciando");
-		ProxyServidorSocket proxyServidorSocket = new ProxyServidorSocket();
+		FrontControlerSocket proxyServidorSocket = new FrontControlerSocket();
 		
 		System.out.println("Fim");
 	}
