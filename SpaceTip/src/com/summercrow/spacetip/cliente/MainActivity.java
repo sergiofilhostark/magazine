@@ -630,7 +630,7 @@ public class MainActivity extends Activity {
 		proxyCliente.enviarLogin(nome);
 		
 		//REMOVER
-		proxyCliente.enviarLogin("Jogador 2");
+//		proxyCliente.enviarLogin("Jogador 2");
 	}
 
 	public void resultadoTiro(ResultadoTiro resultadoTiro) {

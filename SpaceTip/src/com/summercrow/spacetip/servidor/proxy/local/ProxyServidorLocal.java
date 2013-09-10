@@ -23,7 +23,7 @@ public class ProxyServidorLocal implements ProxyServidor {
 	
 	public ProxyServidorLocal(ProxyCliente proxyCliente) {
 		this.proxyCliente = proxyCliente;
-		this.controlador = new Controlador(this);
+		this.controlador = new Controlador();
 	}
 	
 	private Jogador getJogador(Long id){
@@ -41,6 +41,7 @@ public class ProxyServidorLocal implements ProxyServidor {
 	@Override
 	public void login(String nome) {
 		Jogador jogador = controlador.criarJogador(nome);
+		jogador.setProxyServidor(this);
 		controlador.entrarPartida(jogador);
 		jogadores.put(jogador.getId(), jogador);
 	}

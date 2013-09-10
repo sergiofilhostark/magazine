@@ -1,11 +1,17 @@
 package com.summercrow.spacetip.to;
 
-import java.io.Serializable;
 
-public class LoginEfetuado implements Serializable{
+public class LoginEfetuado extends Resposta{
+	
+
+	private static final long serialVersionUID = 1L;
 	
 	private Long id;
 	private int posicao;
+	
+	public LoginEfetuado(){
+		super(LOGIN_EFETUADO);
+	}
 	
 	public Long getId() {
 		return id;

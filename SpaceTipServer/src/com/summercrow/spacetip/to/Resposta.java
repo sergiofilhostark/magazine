@@ -2,36 +2,25 @@ package com.summercrow.spacetip.to;
 
 import java.io.Serializable;
 
-public class Resposta implements Serializable{
+public abstract class Resposta implements Serializable{
 	
-	private int id;
-	private int status;
-	private String mensagem;
+	private static final long serialVersionUID = 1L;
 	
-	//teste
-
-	public int getStatus() {
-		return status;
+	public static int LOGIN_EFETUADO = 1;
+	public static int PEDIR_POSICIONAMENTO = 2;
+	
+	private int tipo;
+	
+	public Resposta(int tipo){
+		this.tipo = tipo;
 	}
 
-	public void setStatus(int status) {
-		this.status = status;
+	public int getTipo() {
+		return tipo;
 	}
 
-	public String getMensagem() {
-		return mensagem;
-	}
-
-	public void setMensagem(String mensagem) {
-		this.mensagem = mensagem;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
+	
+	
+	
 
 }

@@ -36,11 +36,7 @@ public class Partida {
 	
 	private final int NUMERO_NAVES = 4;
 	
-	private ProxyServidor proxyServidor;
-	
-	public void setProxyServidor(ProxyServidor proxyServidor) {
-		this.proxyServidor = proxyServidor;
-	}
+
 
 	public Partida(){
 		jogadores = new ArrayList<Jogador>();
@@ -52,7 +48,7 @@ public class Partida {
 		jogadores.add(jogador);
 		jogador.setPosicao(jogadores.size() - 1);
 		
-		proxyServidor.enviarLoginEfetuado(jogador);
+		jogador.getProxyServidor().enviarLoginEfetuado(jogador);
 		
 		//REMOVER
 //		if(jogador.getId().longValue() > 1){
@@ -73,34 +69,15 @@ public class Partida {
 	
 	private void pedirPosicionamento() {
 		for (Jogador cadaJogador: jogadores) {
-			proxyServidor.enviarPedidoPosicionamento(cadaJogador);
+			cadaJogador.getProxyServidor().enviarPedidoPosicionamento(cadaJogador);
 		}
 	}
 
 	private void iniciar() {
 		turno = 0;
 		for (Jogador cadaJogador: jogadores) {
-			proxyServidor.enviarIniciar(cadaJogador, turno);
+			cadaJogador.getProxyServidor().enviarIniciar(cadaJogador, turno);
 		}
-	}
-	
-	public synchronized Resposta entrar(Long id, String nick){
-		
-		if(jogadores.size() >=2){
-			return null;
-		}
-		
-		Jogador jogador = new Jogador();
-		jogador.setId(id);
-		jogador.setNome(nick);
-		
-		jogadores.add(jogador);
-		jogadoresId.put(id, jogador);
-		
-		Resposta resposta = new Resposta();
-		resposta.setId(ENTROU);
-		resposta.setStatus(OK);
-		return resposta;
 	}
 	
 //	public Resposta posicionarNave(Long id, long x, long y, long altura, long largura){
@@ -151,7 +128,7 @@ public class Partida {
 		inicioDeJogo.setMeuTurno(meuTurno);
 		List<DadosNave> dadosNavesAdversario = montarDadosNaveAdversario(adversario);
 		inicioDeJogo.setNavesAdversario(dadosNavesAdversario);
-		proxyServidor.enviarInicioDeJogo(jogador, inicioDeJogo);
+		jogador.getProxyServidor().enviarInicioDeJogo(jogador, inicioDeJogo);
 	}
 
 	private List<DadosNave> montarDadosNaveAdversario(Jogador jogador) {
@@ -184,10 +161,10 @@ public class Partida {
 		resultadoTiro.setDerrotou(adversario.isDerrotado());
 		
 		resultadoTiro.setMeuTiro(true);
-		proxyServidor.enviarResultadoTiro(jogador, resultadoTiro);
+		jogador.getProxyServidor().enviarResultadoTiro(jogador, resultadoTiro);
 		
 		resultadoTiro.setMeuTiro(false);
-		proxyServidor.enviarResultadoTiro(adversario, resultadoTiro);
+		adversario.getProxyServidor().enviarResultadoTiro(adversario, resultadoTiro);
 	}
 	
 	private Integer verificarAcerto(float x, float y, float yT, Jogador adversario) {
@@ -220,11 +197,13 @@ public class Partida {
 	 * conversao das dimensoes para valores relativos (ver se isso eh mesmo necessario pois as vezes as dimensoes 
 	 * ja sao relativas (ou tem algo que faz isso)
 	 * 
-	 * verificacoes no lado cliente para saber se o turno � dele mesmo (nao estao feitas ainda)
+	 * verificacoes no lado cliente para saber se o turno é dele mesmo (nao estao feitas ainda)
 	 * 
 	 * protocolo de mensagens para o cliente e trantamento de excessao
 	 * 
 	 * Projetos referenciar projetos no Android
+	 * 
+	 * metodos do proxy nao precisam mais incluir o jogador pois o proxy agora é do jogador
 	 * 
 	 */
 

@@ -11,6 +11,7 @@ import com.summercrow.spacetip.cliente.proxy.ProxyCliente;
 import com.summercrow.spacetip.to.InicioDeJogo;
 import com.summercrow.spacetip.to.LoginEfetuado;
 import com.summercrow.spacetip.to.NavesPosicionadas;
+import com.summercrow.spacetip.to.Resposta;
 import com.summercrow.spacetip.to.ResultadoTiro;
 import com.summercrow.spacetip.to.Tiro;
 
@@ -76,14 +77,28 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 	}
 
 	@Override
-	public void loginEfetuado(Long id, int posicao) {
-		activity.loginEfetuado(id, posicao);
+	public void loginEfetuado(final Long id, final int posicao) {
+		activity.runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				activity.loginEfetuado(id, posicao);
+				
+			}
+		});
+		
 	}
 
 	@Override
 	public void pedirPosicionamento() {
-		// TODO Auto-generated method stub
-		
+		activity.runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				activity.pedirPosicionamento();
+				
+			}
+		});
 	}
 
 	
@@ -129,18 +144,20 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 			throw new RuntimeException(e);
 		}
 		
-		Object object;
+		//TODO coloar o in.readObject dentro do while de novo, nesse e no do servidor
+		Resposta resposta;
 		try {
-			while((object = in.readObject()) != null){
-				if(object instanceof LoginEfetuado){
-					LoginEfetuado loginEfetuado = (LoginEfetuado) object;
+			resposta = (Resposta)in.readObject();
+			while(resposta != null){
+				if(resposta.getTipo() == Resposta.LOGIN_EFETUADO ){
+					LoginEfetuado loginEfetuado = (LoginEfetuado) resposta;
 					loginEfetuado(loginEfetuado.getId(), loginEfetuado.getPosicao());
+				} else if(resposta.getTipo() == Resposta.PEDIR_POSICIONAMENTO ){
+					pedirPosicionamento();
 				}
+				resposta = (Resposta)in.readObject();
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ClassNotFoundException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {

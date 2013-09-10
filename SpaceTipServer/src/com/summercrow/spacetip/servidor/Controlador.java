@@ -1,27 +1,15 @@
 package com.summercrow.spacetip.servidor;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-
-import com.summercrow.spacetip.servidor.proxy.ProxyServidor;
 
 
 
 public class Controlador {
 	
-	private ProxyServidor proxyServidor;
-	
-	
-	
 	private List<Partida> partidasAguardando = new ArrayList<Partida>();
 	
 	private long idJogadores = 1;
-	
-	public Controlador(ProxyServidor proxyServidor) {
-		this.proxyServidor = proxyServidor;
-	}
 
 	public Jogador criarJogador(String nome) {
 		Jogador jogador = new Jogador();
@@ -33,6 +21,7 @@ public class Controlador {
 		return jogador;
 	}
 	
+	//TODO verificar a necessidade desse metodo
 	public void entrarPartida(Jogador jogador) {
 		Partida partida = jogador.getPartida();
 		partida.entrar(jogador);
@@ -44,7 +33,6 @@ public class Controlador {
 		}
 		else {
 			Partida partida = new Partida();
-			partida.setProxyServidor(proxyServidor);
 			partidasAguardando.add(partida);
 			return partida;
 		}

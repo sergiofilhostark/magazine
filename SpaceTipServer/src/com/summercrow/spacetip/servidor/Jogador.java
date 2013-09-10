@@ -3,6 +3,8 @@ package com.summercrow.spacetip.servidor;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.summercrow.spacetip.servidor.proxy.ProxyServidor;
+
 public class Jogador {
 	
 	private String nome;
@@ -11,6 +13,15 @@ public class Jogador {
 	private List<Nave> naves = new ArrayList<Nave>();
 	private Partida partida;
 	private int navesAbatidas;
+	private ProxyServidor proxyServidor;
+	
+	public void setProxyServidor(ProxyServidor proxyServidor) {
+		this.proxyServidor = proxyServidor;
+	}
+	
+	public ProxyServidor getProxyServidor() {
+		return proxyServidor;
+	}
 	
 	public int getNavesAbatidas() {
 		return navesAbatidas;
@@ -73,6 +84,8 @@ public class Jogador {
 	public boolean isDerrotado(){
 		return (navesAbatidas >= naves.size());
 	}
+
+	
 	
 
 }
