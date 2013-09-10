@@ -124,10 +124,10 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 			
 			String ip;
 			
-//			ip = "192.168.0.7";
-			ip = "10.0.1.162";
+			ip = "192.168.0.7";
+//			ip = "10.0.1.162";
 			
-			socket = new Socket(ip, 5555);
+			socket = new Socket(ip, 7777);
 			
 			out = new ObjectOutputStream(socket.getOutputStream());
 		

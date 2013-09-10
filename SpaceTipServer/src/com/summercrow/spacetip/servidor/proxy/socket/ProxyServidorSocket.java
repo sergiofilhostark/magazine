@@ -28,7 +28,7 @@ public class ProxyServidorSocket{
 		this.controlador = new Controlador();
 		
 		try {
-			serverSocket = new ServerSocket(5555);
+			serverSocket = new ServerSocket(7777);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
