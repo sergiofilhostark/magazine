@@ -73,12 +73,6 @@ public class Partida {
 		}
 	}
 
-	private void iniciar() {
-		turno = 0;
-		for (Jogador cadaJogador: jogadores) {
-			cadaJogador.getProxyServidor().enviarIniciar(cadaJogador, turno);
-		}
-	}
 	
 //	public Resposta posicionarNave(Long id, long x, long y, long altura, long largura){
 //		

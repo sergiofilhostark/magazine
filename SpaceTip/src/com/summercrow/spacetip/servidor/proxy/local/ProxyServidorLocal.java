@@ -46,15 +46,6 @@ public class ProxyServidorLocal implements ProxyServidor {
 		jogadores.put(jogador.getId(), jogador);
 	}
 
-	@Override
-	public void enviarAguardar(Jogador jogador) {
-		proxyCliente.aguardar(jogador.getId(), jogador.getPosicao());
-	}
-
-	@Override
-	public void enviarIniciar(Jogador jogador, int turno) {
-		proxyCliente.iniciar(jogador.getId(), jogador.getPosicao(), turno);
-	}
 
 	@Override
 	public void enviarPedidoPosicionamento(Jogador jogador) {

@@ -34,19 +34,6 @@ public class ProxyClienteLocal implements ProxyCliente {
 		proxyServidor.atirar(tiro);
 	}
 	
-	
-
-	@Override
-	public void aguardar(Long id, int posicao) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void iniciar(Long id, int posicao, int turno) {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public void loginEfetuado(Long id, int posicao) {

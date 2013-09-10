@@ -1,14 +1,18 @@
 package com.summercrow.spacetip.to;
 
-import java.io.Serializable;
-import java.util.List;
 
-public class ResultadoTiro implements Serializable{
+public class ResultadoTiro extends ReqServidor{
+	
+	private static final long serialVersionUID = 1L;
 	
 	private Tiro tiro;
 	private boolean meuTiro;
 	private Integer naveAtingida;
 	private boolean derrotou;
+	
+	public ResultadoTiro(){
+		super(RESULTADO_TIRO);
+	}
 	
 	
 	public boolean isDerrotou() {

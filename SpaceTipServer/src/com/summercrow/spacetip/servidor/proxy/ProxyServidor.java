@@ -10,10 +10,6 @@ public interface ProxyServidor {
 
 	public void login(String nome);
 
-	public void enviarAguardar(Jogador jogador);
-
-	public void enviarIniciar(Jogador jogador, int turno);
-
 	public void enviarPedidoPosicionamento(Jogador jogador);
 
 	public void enviarLoginEfetuado(Jogador jogador);

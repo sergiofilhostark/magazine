@@ -14,10 +14,6 @@ public interface ProxyCliente {
 	public void enviarAtirar(Tiro tiro);
 	
 
-	public void aguardar(Long id, int posicao);
-
-	public void iniciar(Long id, int posicao, int turno);
-
 	public void loginEfetuado(Long id, int posicao);
 
 	public void pedirPosicionamento();

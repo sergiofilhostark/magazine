@@ -1,21 +1,10 @@
 package com.summercrow.spacetip.servidor.proxy.socket;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.HashMap;
-import java.util.Map;
 
 import com.summercrow.spacetip.servidor.Controlador;
-import com.summercrow.spacetip.servidor.Jogador;
-import com.summercrow.spacetip.servidor.proxy.ProxyServidor;
-import com.summercrow.spacetip.to.InicioDeJogo;
-import com.summercrow.spacetip.to.LoginEfetuado;
-import com.summercrow.spacetip.to.NavesPosicionadas;
-import com.summercrow.spacetip.to.ResultadoTiro;
-import com.summercrow.spacetip.to.Tiro;
 
 public class FrontControlerSocket{
 	

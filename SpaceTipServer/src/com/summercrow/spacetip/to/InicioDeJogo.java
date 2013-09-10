@@ -1,12 +1,17 @@
 package com.summercrow.spacetip.to;
 
-import java.io.Serializable;
 import java.util.List;
 
-public class InicioDeJogo implements Serializable{
+public class InicioDeJogo extends ReqServidor{
+	
+	private static final long serialVersionUID = 1L;
 	
 	private boolean meuTurno;
 	private List<DadosNave> navesAdversario;
+	
+	public InicioDeJogo() {
+		super(INICIO_DE_JOGO);
+	}
 	
 	public boolean isMeuTurno() {
 		return meuTurno;

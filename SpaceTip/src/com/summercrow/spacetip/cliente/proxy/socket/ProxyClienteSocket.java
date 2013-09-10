@@ -8,7 +8,9 @@ import java.net.UnknownHostException;
 
 import com.summercrow.spacetip.cliente.MainActivity;
 import com.summercrow.spacetip.cliente.proxy.ProxyCliente;
+import com.summercrow.spacetip.to.Atirar;
 import com.summercrow.spacetip.to.InicioDeJogo;
+import com.summercrow.spacetip.to.Login;
 import com.summercrow.spacetip.to.LoginEfetuado;
 import com.summercrow.spacetip.to.NavesPosicionadas;
 import com.summercrow.spacetip.to.ReqServidor;
@@ -37,7 +39,10 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 	@Override
 	public void enviarLogin(String nome) {
 		try {
-			out.writeObject(nome);
+			Login login = new Login();
+			login.setNome(nome);
+			
+			out.writeObject(login);
 			out.flush();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -57,23 +62,14 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 	@Override
 	public void enviarAtirar(Tiro tiro) {
 		try {
-			out.writeObject(tiro);
+			Atirar atirar = new Atirar();
+			atirar.setTiro(tiro);
+			
+			out.writeObject(atirar);
 			out.flush();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-	}
-
-	@Override
-	public void aguardar(Long id, int posicao) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void iniciar(Long id, int posicao, int turno) {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -104,17 +100,29 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 	
 
 	@Override
-	public void inicioDeJogo(InicioDeJogo inicioDeJogo) {
-		// TODO Auto-generated method stub
-		
+	public void inicioDeJogo(final InicioDeJogo inicioDeJogo) {
+		activity.runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				activity.inicioDeJogo(inicioDeJogo);
+				
+			}
+		});
 	}
 
 	
 
 	@Override
-	public void resultadoTiro(ResultadoTiro resultadoTiro) {
-		// TODO Auto-generated method stub
-		
+	public void resultadoTiro(final ResultadoTiro resultadoTiro) {
+		activity.runOnUiThread(new Runnable() {
+			
+			@Override
+			public void run() {
+				activity.resultadoTiro(resultadoTiro);
+				
+			}
+		});
 	}
 
 	@Override
@@ -145,17 +153,26 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 		}
 		
 		//TODO coloar o in.readObject dentro do while de novo, nesse e no do servidor
-		ReqServidor resposta;
+		ReqServidor reqServidor;
 		try {
-			resposta = (ReqServidor)in.readObject();
-			while(resposta != null){
-				if(resposta.getTipo() == ReqServidor.LOGIN_EFETUADO ){
-					LoginEfetuado loginEfetuado = (LoginEfetuado) resposta;
+			reqServidor = (ReqServidor)in.readObject();
+			while(reqServidor != null){
+				if(reqServidor.getTipo() == ReqServidor.LOGIN_EFETUADO ){
+					LoginEfetuado loginEfetuado = (LoginEfetuado) reqServidor;
 					loginEfetuado(loginEfetuado.getId(), loginEfetuado.getPosicao());
-				} else if(resposta.getTipo() == ReqServidor.PEDIR_POSICIONAMENTO ){
+				} 
+				else if(reqServidor.getTipo() == ReqServidor.PEDIR_POSICIONAMENTO){
 					pedirPosicionamento();
+				} 
+				else if(reqServidor.getTipo() == ReqServidor.INICIO_DE_JOGO){
+					InicioDeJogo inicioDeJogo = (InicioDeJogo)reqServidor;
+					inicioDeJogo(inicioDeJogo);
 				}
-				resposta = (ReqServidor)in.readObject();
+				else if(reqServidor.getTipo() == ReqServidor.RESULTADO_TIRO){
+					ResultadoTiro resultadoTiro = (ResultadoTiro)reqServidor;
+					resultadoTiro(resultadoTiro);
+				}
+				reqServidor = (ReqServidor)in.readObject();
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

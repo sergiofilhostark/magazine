@@ -357,25 +357,24 @@ public class MainActivity extends Activity {
 		
 		proxyCliente.enviarNavesPosicionadas(navesPosicionadas);
 		
-		//REMOVER
-		
-		List<Nave> navesAdversarioTemp = new ArrayList<Nave>();
-		Nave nave1 = new Nave(60 -(larguraNave/2), 450 - (alturaNave/2), larguraNave, alturaNave);
-		navesAdversarioTemp.add(nave1);
-		Nave nave2 = new Nave(180 -(larguraNave/2), 500 - (alturaNave/2), larguraNave, alturaNave);
-		navesAdversarioTemp.add(nave2);
-		Nave nave3 = new Nave(320 -(larguraNave/2), 580 - (alturaNave/2), larguraNave, alturaNave);
-		navesAdversarioTemp.add(nave3);
-		Nave nave4 = new Nave(450 -(larguraNave/2), 660 - (alturaNave/2), larguraNave, alturaNave);
-		navesAdversarioTemp.add(nave4);
-		List<DadosNave> dadosAdversario = ajustarDimensoes(navesAdversarioTemp);
-		
-		NavesPosicionadas navesPosicionadasAdversario = new NavesPosicionadas();
-		navesPosicionadasAdversario.setIdJogador(idJogador + 1);
-		navesPosicionadasAdversario.setDadosNaves(dadosAdversario);
-		
-		
-		proxyCliente.enviarNavesPosicionadas(navesPosicionadasAdversario);
+		//REMOVER		
+//		List<Nave> navesAdversarioTemp = new ArrayList<Nave>();
+//		Nave nave1 = new Nave(60 -(larguraNave/2), 450 - (alturaNave/2), larguraNave, alturaNave);
+//		navesAdversarioTemp.add(nave1);
+//		Nave nave2 = new Nave(180 -(larguraNave/2), 500 - (alturaNave/2), larguraNave, alturaNave);
+//		navesAdversarioTemp.add(nave2);
+//		Nave nave3 = new Nave(320 -(larguraNave/2), 580 - (alturaNave/2), larguraNave, alturaNave);
+//		navesAdversarioTemp.add(nave3);
+//		Nave nave4 = new Nave(450 -(larguraNave/2), 660 - (alturaNave/2), larguraNave, alturaNave);
+//		navesAdversarioTemp.add(nave4);
+//		List<DadosNave> dadosAdversario = ajustarDimensoes(navesAdversarioTemp);
+//		
+//		NavesPosicionadas navesPosicionadasAdversario = new NavesPosicionadas();
+//		navesPosicionadasAdversario.setIdJogador(idJogador + 1);
+//		navesPosicionadasAdversario.setDadosNaves(dadosAdversario);
+//		
+//		
+//		proxyCliente.enviarNavesPosicionadas(navesPosicionadasAdversario);
 	}
 
 	
@@ -594,29 +593,36 @@ public class MainActivity extends Activity {
 						exibirAlerta(R.string.voce_perdeu);
 					}
 				}
+				else if (meuTiro){
+					meuTurno = false;
+					aguardeDialog.setMessage(getString(R.string.aguardando_adversario));
+					aguardeDialog.show();
+				} else {
+					meuTurno = true;
+				}
 				
 				//REMOVER
-				else if(meuTiro){
-					float x = 200;
-					float y = 600;				
-					float metade = getMetade();				
-					float distancia = -2 * (y - metade);
-					
-					int larguraJogo = meuLayout.getWidth();
-					int alturaJogo = meuLayout.getHeight();
-					
-					float xRelativo = x / larguraJogo;
-					float distanciaRelativa = distancia / alturaJogo;
-					float yRelativo = y / alturaJogo;
-					
-					Tiro tiro = new Tiro();
-					tiro.setX(xRelativo);
-					tiro.setY(yRelativo);
-					tiro.setDistancia(distanciaRelativa);
-					tiro.setIdJogador(idJogador + 1);
-
-					proxyCliente.enviarAtirar(tiro);
-				}
+//				else if(meuTiro){
+//					float x = 200;
+//					float y = 600;				
+//					float metade = getMetade();				
+//					float distancia = -2 * (y - metade);
+//					
+//					int larguraJogo = meuLayout.getWidth();
+//					int alturaJogo = meuLayout.getHeight();
+//					
+//					float xRelativo = x / larguraJogo;
+//					float distanciaRelativa = distancia / alturaJogo;
+//					float yRelativo = y / alturaJogo;
+//					
+//					Tiro tiro = new Tiro();
+//					tiro.setX(xRelativo);
+//					tiro.setY(yRelativo);
+//					tiro.setDistancia(distanciaRelativa);
+//					tiro.setIdJogador(idJogador + 1);
+//
+//					proxyCliente.enviarAtirar(tiro);
+//				}
 				
 				
 			}
@@ -643,15 +649,11 @@ public class MainActivity extends Activity {
 		float y = tiro.getY() * alturaJogo;
 		float distancia = tiro.getDistancia() * alturaJogo;
 		
+		aguardeDialog.hide();
+		
 		animarTiro(x, y, distancia, resultadoTiro.isMeuTiro(), resultadoTiro.getNaveAtingida(), resultadoTiro.isDerrotou());
 		
-		//TODO tirar esse if se nao tiver mais nada
-		if(resultadoTiro.isMeuTiro()){
-			meuTurno = false;
-		}
-		else {
-			meuTurno = true;
-		}
+		
 	}
 
 	private void trocarNaveAtingida(Integer idAtingida, boolean meuTiro) {

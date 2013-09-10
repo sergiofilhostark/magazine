@@ -1,12 +1,17 @@
 package com.summercrow.spacetip.to;
 
-import java.io.Serializable;
 import java.util.List;
 
-public class NavesPosicionadas implements Serializable{
+public class NavesPosicionadas extends ReqCliente{
+	
+	private static final long serialVersionUID = 1L;
 	
 	private Long idJogador;
 	private List<DadosNave> dadosNaves;
+	
+	public NavesPosicionadas(){
+		super(NAVES_POSICIONADAS);
+	}
 	
 	public Long getIdJogador() {
 		return idJogador;

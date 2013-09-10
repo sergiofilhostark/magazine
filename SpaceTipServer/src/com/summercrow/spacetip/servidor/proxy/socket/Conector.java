@@ -7,11 +7,15 @@ import java.net.Socket;
 
 import com.summercrow.spacetip.servidor.Controlador;
 import com.summercrow.spacetip.servidor.Jogador;
+import com.summercrow.spacetip.servidor.Partida;
 import com.summercrow.spacetip.servidor.proxy.ProxyServidor;
+import com.summercrow.spacetip.to.Atirar;
 import com.summercrow.spacetip.to.InicioDeJogo;
+import com.summercrow.spacetip.to.Login;
 import com.summercrow.spacetip.to.LoginEfetuado;
 import com.summercrow.spacetip.to.NavesPosicionadas;
 import com.summercrow.spacetip.to.PedirPosicionamento;
+import com.summercrow.spacetip.to.ReqCliente;
 import com.summercrow.spacetip.to.ReqServidor;
 import com.summercrow.spacetip.to.ResultadoTiro;
 import com.summercrow.spacetip.to.Tiro;
@@ -56,22 +60,40 @@ public class Conector implements Runnable, ProxyServidor{
 		
 		try {
 		
-			Object object = in.readObject();
-			String nome = (String) object;
 			
-			System.out.println("recebi "+nome);
+			ReqCliente reqCliente = (ReqCliente)in.readObject();
 			
-			Jogador jogador = controlador.criarJogador(nome);			
-			setJogador(jogador);
-			jogador.setProxyServidor(this);
-			controlador.entrarPartida(jogador);
-		
-		
-			object = in.readObject();
-			while(object != null){
-				System.out.println("Recebi algo");
-				object = in.readObject();
+			if(reqCliente.getTipo() == ReqCliente.LOGIN){
+				Login login = (Login)reqCliente;
+				String nome = login.getNome();
+				
+				System.out.println("recebi "+nome);
+				
+				Jogador jogador = controlador.criarJogador(nome);			
+				setJogador(jogador);
+				jogador.setProxyServidor(this);
+				controlador.entrarPartida(jogador);
+			
+			
+				reqCliente = (ReqCliente)in.readObject();
+				while(reqCliente != null){
+					
+					if(reqCliente.getTipo() == ReqCliente.NAVES_POSICIONADAS){
+						NavesPosicionadas navesPosicionadas = (NavesPosicionadas) reqCliente;
+						navesPosicionadas(navesPosicionadas);
+					}
+					else if(reqCliente.getTipo() == ReqCliente.ATIRAR){
+						Atirar atirar = (Atirar)reqCliente;
+						atirar(atirar.getTiro());
+					}
+					
+					reqCliente = (ReqCliente)in.readObject();
+				}
 			}
+			
+			
+			
+			
 			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -95,33 +117,33 @@ public class Conector implements Runnable, ProxyServidor{
 	}
 	@Override
 	public void login(String nome) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void enviarAguardar(Jogador jogador) {
-		// TODO Auto-generated method stub
-		
-	}
-	@Override
-	public void enviarIniciar(Jogador jogador, int turno) {
-		// TODO Auto-generated method stub
+		// TODO Verificar a utilidade desse metoddo
 		
 	}
 	@Override
 	public void enviarPedidoPosicionamento(Jogador jogador) {
 		PedirPosicionamento pedirPosicionamento = new PedirPosicionamento();
-		enviarResposta(pedirPosicionamento);
+		enviarReqServidor(pedirPosicionamento);
 	}
 	@Override
 	public void enviarLoginEfetuado(Jogador jogador) {
 		LoginEfetuado loginEfetuado = new LoginEfetuado();
 		loginEfetuado.setId(jogador.getId());
 		loginEfetuado.setPosicao(jogador.getPosicao());
-		enviarResposta(loginEfetuado);
+		enviarReqServidor(loginEfetuado);
+	}
+	
+	@Override
+	public void enviarInicioDeJogo(Jogador jogador, InicioDeJogo inicioDeJogo) {
+		enviarReqServidor(inicioDeJogo);
+	}
+	
+	@Override
+	public void enviarResultadoTiro(Jogador jogador, ResultadoTiro resultadoTiro) {
+		enviarReqServidor(resultadoTiro);
 	}
 
-	private void enviarResposta(ReqServidor resposta) {
+	private void enviarReqServidor(ReqServidor resposta) {
 		try {
 			out.writeObject(resposta);
 			out.flush();
@@ -130,26 +152,21 @@ public class Conector implements Runnable, ProxyServidor{
 			e.printStackTrace();
 		}
 	}
+	
+	
+	
 	@Override
 	public void navesPosicionadas(NavesPosicionadas navesPosicionadas) {
-		// TODO Auto-generated method stub
-		
+		Partida partida = jogador.getPartida();
+		partida.navesPosicionadas(jogador, navesPosicionadas.getDadosNaves());
 	}
-	@Override
-	public void enviarInicioDeJogo(Jogador jogador, InicioDeJogo inicioDeJogo) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	@Override
 	public void atirar(Tiro tiro) {
-		// TODO Auto-generated method stub
-		
+		Partida partida = jogador.getPartida();
+		partida.atirar(jogador, tiro);
 	}
-	@Override
-	public void enviarResultadoTiro(Jogador jogador, ResultadoTiro resultadoTiro) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	
 
 }
