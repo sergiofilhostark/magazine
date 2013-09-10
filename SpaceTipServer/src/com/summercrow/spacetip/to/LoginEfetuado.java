@@ -1,7 +1,7 @@
 package com.summercrow.spacetip.to;
 
 
-public class LoginEfetuado extends Resposta{
+public class LoginEfetuado extends ReqServidor{
 	
 
 	private static final long serialVersionUID = 1L;

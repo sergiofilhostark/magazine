@@ -1,6 +1,6 @@
 package com.summercrow.spacetip.to;
 
-public class PedirPosicionamento extends Resposta{
+public class PedirPosicionamento extends ReqServidor{
 	
 	private static final long serialVersionUID = 1L;
 	

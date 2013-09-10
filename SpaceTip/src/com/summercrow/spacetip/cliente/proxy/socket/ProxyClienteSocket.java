@@ -11,7 +11,7 @@ import com.summercrow.spacetip.cliente.proxy.ProxyCliente;
 import com.summercrow.spacetip.to.InicioDeJogo;
 import com.summercrow.spacetip.to.LoginEfetuado;
 import com.summercrow.spacetip.to.NavesPosicionadas;
-import com.summercrow.spacetip.to.Resposta;
+import com.summercrow.spacetip.to.ReqServidor;
 import com.summercrow.spacetip.to.ResultadoTiro;
 import com.summercrow.spacetip.to.Tiro;
 
@@ -145,17 +145,17 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 		}
 		
 		//TODO coloar o in.readObject dentro do while de novo, nesse e no do servidor
-		Resposta resposta;
+		ReqServidor resposta;
 		try {
-			resposta = (Resposta)in.readObject();
+			resposta = (ReqServidor)in.readObject();
 			while(resposta != null){
-				if(resposta.getTipo() == Resposta.LOGIN_EFETUADO ){
+				if(resposta.getTipo() == ReqServidor.LOGIN_EFETUADO ){
 					LoginEfetuado loginEfetuado = (LoginEfetuado) resposta;
 					loginEfetuado(loginEfetuado.getId(), loginEfetuado.getPosicao());
-				} else if(resposta.getTipo() == Resposta.PEDIR_POSICIONAMENTO ){
+				} else if(resposta.getTipo() == ReqServidor.PEDIR_POSICIONAMENTO ){
 					pedirPosicionamento();
 				}
-				resposta = (Resposta)in.readObject();
+				resposta = (ReqServidor)in.readObject();
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

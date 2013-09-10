@@ -9,7 +9,7 @@ import java.util.Map;
 import com.summercrow.spacetip.servidor.proxy.ProxyServidor;
 import com.summercrow.spacetip.to.DadosNave;
 import com.summercrow.spacetip.to.InicioDeJogo;
-import com.summercrow.spacetip.to.Resposta;
+import com.summercrow.spacetip.to.ReqServidor;
 import com.summercrow.spacetip.to.ResultadoTiro;
 import com.summercrow.spacetip.to.Tiro;
 

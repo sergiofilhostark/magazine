@@ -12,7 +12,7 @@ import com.summercrow.spacetip.to.InicioDeJogo;
 import com.summercrow.spacetip.to.LoginEfetuado;
 import com.summercrow.spacetip.to.NavesPosicionadas;
 import com.summercrow.spacetip.to.PedirPosicionamento;
-import com.summercrow.spacetip.to.Resposta;
+import com.summercrow.spacetip.to.ReqServidor;
 import com.summercrow.spacetip.to.ResultadoTiro;
 import com.summercrow.spacetip.to.Tiro;
 
@@ -121,7 +121,7 @@ public class Conector implements Runnable, ProxyServidor{
 		enviarResposta(loginEfetuado);
 	}
 
-	private void enviarResposta(Resposta resposta) {
+	private void enviarResposta(ReqServidor resposta) {
 		try {
 			out.writeObject(resposta);
 			out.flush();
