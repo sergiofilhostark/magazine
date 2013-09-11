@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="SpaceTipServerWeb">
+        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <dependent-module archiveName="SpaceTipLibrary.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/SpaceTipLibrary/SpaceTipLibrary">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="SpaceTipServer.jar" deploy-path="/WEB-INF/lib" handle="module:/resource/SpaceTipServer/SpaceTipServer">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <property name="context-root" value="SpaceTipServerWeb"/>
+        <property name="java-output-path" value="/SpaceTipServerWeb/build/classes"/>
+    </wb-module>
+</project-modules>
