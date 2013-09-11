@@ -6,7 +6,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
-import com.summercrow.spacetip.cliente.MainActivity;
+import com.summercrow.spacetip.cliente.SpaceTipActivity;
 import com.summercrow.spacetip.cliente.proxy.ProxyCliente;
 import com.summercrow.spacetip.to.Atirar;
 import com.summercrow.spacetip.to.InicioDeJogo;
@@ -19,7 +19,7 @@ import com.summercrow.spacetip.to.Tiro;
 
 public class ProxyClienteSocket implements ProxyCliente, Runnable{
 	
-	private MainActivity activity;
+	private SpaceTipActivity activity;
 	private Socket socket;
 	
 	private ObjectInputStream in;
@@ -27,7 +27,7 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 	private ObjectOutputStream out;
 	
 	
-	public ProxyClienteSocket(MainActivity activity){
+	public ProxyClienteSocket(SpaceTipActivity activity){
 		this.activity = activity;
 		
 		Thread thread = new Thread(this);

@@ -34,7 +34,7 @@ import com.summercrow.spacetip.to.NavesPosicionadas;
 import com.summercrow.spacetip.to.ResultadoTiro;
 import com.summercrow.spacetip.to.Tiro;
 
-public class MainActivity extends Activity {
+public class SpaceTipActivity extends Activity {
 	
 	private RelativeLayout meuLayout;
 	private ImageView nave;
