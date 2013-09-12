@@ -17,6 +17,8 @@ public class FrontControlerRest {
 	@Produces("application/json")
 	public ReqServidor getBooks() {
 		
+		// http://localhost:8080/SpaceTipServerWeb/services/spacetip/teste
+		
 		Tiro tiro = new Tiro();
 		tiro.setDistancia(2.3F);
 		tiro.setX(4);
