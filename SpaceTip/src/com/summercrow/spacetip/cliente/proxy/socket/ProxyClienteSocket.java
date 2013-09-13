@@ -1,6 +1,7 @@
 package com.summercrow.spacetip.cliente.proxy.socket;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -16,6 +17,20 @@ import com.summercrow.spacetip.to.NavesPosicionadas;
 import com.summercrow.spacetip.to.ReqServidor;
 import com.summercrow.spacetip.to.ResultadoTiro;
 import com.summercrow.spacetip.to.Tiro;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.json.JSONObject;
 
 public class ProxyClienteSocket implements ProxyCliente, Runnable{
 	
@@ -129,6 +144,59 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 	public void run() {
 		
 		try {
+			/*
+			Atirar atirar = new Atirar();
+			Tiro tiro = new Tiro();
+			tiro.setDistancia(5F);
+			tiro.setIdJogador(4L);
+			tiro.setX(2.4555F);
+			tiro.setY(0.3F);
+			atirar.setTiro(tiro);
+			
+			
+	        try {
+	        	ObjectMapper mapper = new ObjectMapper();
+				String json = mapper.writeValueAsString(atirar);
+				
+				String url = "http://192.168.0.7:8080/SpaceTipServerWeb/services/spacetip/atirar";
+				
+				HttpClient httpclient = new DefaultHttpClient();
+				
+				HttpPost httpPost = new HttpPost(url);
+				StringEntity st = new StringEntity(json);
+				st.setContentType("application/json");
+				st.setContentEncoding(HTTP.UTF_8);
+	            httpPost.setEntity(st);
+
+				HttpResponse response = httpclient.execute(httpPost);
+
+				HttpEntity entity = response.getEntity();
+				
+				if (entity != null) {
+					
+
+					String jsonText = EntityUtils.toString(entity, HTTP.UTF_8);
+					
+					
+					ObjectMapper mapper2 = new ObjectMapper();
+					
+					JSONObject jsonObject = new JSONObject(jsonText);
+					int tipo = jsonObject.getInt("tipo");
+					
+			        Atirar atirar2 = mapper2.readValue(jsonText, Atirar.class);
+			        
+			        System.out.println(1);
+				}
+
+
+
+				
+			} catch (Exception e1) {
+
+				e1.printStackTrace();
+			}
+	        
+			*/
 			
 			String ip;
 			
