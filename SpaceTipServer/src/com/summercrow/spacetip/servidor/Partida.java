@@ -149,16 +149,19 @@ public class Partida {
 		}
 		Integer naveAtingida = verificarAcerto(tiro.getX(), tiro.getY(), tiro.getDistancia(), adversario);
 		
-		ResultadoTiro resultadoTiro = new ResultadoTiro();
-		resultadoTiro.setTiro(tiro);
-		resultadoTiro.setNaveAtingida(naveAtingida);
-		resultadoTiro.setDerrotou(adversario.isDerrotado());
+		ResultadoTiro resultadoTiroMeu = new ResultadoTiro();
+		resultadoTiroMeu.setMeuTiro(true);
+		resultadoTiroMeu.setTiro(tiro);
+		resultadoTiroMeu.setNaveAtingida(naveAtingida);
+		resultadoTiroMeu.setDerrotou(adversario.isDerrotado());
+		jogador.getProxyServidor().enviarResultadoTiro(jogador, resultadoTiroMeu);
 		
-		resultadoTiro.setMeuTiro(true);
-		jogador.getProxyServidor().enviarResultadoTiro(jogador, resultadoTiro);
-		
-		resultadoTiro.setMeuTiro(false);
-		adversario.getProxyServidor().enviarResultadoTiro(adversario, resultadoTiro);
+		ResultadoTiro resultadoTiroAdversario = new ResultadoTiro();
+		resultadoTiroAdversario.setMeuTiro(false);
+		resultadoTiroAdversario.setTiro(tiro);
+		resultadoTiroAdversario.setNaveAtingida(naveAtingida);
+		resultadoTiroAdversario.setDerrotou(adversario.isDerrotado());
+		adversario.getProxyServidor().enviarResultadoTiro(adversario, resultadoTiroAdversario);
 	}
 	
 	private Integer verificarAcerto(float x, float y, float yT, Jogador adversario) {
@@ -180,7 +183,7 @@ public class Partida {
 	 * pool eh ineficiente (e sincrono)
 	 * sincronia impossibilita de mandar mensagens aleatorias para todos os usuarios
 	 * seguranca dos dados (id do usuario pode ser alterado)
-	 * sincronizacao dos metodos!!
+	 * sincronizacao dos metodos!! (cuidado com deadlock)
 	 * travar o cliente para multiplos toques. esperar o resultado antes de aceitar outro toque
 	 * 
 	 * a resposta pode ser generica, entao nao compensa criar um protocolo assincrono
@@ -198,6 +201,10 @@ public class Partida {
 	 * Projetos referenciar projetos no Android
 	 * 
 	 * metodos do proxy nao precisam mais incluir o jogador pois o proxy agora é do jogador
+	 * 
+	 * discutir sobre sistema de seguranca, um id ou um token ja é o bastante (alem de https, quando for http)
+	 * 
+	 * tratamento de excessoes
 	 * 
 	 */
 

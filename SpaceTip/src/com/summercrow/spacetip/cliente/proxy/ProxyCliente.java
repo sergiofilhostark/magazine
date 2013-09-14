@@ -11,7 +11,7 @@ public interface ProxyCliente {
 	
 	public void enviarNavesPosicionadas(NavesPosicionadas navesPosicionadas);
 	
-	public void enviarAtirar(Tiro tiro);
+	public void enviarAtirar(Tiro tiro, Long idJogador);
 	
 
 	public void loginEfetuado(Long id, int posicao);

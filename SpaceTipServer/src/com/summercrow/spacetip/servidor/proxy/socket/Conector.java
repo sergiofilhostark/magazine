@@ -115,11 +115,7 @@ public class Conector implements Runnable, ProxyServidor{
 		}
 		
 	}
-	@Override
-	public void login(String nome) {
-		// TODO Verificar a utilidade desse metoddo
-		
-	}
+	
 	@Override
 	public void enviarPedidoPosicionamento(Jogador jogador) {
 		PedirPosicionamento pedirPosicionamento = new PedirPosicionamento();
@@ -154,6 +150,11 @@ public class Conector implements Runnable, ProxyServidor{
 	}
 	
 	
+	@Override
+	public void login(String nome) {
+		// TODO Verificar a utilidade desse metoddo
+		
+	}
 	
 	@Override
 	public void navesPosicionadas(NavesPosicionadas navesPosicionadas) {

@@ -1,16 +1,21 @@
 package com.summercrow.spacetip.servidor.proxy.rest;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import com.summercrow.spacetip.servidor.Controlador;
+import com.summercrow.spacetip.servidor.Jogador;
 import com.summercrow.spacetip.to.Atirar;
-import com.summercrow.spacetip.to.LoginEfetuado;
+import com.summercrow.spacetip.to.Login;
+import com.summercrow.spacetip.to.NavesPosicionadas;
 import com.summercrow.spacetip.to.ReqServidor;
 import com.summercrow.spacetip.to.ResultadoTiro;
 import com.summercrow.spacetip.to.Tiro;
@@ -19,43 +24,95 @@ import com.summercrow.spacetip.to.Tiro;
 public class FrontControlerRest {
 	
 	private Controlador controlador;
+	private Map<Long, ProxyServidorRest> proxys = new HashMap<Long, ProxyServidorRest>();
 	
 	public FrontControlerRest(){
 		this.controlador = new Controlador();
 	}
 	
+	private synchronized void putProxy(Jogador jogador,
+			ProxyServidorRest proxyServidorRest) {
+		proxys.put(jogador.getId(), proxyServidorRest);
+	}
+	
+	private synchronized ProxyServidorRest getProxy(Long idJogador) {
+		ProxyServidorRest proxyServidor = proxys.get(idJogador);
+		return proxyServidor;
+	}
+	
+	@POST
+	@Path("/login")
+	@Consumes("application/json")
+	public Response login(Login login){
+		
+		String nome = login.getNome();
+		
+		Jogador jogador = controlador.criarJogador(nome);
+		ProxyServidorRest proxyServidorRest = new ProxyServidorRest();
+		proxyServidorRest.setJogador(jogador);
+		jogador.setProxyServidor(proxyServidorRest);
+		
+		putProxy(jogador, proxyServidorRest);
+		
+		controlador.entrarPartida(jogador);
+		
+		return Response
+				.status(Response.Status.OK)
+				.entity(jogador.getId().toString())
+				.build();
+	}
+	
+	
+	@POST
+	@Path("/naves_posicionadas")
+	@Consumes("application/json")
+	public Response navesPosicionadas(NavesPosicionadas navesPosicionadas){
+		
+		Long idJogador = navesPosicionadas.getIdJogador();
+		
+		ProxyServidorRest proxyServidor = getProxy(idJogador);
+		
+		if(proxyServidor != null){
+			proxyServidor.navesPosicionadas(navesPosicionadas);
+			
+			return Response.status(Response.Status.OK).build();
+		}
+		
+		return Response.status(Response.Status.FORBIDDEN).build();
+	}
+	
 	@POST
 	@Path("/atirar")
 	@Consumes("application/json")
-	@Produces("application/json")
-	public Atirar atirar(Atirar atirar){
+	public Response atirar(Atirar atirar){
 		
-		System.out.println("atirei "+ atirar.getTipo());
+		Long idJogador = atirar.getIdJogador();
 		
+		ProxyServidorRest proxyServidor = getProxy(idJogador);
 		
-		return atirar;
+		if(proxyServidor != null){
+			proxyServidor.atirar(atirar.getTiro());
+			
+			return Response.status(Response.Status.OK).build();
+		}
+		
+		return Response.status(Response.Status.FORBIDDEN).build();
 	}
 	
-	@GET
-	@Path("/teste")
+	@POST
+	@Path("/verificar_req_servidor")
 	@Produces("application/json")
-	public ReqServidor getBooks() {
+	public ReqServidor verificarReqServidor(@FormParam("idJogador") Long idJogador) {
+		ProxyServidorRest proxyServidor = getProxy(idJogador);
 		
-		// http://localhost:8080/SpaceTipServerWeb/services/spacetip/teste
+		if(proxyServidor != null){
+			ReqServidor reqServidor = proxyServidor.getRequisicao();
+			return reqServidor;
+		}
 		
-		Tiro tiro = new Tiro();
-		tiro.setDistancia(2.3F);
-		tiro.setX(4);
-		tiro.setY(0.0045F);
-		
-		ResultadoTiro rt = new ResultadoTiro();
-		rt.setTiro(tiro);
-		rt.setDerrotou(true);
-		rt.setMeuTiro(false);
-		rt.setNaveAtingida(5);
-		
-		
-		return rt;
+		return null;
 	}
+	
+	
 
 }

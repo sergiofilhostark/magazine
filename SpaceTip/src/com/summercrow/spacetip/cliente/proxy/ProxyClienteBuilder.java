@@ -1,8 +1,7 @@
 package com.summercrow.spacetip.cliente.proxy;
 
 import com.summercrow.spacetip.cliente.SpaceTipActivity;
-import com.summercrow.spacetip.cliente.proxy.local.ProxyClienteLocal;
-import com.summercrow.spacetip.cliente.proxy.socket.ProxyClienteSocket;
+import com.summercrow.spacetip.cliente.proxy.rest.ProxyClienteRest;
 
 public class ProxyClienteBuilder {
 	
@@ -10,7 +9,9 @@ public class ProxyClienteBuilder {
 		
 //		return new ProxyClienteLocal(activity);
 		
-		return new ProxyClienteSocket(activity);
+//		return new ProxyClienteSocket(activity);
+		
+		return new ProxyClienteRest(activity);
 		
 	}
 

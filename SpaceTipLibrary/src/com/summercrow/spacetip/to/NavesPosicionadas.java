@@ -6,19 +6,14 @@ public class NavesPosicionadas extends ReqCliente{
 	
 	private static final long serialVersionUID = 1L;
 	
-	private Long idJogador;
+	
 	private List<DadosNave> dadosNaves;
 	
 	public NavesPosicionadas(){
 		super(NAVES_POSICIONADAS);
 	}
 	
-	public Long getIdJogador() {
-		return idJogador;
-	}
-	public void setIdJogador(Long idJogador) {
-		this.idJogador = idJogador;
-	}
+	
 	public List<DadosNave> getDadosNaves() {
 		return dadosNaves;
 	}

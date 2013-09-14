@@ -6,6 +6,10 @@ public class Atirar extends ReqCliente{
 	
 	private Tiro tiro;
 	
+	public Atirar(){
+		super(ATIRAR);
+	}
+	
 	public Tiro getTiro() {
 		return tiro;
 	}
@@ -14,8 +18,6 @@ public class Atirar extends ReqCliente{
 		this.tiro = tiro;
 	}
 
-	public Atirar(){
-		super(ATIRAR);
-	}
+	
 
 }

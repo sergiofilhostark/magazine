@@ -30,7 +30,7 @@ public class ProxyClienteLocal implements ProxyCliente {
 	}
 	
 	@Override
-	public void enviarAtirar(Tiro tiro) {
+	public void enviarAtirar(Tiro tiro, Long idJogador) {
 //		proxyServidor.atirar(tiro);
 	}
 	

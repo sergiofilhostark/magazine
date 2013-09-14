@@ -6,10 +6,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.summercrow.spacetip.cliente.SpaceTipActivity;
 import com.summercrow.spacetip.cliente.proxy.ProxyCliente;
 import com.summercrow.spacetip.to.Atirar;
+import com.summercrow.spacetip.to.DadosNave;
 import com.summercrow.spacetip.to.InicioDeJogo;
 import com.summercrow.spacetip.to.Login;
 import com.summercrow.spacetip.to.LoginEfetuado;
@@ -75,10 +78,11 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 	}
 	
 	@Override
-	public void enviarAtirar(Tiro tiro) {
+	public void enviarAtirar(Tiro tiro, Long idJogador) {
 		try {
 			Atirar atirar = new Atirar();
 			atirar.setTiro(tiro);
+			atirar.setIdJogador(idJogador);
 			
 			out.writeObject(atirar);
 			out.flush();
@@ -90,52 +94,39 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 	@Override
 	public void loginEfetuado(final Long id, final int posicao) {
 		activity.runOnUiThread(new Runnable() {
-			
 			@Override
 			public void run() {
 				activity.loginEfetuado(id, posicao);
-				
 			}
 		});
-		
 	}
 
 	@Override
 	public void pedirPosicionamento() {
 		activity.runOnUiThread(new Runnable() {
-			
 			@Override
 			public void run() {
 				activity.pedirPosicionamento();
-				
 			}
 		});
 	}
-
-	
 
 	@Override
 	public void inicioDeJogo(final InicioDeJogo inicioDeJogo) {
 		activity.runOnUiThread(new Runnable() {
-			
 			@Override
 			public void run() {
 				activity.inicioDeJogo(inicioDeJogo);
-				
 			}
 		});
 	}
 
-	
-
 	@Override
 	public void resultadoTiro(final ResultadoTiro resultadoTiro) {
 		activity.runOnUiThread(new Runnable() {
-			
 			@Override
 			public void run() {
 				activity.resultadoTiro(resultadoTiro);
-				
 			}
 		});
 	}
@@ -144,21 +135,34 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 	public void run() {
 		
 		try {
-			/*
-			Atirar atirar = new Atirar();
-			Tiro tiro = new Tiro();
-			tiro.setDistancia(5F);
-			tiro.setIdJogador(4L);
-			tiro.setX(2.4555F);
-			tiro.setY(0.3F);
-			atirar.setTiro(tiro);
+			
+			
 			
 			
 	        try {
+	        	
+	        	NavesPosicionadas na = new NavesPosicionadas();
+	        	na.setIdJogador(55L);
+	        	
+	        	List<DadosNave> dadosNaves = new ArrayList<DadosNave>();
+	        	DadosNave dn = new DadosNave();
+	        	dn.setAltura(1F);
+	        	dn.setLargura(2F);
+	        	dn.setX(3F);
+	        	dn.setY(4F);
+	        	dadosNaves.add(dn);
+	        	DadosNave dn2 = new DadosNave();
+	        	dn2.setAltura(5F);
+	        	dn2.setLargura(6F);
+	        	dn2.setX(7F);
+	        	dn2.setY(8F);
+	        	dadosNaves.add(dn2);
+	        	na.setDadosNaves(dadosNaves);
+	        	
 	        	ObjectMapper mapper = new ObjectMapper();
-				String json = mapper.writeValueAsString(atirar);
+				String json = mapper.writeValueAsString(na);
 				
-				String url = "http://192.168.0.7:8080/SpaceTipServerWeb/services/spacetip/atirar";
+				String url = "http://192.168.0.7:8080/SpaceTipServerWeb/services/spacetip/navesposicionadas";
 				
 				HttpClient httpclient = new DefaultHttpClient();
 				
@@ -196,7 +200,7 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 				e1.printStackTrace();
 			}
 	        
-			*/
+			/* */
 			
 			String ip;
 			

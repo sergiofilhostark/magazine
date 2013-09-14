@@ -307,7 +307,7 @@ public class SpaceTipActivity extends Activity {
 		tiro.setDistancia(distanciaRelativa);
 		tiro.setIdJogador(idJogador);
 		
-		proxyCliente.enviarAtirar(tiro);
+		proxyCliente.enviarAtirar(tiro, idJogador);
 	}
 
 	private void posicionarNaveMinha(MotionEvent event) {
