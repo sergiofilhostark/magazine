@@ -20,7 +20,7 @@ import com.summercrow.spacetip.to.ReqServidor;
 import com.summercrow.spacetip.to.ResultadoTiro;
 import com.summercrow.spacetip.to.Tiro;
 
-public class Conector implements Runnable, ProxyServidor{
+public class ProxyServidorSocket implements Runnable, ProxyServidor{
 	
 	private Socket socket;
 	private ObjectInputStream in;
@@ -28,7 +28,7 @@ public class Conector implements Runnable, ProxyServidor{
 	private Jogador jogador;
 	private Controlador controlador;
 	
-	public Conector(Socket socket){
+	public ProxyServidorSocket(Socket socket){
 		this.socket = socket;
 		try {
 			out = new ObjectOutputStream(socket.getOutputStream());

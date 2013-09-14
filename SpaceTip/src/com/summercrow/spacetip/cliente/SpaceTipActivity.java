@@ -40,9 +40,6 @@ public class SpaceTipActivity extends Activity {
 	private ImageView nave;
 	
 	
-	private Batalha batalha;
-	
-	
 	//TODO organizar estado do cliente
 	private int estado;
 	private final int POSICIONANDO = 1;
@@ -125,23 +122,6 @@ public class SpaceTipActivity extends Activity {
 		fogo.setVisibility(View.INVISIBLE);
 		meuLayout.addView(fogo);
 		
-		batalha = new Batalha(this, meuLayout);
-		
-//		nave = new ImageView(this);
-//		nave.setImageResource(R.drawable.nave);
-//		nave.setX(0);
-//		nave.setY(0);
-//		meuLayout.addView(nave);
-		
-//		torpedo = new ImageView(this);
-//		torpedo.setImageResource(R.drawable.torpedo);
-//		torpedo.setX(0);
-//		torpedo.setY(0);
-//		meuLayout.addView(torpedo);
-		
-//		estado = POSICIONANDO;
-//		exibirAlerta(R.string.posicione);
-		
 		aguardeDialog = new ProgressDialog(this);
 		aguardeDialog.setIndeterminate(true);
 		aguardeDialog.setCancelable(false);
@@ -216,35 +196,6 @@ public class SpaceTipActivity extends Activity {
 				break;
 		}
 		
-		
-		
-		
-//		
-		
-//		System.out.println(x + " " + y + " "+ meuLayout.getY());
-//		
-//		nave.setX(x);
-//		nave.setY(y);
-		
-//		Animation mira = AnimationUtils.loadAnimation(this, R.anim.mira);
-//		nave.startAnimation(mira);
-		
-//		Animation tiro = AnimationUtils.loadAnimation(this, R.anim.tiro);
-//		tiro.setStartOffset(1000);
-//		tiro.setFillAfter(true);
-//		torpedo.setX(x);
-//		torpedo.setY(y);
-//		torpedo.startAnimation(tiro);
-		
-//		torpedo.setX(x);
-//		torpedo.setY(y);
-//		Animation animation = new TranslateAnimation(0, 0 ,0, 300);
-//		animation.setDuration(5000);
-//		animation.setInterpolator(new LinearInterpolator());
-//		animation.setFillAfter(true);
-//		torpedo.startAnimation(animation);
-//		torpedo.setVisibility(0);
-		
 		return true;
 	}
 
@@ -285,12 +236,6 @@ public class SpaceTipActivity extends Activity {
 		float distancia = -2 * (y - metade);
 		
 		enviarAtirar(x, y, distancia);
-		
-//		batalha.atirar(x, y, distancia);
-//		if(batalha.isGanhei()){
-//			estado = JOGO_ACABOU;
-//			exibirAlerta(R.string.ganhou);
-//		}
 	}
 
 	private void enviarAtirar(float x, float y, float distancia) {
@@ -332,16 +277,6 @@ public class SpaceTipActivity extends Activity {
 			enviarNavesPosicionadas();
 		}
 		
-		
-		
-		
-		
-//		batalha.posicionarNaveMinha(this, x, y);
-//		
-//		if(batalha.isTodasNavesMinhasPosicionadas()){
-//			aguardarInicio();
-//		}
-		
 	}
 
 	private void enviarNavesPosicionadas() {
@@ -356,25 +291,6 @@ public class SpaceTipActivity extends Activity {
 		navesPosicionadas.setDadosNaves(dadosNaves);
 		
 		proxyCliente.enviarNavesPosicionadas(navesPosicionadas);
-		
-		//REMOVER		
-//		List<Nave> navesAdversarioTemp = new ArrayList<Nave>();
-//		Nave nave1 = new Nave(60 -(larguraNave/2), 450 - (alturaNave/2), larguraNave, alturaNave);
-//		navesAdversarioTemp.add(nave1);
-//		Nave nave2 = new Nave(180 -(larguraNave/2), 500 - (alturaNave/2), larguraNave, alturaNave);
-//		navesAdversarioTemp.add(nave2);
-//		Nave nave3 = new Nave(320 -(larguraNave/2), 580 - (alturaNave/2), larguraNave, alturaNave);
-//		navesAdversarioTemp.add(nave3);
-//		Nave nave4 = new Nave(450 -(larguraNave/2), 660 - (alturaNave/2), larguraNave, alturaNave);
-//		navesAdversarioTemp.add(nave4);
-//		List<DadosNave> dadosAdversario = ajustarDimensoes(navesAdversarioTemp);
-//		
-//		NavesPosicionadas navesPosicionadasAdversario = new NavesPosicionadas();
-//		navesPosicionadasAdversario.setIdJogador(idJogador + 1);
-//		navesPosicionadasAdversario.setDadosNaves(dadosAdversario);
-//		
-//		
-//		proxyCliente.enviarNavesPosicionadas(navesPosicionadasAdversario);
 	}
 
 	
@@ -404,23 +320,6 @@ public class SpaceTipActivity extends Activity {
 		
 		y = y - location[1];
 		return y;
-	}
-
-	private void aguardarInicio() {
-		estado = AGUARDANDO_INICIO;
-		
-		batalha.posicionarMinhaNaveInimiga(this, 100, 100);
-		batalha.posicionarMinhaNaveInimiga(this, 200, 200);
-		batalha.posicionarMinhaNaveInimiga(this, 300, 300);
-		batalha.posicionarMinhaNaveInimiga(this, 400, 400);
-		
-		iniciarJogo();
-	}
-
-	private void iniciarJogo() {
-		estado = EM_JOGO;
-		exibirAlerta(R.string.mire);
-		meuTurno = true;
 	}
 
 	public void loginEfetuado(Long id, int posicao) {
@@ -601,30 +500,6 @@ public class SpaceTipActivity extends Activity {
 					meuTurno = true;
 				}
 				
-				//REMOVER
-//				else if(meuTiro){
-//					float x = 200;
-//					float y = 600;				
-//					float metade = getMetade();				
-//					float distancia = -2 * (y - metade);
-//					
-//					int larguraJogo = meuLayout.getWidth();
-//					int alturaJogo = meuLayout.getHeight();
-//					
-//					float xRelativo = x / larguraJogo;
-//					float distanciaRelativa = distancia / alturaJogo;
-//					float yRelativo = y / alturaJogo;
-//					
-//					Tiro tiro = new Tiro();
-//					tiro.setX(xRelativo);
-//					tiro.setY(yRelativo);
-//					tiro.setDistancia(distanciaRelativa);
-//					tiro.setIdJogador(idJogador + 1);
-//
-//					proxyCliente.enviarAtirar(tiro);
-//				}
-				
-				
 			}
 		});
 		
@@ -634,9 +509,6 @@ public class SpaceTipActivity extends Activity {
 
 	private void enviarLogin(String nome) {
 		proxyCliente.enviarLogin(nome);
-		
-		//REMOVER
-//		proxyCliente.enviarLogin("Jogador 2");
 	}
 
 	public void resultadoTiro(ResultadoTiro resultadoTiro) {

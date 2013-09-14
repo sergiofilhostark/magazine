@@ -4,18 +4,6 @@
     android:layout_height="fill_parent"
     tools:context=".SpaceTipActivity" 
     android:id="@+id/layout_main">
-
-    <!--
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/espaco" 
-        android:contentDescription="@string/espaco"/>
-     
-       --> 
        
     <com.summercrow.spacetip.cliente.Fundo android:id="@+id/fundo" 
         android:layout_width="wrap_content" android:layout_height="wrap_content"/>

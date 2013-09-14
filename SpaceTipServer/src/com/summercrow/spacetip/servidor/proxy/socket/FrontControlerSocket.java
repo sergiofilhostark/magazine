@@ -26,13 +26,10 @@ public class FrontControlerSocket{
 			try {
 				Socket socket = serverSocket.accept();
 				
+				ProxyServidorSocket proxy = new ProxyServidorSocket(socket);
+				proxy.setControlador(controlador);
 				
-				
-				
-				Conector conector = new Conector(socket);
-				conector.setControlador(controlador);
-				
-				Thread thread = new Thread(conector);
+				Thread thread = new Thread(proxy);
 				
 				thread.start();
 				
