@@ -16,13 +16,9 @@ public interface ProxyCliente {
 
 	public void loginEfetuado(Long id, int posicao);
 
-	public void pedirPosicionamento();
+	public void pedirPosicionamento();	
 
-	
-
-	public void inicioDeJogo(InicioDeJogo inicioDeJogo);
-
-	
+	public void inicioDeJogo(InicioDeJogo inicioDeJogo);	
 
 	public void resultadoTiro(ResultadoTiro resultadoTiro);
 

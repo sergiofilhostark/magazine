@@ -206,6 +206,9 @@ public class Partida {
 	 * 
 	 * tratamento de excessoes
 	 * 
+	 * falta corrigir os servidores para nao ter que reiniciar toda vez
+	 * corrigir os clientes para poder para o jogo e sair da aplicacao
+	 * 
 	 */
 
 }

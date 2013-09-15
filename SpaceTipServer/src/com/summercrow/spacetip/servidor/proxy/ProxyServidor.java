@@ -8,6 +8,7 @@ import com.summercrow.spacetip.to.Tiro;
 
 public interface ProxyServidor {
 
+	//TODO tirar o jogador, talvez de todos os metodos
 
 	public void enviarPedidoPosicionamento(Jogador jogador);
 
