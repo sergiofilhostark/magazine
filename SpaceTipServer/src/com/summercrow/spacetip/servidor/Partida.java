@@ -48,7 +48,7 @@ public class Partida {
 		jogadores.add(jogador);
 		jogador.setPosicao(jogadores.size() - 1);
 		
-		jogador.getProxyServidor().enviarLoginEfetuado(jogador);
+		jogador.getProxyServidor().enviarLoginEfetuado();
 		
 		//REMOVER
 //		if(jogador.getId().longValue() > 1){
@@ -69,7 +69,7 @@ public class Partida {
 	
 	private void pedirPosicionamento() {
 		for (Jogador cadaJogador: jogadores) {
-			cadaJogador.getProxyServidor().enviarPedidoPosicionamento(cadaJogador);
+			cadaJogador.getProxyServidor().enviarPedidoPosicionamento();
 		}
 	}
 
@@ -122,7 +122,7 @@ public class Partida {
 		inicioDeJogo.setMeuTurno(meuTurno);
 		List<DadosNave> dadosNavesAdversario = montarDadosNaveAdversario(adversario);
 		inicioDeJogo.setNavesAdversario(dadosNavesAdversario);
-		jogador.getProxyServidor().enviarInicioDeJogo(jogador, inicioDeJogo);
+		jogador.getProxyServidor().enviarInicioDeJogo(inicioDeJogo);
 	}
 
 	private List<DadosNave> montarDadosNaveAdversario(Jogador jogador) {
@@ -154,14 +154,14 @@ public class Partida {
 		resultadoTiroMeu.setTiro(tiro);
 		resultadoTiroMeu.setNaveAtingida(naveAtingida);
 		resultadoTiroMeu.setDerrotou(adversario.isDerrotado());
-		jogador.getProxyServidor().enviarResultadoTiro(jogador, resultadoTiroMeu);
+		jogador.getProxyServidor().enviarResultadoTiro(resultadoTiroMeu);
 		
 		ResultadoTiro resultadoTiroAdversario = new ResultadoTiro();
 		resultadoTiroAdversario.setMeuTiro(false);
 		resultadoTiroAdversario.setTiro(tiro);
 		resultadoTiroAdversario.setNaveAtingida(naveAtingida);
 		resultadoTiroAdversario.setDerrotou(adversario.isDerrotado());
-		adversario.getProxyServidor().enviarResultadoTiro(adversario, resultadoTiroAdversario);
+		adversario.getProxyServidor().enviarResultadoTiro(resultadoTiroAdversario);
 	}
 	
 	private Integer verificarAcerto(float x, float y, float yT, Jogador adversario) {

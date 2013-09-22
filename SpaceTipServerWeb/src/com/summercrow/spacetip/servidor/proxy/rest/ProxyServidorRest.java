@@ -45,13 +45,13 @@ public class ProxyServidorRest implements ProxyServidor{
 	// A maioria dos metodos nao precisa receber jogador, acho que ne precisa guardar como atributos
 	
 	@Override
-	public void enviarPedidoPosicionamento(Jogador jogador) {
+	public void enviarPedidoPosicionamento() {
 		PedirPosicionamento pedirPosicionamento = new PedirPosicionamento();
 		addRequisicao(pedirPosicionamento);
 	}
 
 	@Override
-	public void enviarLoginEfetuado(Jogador jogador) {
+	public void enviarLoginEfetuado() {
 		LoginEfetuado loginEfetuado = new LoginEfetuado();
 		loginEfetuado.setId(jogador.getId());
 		loginEfetuado.setPosicao(jogador.getPosicao());
@@ -59,12 +59,12 @@ public class ProxyServidorRest implements ProxyServidor{
 	}
 
 	@Override
-	public void enviarInicioDeJogo(Jogador jogador, InicioDeJogo inicioDeJogo) {
+	public void enviarInicioDeJogo(InicioDeJogo inicioDeJogo) {
 		addRequisicao(inicioDeJogo);
 	}
 	
 	@Override
-	public void enviarResultadoTiro(Jogador jogador, ResultadoTiro resultadoTiro) {
+	public void enviarResultadoTiro(ResultadoTiro resultadoTiro) {
 		addRequisicao(resultadoTiro);
 	}
 	

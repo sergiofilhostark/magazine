@@ -117,12 +117,12 @@ public class ProxyServidorSocket implements Runnable, ProxyServidor{
 	}
 	
 	@Override
-	public void enviarPedidoPosicionamento(Jogador jogador) {
+	public void enviarPedidoPosicionamento() {
 		PedirPosicionamento pedirPosicionamento = new PedirPosicionamento();
 		enviarReqServidor(pedirPosicionamento);
 	}
 	@Override
-	public void enviarLoginEfetuado(Jogador jogador) {
+	public void enviarLoginEfetuado() {
 		LoginEfetuado loginEfetuado = new LoginEfetuado();
 		loginEfetuado.setId(jogador.getId());
 		loginEfetuado.setPosicao(jogador.getPosicao());
@@ -130,12 +130,12 @@ public class ProxyServidorSocket implements Runnable, ProxyServidor{
 	}
 	
 	@Override
-	public void enviarInicioDeJogo(Jogador jogador, InicioDeJogo inicioDeJogo) {
+	public void enviarInicioDeJogo(InicioDeJogo inicioDeJogo) {
 		enviarReqServidor(inicioDeJogo);
 	}
 	
 	@Override
-	public void enviarResultadoTiro(Jogador jogador, ResultadoTiro resultadoTiro) {
+	public void enviarResultadoTiro(ResultadoTiro resultadoTiro) {
 		enviarReqServidor(resultadoTiro);
 	}
 

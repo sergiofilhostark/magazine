@@ -19,11 +19,5 @@ public class SpaceTipRestApplication extends Application{
 		return singletons;
 	}
 	
-//	@Override
-//	public Set<Class<?>> getClasses() {
-//		Set<Class<?>> cla = new HashSet<Class<?>>();
-//		cla.add(FrontControlerRest.class);
-//		return cla;
-//	}
 
 }

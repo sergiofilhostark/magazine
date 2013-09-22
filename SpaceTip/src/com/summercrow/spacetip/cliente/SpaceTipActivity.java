@@ -27,7 +27,7 @@ import android.widget.Toast;
 
 import com.summercrow.spacetip.R;
 import com.summercrow.spacetip.cliente.proxy.ProxyCliente;
-import com.summercrow.spacetip.cliente.proxy.ProxyClienteBuilder;
+import com.summercrow.spacetip.cliente.proxy.ProxyClienteFactory;
 import com.summercrow.spacetip.to.DadosNave;
 import com.summercrow.spacetip.to.InicioDeJogo;
 import com.summercrow.spacetip.to.NavesPosicionadas;
@@ -56,8 +56,8 @@ public class SpaceTipActivity extends Activity {
 	private Long idJogador;
 	private Integer posicaoJogador;
 
-	private List<Nave> navesMinhas;
-	private List<Nave> navesAdversario;
+	private List<NaveCliente> navesMinhas;
+	private List<NaveCliente> navesAdversario;
 	
 	//TODO sera que precisa dessas variaveis globais??
 	private int alturaNave;
@@ -77,13 +77,13 @@ public class SpaceTipActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		proxyCliente = ProxyClienteBuilder.buildProxyCliente(this);
+		proxyCliente = ProxyClienteFactory.newProxyCliente(this);
 		
-		setContentView(R.layout.activity_main);
+		setContentView(R.layout.activity_space_tip);
 		
-		meuLayout = (RelativeLayout)findViewById(R.id.layout_main);
+		meuLayout = (RelativeLayout)findViewById(R.id.layout_space_tip);
 		
-		navesMinhas = new ArrayList<Nave>();
+		navesMinhas = new ArrayList<NaveCliente>();
 		
 		Drawable drwNave = this.getResources().getDrawable(R.drawable.nave);
 		alturaNave = drwNave.getIntrinsicHeight();
@@ -295,7 +295,7 @@ public class SpaceTipActivity extends Activity {
 
 	
 	
-	private void posicionarNave(float x, float y, List<Nave> naves, int imageId, int largura, int altura){
+	private void posicionarNave(float x, float y, List<NaveCliente> naves, int imageId, int largura, int altura){
 		
 		ImageView naveImg = new ImageView(this);
 		naveImg.setImageResource(imageId);
@@ -303,7 +303,7 @@ public class SpaceTipActivity extends Activity {
 		naveImg.setY(y - (altura/2));
 		meuLayout.addView(naveImg);
 		
-		Nave nave = new Nave(x -(largura/2), y - (altura/2), largura, altura);
+		NaveCliente nave = new NaveCliente(x -(largura/2), y - (altura/2), largura, altura);
 		nave.setImageView(naveImg);
 		naves.add(nave);
 	}
@@ -334,11 +334,11 @@ public class SpaceTipActivity extends Activity {
 		
 	}
 	
-	private List<DadosNave> ajustarDimensoes(List<Nave> naves) {
+	private List<DadosNave> ajustarDimensoes(List<NaveCliente> naves) {
 		int larguraJogo = meuLayout.getWidth();
 		int alturaJogo = meuLayout.getHeight();
 		List<DadosNave> dadosNaves = new ArrayList<DadosNave>();
-		for (Nave nave: naves) {
+		for (NaveCliente nave: naves) {
 			float larguraRelativa = nave.getLargura() / larguraJogo;
 			float xRelativo = nave.getX() / larguraJogo;
 			float alturaRelativa = nave.getAltura() / alturaJogo;
@@ -355,10 +355,10 @@ public class SpaceTipActivity extends Activity {
 		return dadosNaves;
 	}
 	
-	private List<Nave> ajustarDimensoesAdversario(List<DadosNave> dadosNavesAdversario) {
+	private List<NaveCliente> ajustarDimensoesAdversario(List<DadosNave> dadosNavesAdversario) {
 		int larguraJogo = meuLayout.getWidth();
 		int alturaJogo = meuLayout.getHeight();
-		List<Nave> naves = new ArrayList<Nave>();
+		List<NaveCliente> naves = new ArrayList<NaveCliente>();
 		for (DadosNave dados: dadosNavesAdversario) {
 			float largura = dados.getLargura() * larguraJogo;
 			float x = dados.getX() * larguraJogo;
@@ -368,7 +368,7 @@ public class SpaceTipActivity extends Activity {
 			
 			y = y * alturaJogo;
 			
-			Nave nave = new Nave(x, y, largura, altura);
+			NaveCliente nave = new NaveCliente(x, y, largura, altura);
 			
 			naves.add(nave);
 		}
@@ -398,7 +398,7 @@ public class SpaceTipActivity extends Activity {
 		
 		List<DadosNave> dadosNavesAdversario = inicioDeJogo.getNavesAdversario();
 		navesAdversario = ajustarDimensoesAdversario(dadosNavesAdversario);
-		for (Nave nave : navesAdversario) {
+		for (NaveCliente nave : navesAdversario) {
 			ImageView imageView = posicionarImagemNaveAdversario(nave.getX(), nave.getY(), R.drawable.nave_inimiga);
 			nave.setImageView(imageView);
 		}
@@ -531,7 +531,7 @@ public class SpaceTipActivity extends Activity {
 	private void trocarNaveAtingida(Integer idAtingida, boolean meuTiro) {
 		if(idAtingida != null){
 			
-			List<Nave> naves;
+			List<NaveCliente> naves;
 			int idImgNaveAtingida;
 			if(meuTiro){
 				naves = navesAdversario;
@@ -541,7 +541,7 @@ public class SpaceTipActivity extends Activity {
 				idImgNaveAtingida = R.drawable.nave_atingida;
 			}
 			
-			Nave naveAtingida = naves.get(idAtingida);
+			NaveCliente naveAtingida = naves.get(idAtingida);
 			naveAtingida.setAtingido(true);
 			naveAtingida.getImageView().setImageResource(idImgNaveAtingida);
 		}

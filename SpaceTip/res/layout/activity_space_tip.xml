@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     tools:context=".SpaceTipActivity" 
-    android:id="@+id/layout_main">
+    android:id="@+id/layout_space_tip">
        
     <com.summercrow.spacetip.cliente.Fundo android:id="@+id/fundo" 
         android:layout_width="wrap_content" android:layout_height="wrap_content"/>

@@ -1,6 +1,5 @@
 package com.summercrow.spacetip.servidor.proxy;
 
-import com.summercrow.spacetip.servidor.Jogador;
 import com.summercrow.spacetip.to.InicioDeJogo;
 import com.summercrow.spacetip.to.NavesPosicionadas;
 import com.summercrow.spacetip.to.ResultadoTiro;
@@ -8,15 +7,13 @@ import com.summercrow.spacetip.to.Tiro;
 
 public interface ProxyServidor {
 
-	//TODO tirar o jogador, talvez de todos os metodos
+	public void enviarPedidoPosicionamento();
 
-	public void enviarPedidoPosicionamento(Jogador jogador);
+	public void enviarLoginEfetuado();
 
-	public void enviarLoginEfetuado(Jogador jogador);
+	public void enviarInicioDeJogo(InicioDeJogo inicioDeJogo);
 
-	public void enviarInicioDeJogo(Jogador jogador, InicioDeJogo inicioDeJogo);
-
-	public void enviarResultadoTiro(Jogador jogador, ResultadoTiro resultadoTiro);
+	public void enviarResultadoTiro(ResultadoTiro resultadoTiro);
 	
 	
 	

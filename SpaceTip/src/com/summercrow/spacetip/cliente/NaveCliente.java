@@ -2,7 +2,7 @@ package com.summercrow.spacetip.cliente;
 
 import android.widget.ImageView;
 
-public class Nave {
+public class NaveCliente {
 
 	private float x;
 	private float y;
@@ -11,7 +11,7 @@ public class Nave {
 	private boolean atingido;
 	private ImageView imageView;
 
-	public Nave(float x, float y, float largura, float altura){
+	public NaveCliente(float x, float y, float largura, float altura){
 		this.x = x;
 		this.y = y;
 		this.altura = altura;
