@@ -271,7 +271,15 @@ public class SpaceTipActivity extends Activity {
 		
 		System.out.println(x +" " + y);
 		
-		posicionarNave(x, y, navesMinhas, R.drawable.nave, larguraNave, alturaNave);
+		ImageView naveImg = new ImageView(this);
+		naveImg.setImageResource(R.drawable.nave);
+		naveImg.setX(x -(larguraNave/2));
+		naveImg.setY(y - (alturaNave/2));
+		meuLayout.addView(naveImg);
+		
+		NaveCliente nave = new NaveCliente(x -(larguraNave/2), y - (alturaNave/2), larguraNave, alturaNave);
+		nave.setImageView(naveImg);
+		navesMinhas.add(nave);
 		
 		if(navesMinhas.size() >= 4){
 			enviarNavesPosicionadas();
@@ -295,18 +303,7 @@ public class SpaceTipActivity extends Activity {
 
 	
 	
-	private void posicionarNave(float x, float y, List<NaveCliente> naves, int imageId, int largura, int altura){
-		
-		ImageView naveImg = new ImageView(this);
-		naveImg.setImageResource(imageId);
-		naveImg.setX(x -(largura/2));
-		naveImg.setY(y - (altura/2));
-		meuLayout.addView(naveImg);
-		
-		NaveCliente nave = new NaveCliente(x -(largura/2), y - (altura/2), largura, altura);
-		nave.setImageView(naveImg);
-		naves.add(nave);
-	}
+	
 
 	private float getMetade() {
 		View fundo = findViewById(R.id.fundo);
