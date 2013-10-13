@@ -21,12 +21,12 @@ import com.summercrow.spacetip.to.ResultadoTiro;
 import com.summercrow.spacetip.to.Tiro;
 
 @Path("/spacetip")
-public class FrontControlerRest {
+public class FrontControllerRest {
 	
 	private Controlador controlador;
 	private Map<Long, ProxyServidorRest> proxys = new HashMap<Long, ProxyServidorRest>();
 	
-	public FrontControlerRest(){
+	public FrontControllerRest(){
 		this.controlador = new Controlador();
 	}
 	

@@ -11,10 +11,10 @@ public class SpaceTipRestApplication extends Application{
 	
 	@Override
 	public Set<Object> getSingletons() {
-		FrontControlerRest frontControlerRest = new FrontControlerRest();
+		FrontControllerRest frontControllerRest = new FrontControllerRest();
 		
 		Set<Object> singletons = new HashSet<Object>();
-		singletons.add(frontControlerRest);
+		singletons.add(frontControllerRest);
 		
 		return singletons;
 	}

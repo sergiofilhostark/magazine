@@ -6,13 +6,13 @@ import java.net.Socket;
 
 import com.summercrow.spacetip.servidor.Controlador;
 
-public class FrontControlerSocket{
+public class FrontControllerSocket{
 	
 	private ServerSocket serverSocket;
 	private Controlador controlador;
 	
 	
-	public FrontControlerSocket(){
+	public FrontControllerSocket(){
 		
 		this.controlador = new Controlador();
 		
@@ -44,7 +44,7 @@ public class FrontControlerSocket{
 	
 	public static void main(String[] args) {
 		System.out.println("Iniciando");
-		FrontControlerSocket proxyServidorSocket = new FrontControlerSocket();
+		FrontControllerSocket proxyServidorSocket = new FrontControllerSocket();
 		
 		System.out.println("Fim");
 	}
