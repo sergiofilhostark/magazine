@@ -3,6 +3,9 @@ package com.summercrow.spacetip.cliente;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.animation.Animator;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
@@ -105,21 +108,24 @@ public class SpaceTipActivity extends Activity {
 		torpedo.setImageResource(R.drawable.torpedo);
 		torpedo.setX(0);
 		torpedo.setY(0);
-		torpedo.setVisibility(View.INVISIBLE);
+//		torpedo.setVisibility(View.INVISIBLE);
+		torpedo.setAlpha(0f);
 		meuLayout.addView(torpedo);
 		
 		torpedoInimigo = new ImageView(this);
 		torpedoInimigo.setImageResource(R.drawable.torpedo_inimigo);
 		torpedoInimigo.setX(0);
 		torpedoInimigo.setY(0);
-		torpedoInimigo.setVisibility(View.INVISIBLE);
+//		torpedoInimigo.setVisibility(View.INVISIBLE);
+		torpedoInimigo.setAlpha(0f);
 		meuLayout.addView(torpedoInimigo);
 		
 		fogo = new ImageView(this);
 		fogo.setImageResource(R.drawable.fogo);
 		fogo.setX(0);
 		fogo.setY(0);
-		fogo.setVisibility(View.INVISIBLE);
+//		fogo.setVisibility(View.INVISIBLE);
+		fogo.setAlpha(0f);
 		meuLayout.addView(fogo);
 		
 		aguardeDialog = new ProgressDialog(this);
@@ -417,6 +423,107 @@ public class SpaceTipActivity extends Activity {
 	}
 	
 	private void animarTiro(float x, float y, float distancia, final boolean meuTiro, final Integer idAtingida, final boolean derrotou) {
+		ImageView imageTorpedo;
+		
+		if(meuTiro){
+			imageTorpedo = torpedo;
+			
+		} else {
+			float metade = getMetade();
+			y = y - 2 * (y - metade);
+			imageTorpedo = torpedoInimigo;
+			distancia = distancia * -1;
+		}
+		
+		imageTorpedo.setX(x - (larguraTorpedo/2));
+		imageTorpedo.setY(y - (alturaTorpedo/2));
+		imageTorpedo.bringToFront();
+		
+		ObjectAnimator aparecer = ObjectAnimator.ofFloat(imageTorpedo, "alpha", 0, 1);
+		aparecer.setDuration(100);
+		
+		long tempoTiro = 2000;
+		
+		ObjectAnimator movimento = ObjectAnimator.ofFloat(imageTorpedo, "y", imageTorpedo.getY() + distancia);
+		movimento.setDuration(tempoTiro);
+		
+		ObjectAnimator desaparecer = ObjectAnimator.ofFloat(imageTorpedo, "alpha", 1, 0);
+		desaparecer.setDuration(1000);		
+		
+		AnimatorSet animacao = new AnimatorSet();
+//		animacao.playSequentially(aparecer, movimento, desaparecer);
+//		animacao.play(aparecer);
+		
+		
+		
+		fogo.setX(x - (larguraFogo/2));
+		fogo.setY(y + distancia - (alturaFogo/2));
+		fogo.bringToFront();
+		
+		long tempoExplosao = 1000;
+		
+		ObjectAnimator explosao1 = ObjectAnimator.ofFloat(fogo, "alpha", 0, 1);
+		explosao1.setDuration(tempoExplosao);
+		
+		ObjectAnimator explosao2 = ObjectAnimator.ofFloat(fogo, "alpha", 1, 0);
+		explosao2.setDuration(tempoExplosao);
+		
+//		animacao.
+//			play(aparecer).
+//			before(movimento).
+//			before(desaparecer).
+//			with(explosao1).
+//			before(explosao2);
+		
+//		imageTorpedo.setAlpha(1f);
+//		animacao.
+//			play(movimento);
+		
+		animacao.play(aparecer).before(movimento);
+		animacao.play(movimento).before(desaparecer);
+		animacao.play(desaparecer).with(explosao1);
+		animacao.play(explosao1).before(explosao2);
+
+		animacao.addListener(new Animator.AnimatorListener() {
+			
+			@Override
+			public void onAnimationStart(Animator animation) {
+			}
+			
+			@Override
+			public void onAnimationRepeat(Animator animation) {
+			}
+			
+			@Override
+			public void onAnimationEnd(Animator animation) {
+				trocarNaveAtingida(idAtingida, meuTiro);
+				
+				if(derrotou){
+					if(meuTiro){
+						exibirAlerta(R.string.voce_venceu);
+					} else {
+						exibirAlerta(R.string.voce_perdeu);
+					}
+				}
+				else if (meuTiro){
+					meuTurno = false;
+					aguardeDialog.setMessage(getString(R.string.aguardando_adversario));
+					aguardeDialog.show();
+				} else {
+					meuTurno = true;
+				}
+			}
+			
+			@Override
+			public void onAnimationCancel(Animator animation) {
+			}
+		});
+		
+		animacao.start();
+		System.out.println("nova animacao");
+	}
+	
+	private void animarTiroOld(float x, float y, float distancia, final boolean meuTiro, final Integer idAtingida, final boolean derrotou) {
 		
 		ImageView imageTorpedo;
 		
@@ -502,6 +609,10 @@ public class SpaceTipActivity extends Activity {
 		
 		imageTorpedo.startAnimation(animacao);
 		fogo.startAnimation(explosao);
+		
+		
+		
+		
 	}
 
 	private void enviarLogin(String nome) {
