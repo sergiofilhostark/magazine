@@ -81,9 +81,10 @@ public class ProxyClienteRest implements ProxyCliente, Runnable{
 	@Override
 	public void run() {
 		
-		while(verificarCliente){
+		try {
+		
+			while(verificarCliente){
 			
-			try {
 				HttpClient httpclient = new DefaultHttpClient();
 				
 				String url = urlBase + "verificar_req_servidor";
@@ -132,12 +133,12 @@ public class ProxyClienteRest implements ProxyCliente, Runnable{
 							break;
 					}
 				}
-				
-			} catch (Exception e) {
-				activity.reportarErroFatal(R.string.falha_comunicar_servidor);
-			}
 			
-			esperar();
+				esperar();
+			}
+		
+		} catch (Exception e) {
+			activity.reportarErroFatal(R.string.falha_comunicar_servidor);
 		}
 		
 	}

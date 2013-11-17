@@ -128,7 +128,7 @@ public class SpaceTipActivity extends Activity {
 		
 		aguardeDialog = new ProgressDialog(this);
 		aguardeDialog.setIndeterminate(true);
-		aguardeDialog.setCancelable(false);
+		aguardeDialog.setCancelable(true);
 		aguardeDialog.setMessage(getString(R.string.aguarde));
 		
 		proxyCliente = ProxyClienteFactory.newProxyCliente(this);
