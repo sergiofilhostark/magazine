@@ -442,19 +442,11 @@ public class SpaceTipActivity extends Activity {
 		ObjectAnimator aparecer = ObjectAnimator.ofFloat(imageTorpedo, "alpha", 0, 1);
 		aparecer.setDuration(100);
 		
-		long tempoTiro = 2000;
-		
 		ObjectAnimator movimento = ObjectAnimator.ofFloat(imageTorpedo, "y", imageTorpedo.getY() + distancia);
-		movimento.setDuration(tempoTiro);
+		movimento.setDuration(2000);
 		
 		ObjectAnimator desaparecer = ObjectAnimator.ofFloat(imageTorpedo, "alpha", 1, 0);
-		desaparecer.setDuration(1000);		
-		
-		AnimatorSet animacao = new AnimatorSet();
-//		animacao.playSequentially(aparecer, movimento, desaparecer);
-//		animacao.play(aparecer);
-		
-		
+		desaparecer.setDuration(1000);
 		
 		fogo.setX(x - (larguraFogo/2));
 		fogo.setY(y + distancia - (alturaFogo/2));
@@ -468,16 +460,7 @@ public class SpaceTipActivity extends Activity {
 		ObjectAnimator explosao2 = ObjectAnimator.ofFloat(fogo, "alpha", 1, 0);
 		explosao2.setDuration(tempoExplosao);
 		
-//		animacao.
-//			play(aparecer).
-//			before(movimento).
-//			before(desaparecer).
-//			with(explosao1).
-//			before(explosao2);
-		
-//		imageTorpedo.setAlpha(1f);
-//		animacao.
-//			play(movimento);
+		AnimatorSet animacao = new AnimatorSet();
 		
 		animacao.play(aparecer).before(movimento);
 		animacao.play(movimento).before(desaparecer);
