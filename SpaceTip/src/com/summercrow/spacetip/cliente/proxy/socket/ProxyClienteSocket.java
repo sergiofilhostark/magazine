@@ -75,23 +75,7 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 		}
 	}
 	
-	private void exibirTelaLogin() {
-		activity.runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				activity.exibirTelaLogin();
-			}
-		});
-	}
 	
-	private void reportarErroFatal(final int erro) {
-		activity.runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				activity.reportarErroFatal(erro);
-			}
-		});
-	}
 
 	@Override
 	public void loginEfetuado(final Long id, final int posicao) {
@@ -140,20 +124,19 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 			
 			PropertiesSpaceTip propertiesSpaceTip = PropertiesSpaceTip.getInstance();
 			
-			String ip = propertiesSpaceTip.getProperty("socket.server.ip");
+			String ip = propertiesSpaceTip.getProperty("server.socket.ip");
 			
 			socket = new Socket(ip, 7777);
 			
 			out = new ObjectOutputStream(socket.getOutputStream());
 		
-			in = new ObjectInputStream(socket.getInputStream());			
+			in = new ObjectInputStream(socket.getInputStream());
 			
-			
-			exibirTelaLogin();
+			activity.exibirLogin();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			reportarErroFatal(R.string.nao_conectar_servidor);
+			activity.reportarErroFatal(R.string.nao_conectar_servidor);
 		}
 		
 		if(socket != null){
@@ -185,7 +168,7 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 				reqServidor = (ReqServidor)in.readObject();
 			}
 		} catch (Exception e) {
-			reportarErroFatal(R.string.falha_comunicar_servidor);
+			activity.reportarErroFatal(R.string.falha_comunicar_servidor);
 			e.printStackTrace();
 		} finally {
 			close();

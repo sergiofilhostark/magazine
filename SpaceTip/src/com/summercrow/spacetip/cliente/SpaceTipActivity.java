@@ -159,7 +159,16 @@ public class SpaceTipActivity extends Activity {
 		dialog.show();
 	}
 	
-	public void exibirTelaLogin() {
+	public void exibirLogin() {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				exibirTelaLogin();
+			}
+		});
+	}
+	
+	private void exibirTelaLogin() {
 		
 		LayoutInflater layoutInflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View view = layoutInflater.inflate(R.layout.login_dialog, null);
@@ -651,8 +660,13 @@ public class SpaceTipActivity extends Activity {
 		}
 	}
 
-	public void reportarErroFatal(int erro) {
-		exibirAlertaErroFatal(erro);
+	public void reportarErroFatal(final int erro) {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				exibirAlertaErroFatal(erro);
+			}
+		});
 	}
 	
 	

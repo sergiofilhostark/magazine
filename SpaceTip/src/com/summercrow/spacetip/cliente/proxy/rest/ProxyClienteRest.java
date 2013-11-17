@@ -1,13 +1,11 @@
 package com.summercrow.spacetip.cliente.proxy.rest;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
-import org.apache.http.ParseException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
@@ -19,6 +17,8 @@ import org.apache.http.util.EntityUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.json.JSONObject;
 
+import com.summercrow.spacetip.R;
+import com.summercrow.spacetip.cliente.PropertiesSpaceTip;
 import com.summercrow.spacetip.cliente.SpaceTipActivity;
 import com.summercrow.spacetip.cliente.proxy.ProxyCliente;
 import com.summercrow.spacetip.to.Atirar;
@@ -26,7 +26,6 @@ import com.summercrow.spacetip.to.InicioDeJogo;
 import com.summercrow.spacetip.to.Login;
 import com.summercrow.spacetip.to.LoginEfetuado;
 import com.summercrow.spacetip.to.NavesPosicionadas;
-import com.summercrow.spacetip.to.PedirPosicionamento;
 import com.summercrow.spacetip.to.ReqCliente;
 import com.summercrow.spacetip.to.ReqServidor;
 import com.summercrow.spacetip.to.ResultadoTiro;
@@ -45,9 +44,11 @@ public class ProxyClienteRest implements ProxyCliente, Runnable{
 	
 	public ProxyClienteRest(SpaceTipActivity activity){
 		
-		urlBase = "http://192.168.0.7:8080/SpaceTipServerWeb/services/spacetip/";
+		urlBase = PropertiesSpaceTip.getInstance().getProperty("server.rest.url");
 		
 		this.activity = activity;
+		
+		activity.exibirLogin();
 	}
 	
 	private HttpResponse enviarReqCliente(ReqCliente reqCliente, String servico) {
@@ -69,7 +70,9 @@ public class ProxyClienteRest implements ProxyCliente, Runnable{
 			return httpclient.execute(httpPost);
 			
 		} catch (Exception e) {
-			throw new RuntimeException(e);
+			e.printStackTrace();
+			activity.reportarErroFatal(R.string.falha_comunicar_servidor);
+			return null;
 		}
 		
 		
@@ -131,7 +134,7 @@ public class ProxyClienteRest implements ProxyCliente, Runnable{
 				}
 				
 			} catch (Exception e) {
-				throw new RuntimeException(e);
+				activity.reportarErroFatal(R.string.falha_comunicar_servidor);
 			}
 			
 			esperar();
@@ -157,20 +160,22 @@ public class ProxyClienteRest implements ProxyCliente, Runnable{
 				login.setNome(nome);
 				
 				HttpResponse response = enviarReqCliente(login, "login");
-				int status = response.getStatusLine().getStatusCode();
-				if(status == STATUS_OK){
-					
-					HttpEntity entity = response.getEntity();
-					
-					if (entity != null) {
-						try {
-							String idJogadorText = EntityUtils.toString(entity, HTTP.UTF_8);
-							idJogador = Long.parseLong(idJogadorText);
-							verificarCliente = true;
-							Thread threadVerificacao = new Thread(ProxyClienteRest.this);
-							threadVerificacao.start();
-						} catch (Exception e) {
-							throw new RuntimeException(e);
+				if(response != null){
+					int status = response.getStatusLine().getStatusCode();
+					if(status == STATUS_OK){
+						
+						HttpEntity entity = response.getEntity();
+						
+						if (entity != null) {
+							try {
+								String idJogadorText = EntityUtils.toString(entity, HTTP.UTF_8);
+								idJogador = Long.parseLong(idJogadorText);
+								verificarCliente = true;
+								Thread threadVerificacao = new Thread(ProxyClienteRest.this);
+								threadVerificacao.start();
+							} catch (Exception e) {
+								activity.reportarErroFatal(R.string.falha_comunicar_servidor);
+							}
 						}
 					}
 				}
