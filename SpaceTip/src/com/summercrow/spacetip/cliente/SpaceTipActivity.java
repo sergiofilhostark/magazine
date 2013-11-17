@@ -80,8 +80,6 @@ public class SpaceTipActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		proxyCliente = ProxyClienteFactory.newProxyCliente(this);
-		
 		setContentView(R.layout.activity_space_tip);
 		
 		meuLayout = (RelativeLayout)findViewById(R.id.layout_space_tip);
@@ -133,20 +131,35 @@ public class SpaceTipActivity extends Activity {
 		aguardeDialog.setCancelable(false);
 		aguardeDialog.setMessage(getString(R.string.aguarde));
 		
-		exibirTelaLogin();
+		proxyCliente = ProxyClienteFactory.newProxyCliente(this);
+		
+		//exibirTelaLogin();
 		
 	}
 
 	private void exibirAlerta(int messageId) {
 		Builder dialog = new AlertDialog.Builder(this);
 		
-//		dialog.setTitle(R.string.sua_vez);
 		dialog.setMessage(messageId);
 		dialog.setPositiveButton(R.string.ok, null);
 		dialog.show();
 	}
 	
-	private void exibirTelaLogin() {
+	private void exibirAlertaErroFatal(int messageId) {
+		Builder dialog = new AlertDialog.Builder(this);
+		
+		dialog.setMessage(messageId);
+		dialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				finish();
+			}
+		});
+		dialog.show();
+	}
+	
+	public void exibirTelaLogin() {
 		
 		LayoutInflater layoutInflater = (LayoutInflater)getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		View view = layoutInflater.inflate(R.layout.login_dialog, null);
@@ -637,9 +650,14 @@ public class SpaceTipActivity extends Activity {
 			naveAtingida.getImageView().setImageResource(idImgNaveAtingida);
 		}
 	}
+
+	public void reportarErroFatal(int erro) {
+		exibirAlertaErroFatal(erro);
+	}
 	
 	
 	
 	
 
 }
+;

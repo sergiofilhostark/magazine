@@ -1,18 +1,15 @@
 package com.summercrow.spacetip.cliente.proxy.socket;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.net.UnknownHostException;
-import java.util.ArrayList;
-import java.util.List;
 
+import com.summercrow.spacetip.R;
+import com.summercrow.spacetip.cliente.PropertiesSpaceTip;
 import com.summercrow.spacetip.cliente.SpaceTipActivity;
 import com.summercrow.spacetip.cliente.proxy.ProxyCliente;
 import com.summercrow.spacetip.to.Atirar;
-import com.summercrow.spacetip.to.DadosNave;
 import com.summercrow.spacetip.to.InicioDeJogo;
 import com.summercrow.spacetip.to.Login;
 import com.summercrow.spacetip.to.LoginEfetuado;
@@ -21,19 +18,6 @@ import com.summercrow.spacetip.to.ReqServidor;
 import com.summercrow.spacetip.to.ResultadoTiro;
 import com.summercrow.spacetip.to.Tiro;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.protocol.HTTP;
-import org.apache.http.util.EntityUtils;
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.json.JSONObject;
 
 public class ProxyClienteSocket implements ProxyCliente, Runnable{
 	
@@ -90,6 +74,24 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 			throw new RuntimeException(e);
 		}
 	}
+	
+	private void exibirTelaLogin() {
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				activity.exibirTelaLogin();
+			}
+		});
+	}
+	
+	private void reportarErroFatal(final int erro) {
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				activity.reportarErroFatal(erro);
+			}
+		});
+	}
 
 	@Override
 	public void loginEfetuado(final Long id, final int posicao) {
@@ -136,10 +138,9 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 		
 		try {
 			
-			String ip;
+			PropertiesSpaceTip propertiesSpaceTip = PropertiesSpaceTip.getInstance();
 			
-			ip = "192.168.0.7";
-//			ip = "10.0.1.162";
+			String ip = propertiesSpaceTip.getProperty("socket.server.ip");
 			
 			socket = new Socket(ip, 7777);
 			
@@ -148,17 +149,20 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 			in = new ObjectInputStream(socket.getInputStream());			
 			
 			
+			exibirTelaLogin();
 			
-			
-		} catch (UnknownHostException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-			throw new RuntimeException(e);
-		} catch (IOException e) {
-			e.printStackTrace();
-			throw new RuntimeException(e);
+			reportarErroFatal(R.string.nao_conectar_servidor);
 		}
 		
-		//TODO coloar o in.readObject dentro do while de novo, nesse e no do servidor
+		if(socket != null){
+			esperarResposta();
+		}
+		
+	}
+
+	private void esperarResposta() {
 		ReqServidor reqServidor;
 		try {
 			reqServidor = (ReqServidor)in.readObject();
@@ -181,13 +185,11 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 				reqServidor = (ReqServidor)in.readObject();
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
+			reportarErroFatal(R.string.falha_comunicar_servidor);
 			e.printStackTrace();
 		} finally {
 			close();
 		}
-		
-		
 	}
 	
 	private void close(){
@@ -196,7 +198,6 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 			in.close();
 			socket.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		

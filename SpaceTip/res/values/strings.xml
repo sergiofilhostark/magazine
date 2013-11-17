@@ -19,5 +19,7 @@
     <string name="aguardando_inicio">Aguardando inicio</string>
     <string name="voce_venceu">Você venceu a batalha</string>
     <string name="voce_perdeu">Você foi derrotado</string>
+    <string name="nao_conectar_servidor">Não foi possível conectar ao servidor.</string>
+    <string name="falha_comunicar_servidor">Falha de comunicação com o servidor.</string>
 
 </resources>
