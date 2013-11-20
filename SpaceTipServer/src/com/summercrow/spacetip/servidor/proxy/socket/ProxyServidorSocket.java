@@ -65,8 +65,6 @@ public class ProxyServidorSocket implements Runnable, ProxyServidor{
 				Login login = (Login)reqCliente;
 				String nome = login.getNome();
 				
-				System.out.println("recebi "+nome);
-				
 				Jogador jogador = controlador.criarJogador(nome);			
 				setJogador(jogador);
 				jogador.setProxyServidor(this);
@@ -104,7 +102,6 @@ public class ProxyServidorSocket implements Runnable, ProxyServidor{
 			abandonarJogo();
 			e.printStackTrace();
 		} finally {
-			System.out.println("fechando");
 			close();
 		}
 		

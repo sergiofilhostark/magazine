@@ -57,7 +57,7 @@ public class FrontControllerSocket{
 	
 	@SuppressWarnings("unused")
 	public static void main(String[] args) {
-		System.out.println("Iniciando");
+		System.out.println("Iniciando Server Socket");
 		FrontControllerSocket proxyServidorSocket = new FrontControllerSocket();
 		
 		System.out.println("Fim");

@@ -335,8 +335,6 @@ public class SpaceTipActivity extends Activity {
 			return;
 		}
 		
-		System.out.println(x +" " + y);
-		
 		ImageView naveImg = new ImageView(this);
 		naveImg.setImageResource(R.drawable.nave);
 		naveImg.setX(x -(larguraNave/2));
@@ -583,7 +581,6 @@ public class SpaceTipActivity extends Activity {
 		});
 		
 		animacao.start();
-		System.out.println("nova animacao");
 	}
 
 	private void enviarLogin(String nome) {
