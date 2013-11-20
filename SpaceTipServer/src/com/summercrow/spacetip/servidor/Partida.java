@@ -140,13 +140,8 @@ public class Partida {
 	}
 
 	public void atirar(Jogador jogador, Tiro tiro) {
-		int posicao = jogador.getPosicao();
-		Jogador adversario;
-		if(posicao == 0){
-			adversario = jogadores.get(1);
-		} else {
-			adversario = jogadores.get(0);
-		}
+		Jogador adversario = getAdversario(jogador);
+		
 		Integer naveAtingida = verificarAcerto(tiro.getX(), tiro.getY(), tiro.getDistancia(), adversario);
 		
 		ResultadoTiro resultadoTiroMeu = new ResultadoTiro();
@@ -162,8 +157,21 @@ public class Partida {
 		resultadoTiroAdversario.setNaveAtingida(naveAtingida);
 		resultadoTiroAdversario.setDerrotou(adversario.isDerrotado());
 		adversario.getProxyServidor().enviarResultadoTiro(resultadoTiroAdversario);
+		
+
 	}
-	
+
+	private Jogador getAdversario(Jogador jogador) {
+		int posicao = jogador.getPosicao();
+		Jogador adversario;
+		if(posicao == 0){
+			adversario = jogadores.get(1);
+		} else {
+			adversario = jogadores.get(0);
+		}
+		return adversario;
+	}
+
 	private Integer verificarAcerto(float x, float y, float yT, Jogador adversario) {
 		List<Nave> navesInimigas = adversario.getNaves();
 		for (int i = 0; i < navesInimigas.size(); i++) {
@@ -175,6 +183,10 @@ public class Partida {
 			}
 		}
 		return null;
+	}
+
+	public void abandonarJogo(Jogador jogador) {
+		Jogador adversario = getAdversario(jogador);
 	}
 	
 	

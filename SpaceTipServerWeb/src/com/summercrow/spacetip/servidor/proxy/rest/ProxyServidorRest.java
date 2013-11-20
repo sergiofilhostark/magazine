@@ -89,4 +89,10 @@ public class ProxyServidorRest implements ProxyServidor{
 		partida.atirar(jogador, tiro);
 	}
 
+	@Override
+	public void abandonarJogo() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

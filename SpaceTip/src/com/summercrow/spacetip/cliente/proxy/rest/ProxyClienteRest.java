@@ -257,6 +257,18 @@ public class ProxyClienteRest implements ProxyCliente, Runnable{
 			}
 		});
 	}
+
+	@Override
+	public void enviarFimDeJogo(Long idJogador) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void enviarAbandonoDeJogo(Long idJogador) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 
 }

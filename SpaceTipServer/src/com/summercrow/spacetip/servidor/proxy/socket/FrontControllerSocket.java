@@ -24,7 +24,7 @@ public class FrontControllerSocket{
 		
 		while(true){
 			try {
-				Socket socket = serverSocket.accept();
+				Socket socket = acceptSocket();
 				
 				ProxyServidorSocket proxy = new ProxyServidorSocket(socket);
 				proxy.setControlador(controlador);
@@ -33,11 +33,24 @@ public class FrontControllerSocket{
 				
 				thread.start();
 				
-			} catch (Exception e) {
-				throw new RuntimeException(e);
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 		
+	}
+
+
+
+	private Socket acceptSocket(){
+		Socket socket;
+		try {
+			socket = serverSocket.accept();
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw new RuntimeException(e);
+		}
+		return socket;
 	}
 
 	

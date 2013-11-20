@@ -48,7 +48,7 @@ public class SpaceTipActivity extends Activity {
 	private final int POSICIONANDO = 1;
 	private final int AGUARDANDO_INICIO = 2;
 	private final int EM_JOGO = 3;
-	private final int JOGO_ACABOU = 4;
+	private final int FIM_DE_JOGO = 4;
 	
 	
 	private boolean meuTurno = false;
@@ -80,11 +80,18 @@ public class SpaceTipActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		iniciarValores();
+		
+		
+		
+	}
+
+	private void iniciarValores() {
 		setContentView(R.layout.activity_space_tip);
 		
 		meuLayout = (RelativeLayout)findViewById(R.id.layout_space_tip);
 		
-		navesMinhas = new ArrayList<NaveCliente>();
+		
 		
 		Drawable drwNave = this.getResources().getDrawable(R.drawable.nave);
 		alturaNave = drwNave.getIntrinsicHeight();
@@ -131,9 +138,11 @@ public class SpaceTipActivity extends Activity {
 		aguardeDialog.setCancelable(true);
 		aguardeDialog.setMessage(getString(R.string.aguarde));
 		
-		proxyCliente = ProxyClienteFactory.newProxyCliente(this);
+		estado = 0;
 		
-		//exibirTelaLogin();
+		navesMinhas = new ArrayList<NaveCliente>();
+		navesAdversario = new ArrayList<NaveCliente>();
+		proxyCliente = ProxyClienteFactory.newProxyCliente(this);
 		
 	}
 
@@ -145,11 +154,18 @@ public class SpaceTipActivity extends Activity {
 		dialog.show();
 	}
 	
-	private void exibirAlertaErroFatal(int messageId) {
+	private void exibirAlertaFimDeJogo(int messageId) {
 		Builder dialog = new AlertDialog.Builder(this);
 		
 		dialog.setMessage(messageId);
-		dialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+		dialog.setPositiveButton(R.string.sim, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				iniciarValores();
+			}
+		});
+		dialog.setNegativeButton(R.string.nao, new DialogInterface.OnClickListener() {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -157,6 +173,22 @@ public class SpaceTipActivity extends Activity {
 			}
 		});
 		dialog.show();
+	}
+	
+	private void exibirAlertaErroFatal(int messageId) {
+		if(estado != FIM_DE_JOGO){
+			Builder dialog = new AlertDialog.Builder(this);
+			
+			dialog.setMessage(messageId);
+			dialog.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+				
+				@Override
+				public void onClick(DialogInterface dialog, int which) {
+					finish();
+				}
+			});
+			dialog.show();
+		}
 	}
 	
 	public void exibirLogin() {
@@ -206,6 +238,7 @@ public class SpaceTipActivity extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if(item.getItemId() == R.id.action_sair){
+			enviarAbandonoDeJogo();
 			finish();
 		}
 		return true;
@@ -264,6 +297,18 @@ public class SpaceTipActivity extends Activity {
 		float distancia = -2 * (y - metade);
 		
 		enviarAtirar(x, y, distancia);
+	}
+	
+	private void enviarFimDeJogo() {
+		proxyCliente.enviarFimDeJogo(idJogador);
+	}
+	
+	private void enviarAbandonoDeJogo() {
+		try {
+			proxyCliente.enviarAbandonoDeJogo(idJogador);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void enviarAtirar(float x, float y, float distancia) {
@@ -504,10 +549,12 @@ public class SpaceTipActivity extends Activity {
 				trocarNaveAtingida(idAtingida, meuTiro);
 				
 				if(derrotou){
+					estado = FIM_DE_JOGO;
+					enviarFimDeJogo();
 					if(meuTiro){
-						exibirAlerta(R.string.voce_venceu);
+						exibirAlertaFimDeJogo(R.string.voce_venceu);
 					} else {
-						exibirAlerta(R.string.voce_perdeu);
+						exibirAlertaFimDeJogo(R.string.voce_perdeu);
 					}
 				}
 				else if (meuTiro){

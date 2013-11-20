@@ -14,6 +14,7 @@ import com.summercrow.spacetip.to.InicioDeJogo;
 import com.summercrow.spacetip.to.Login;
 import com.summercrow.spacetip.to.LoginEfetuado;
 import com.summercrow.spacetip.to.NavesPosicionadas;
+import com.summercrow.spacetip.to.ReqCliente;
 import com.summercrow.spacetip.to.ReqServidor;
 import com.summercrow.spacetip.to.ResultadoTiro;
 import com.summercrow.spacetip.to.Tiro;
@@ -47,7 +48,7 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 			out.writeObject(login);
 			out.flush();
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			activity.reportarErroFatal(R.string.falha_comunicar_servidor);
 		}
 	}
 	
@@ -57,7 +58,7 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 			out.writeObject(navesPosicionadas);
 			out.flush();
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			activity.reportarErroFatal(R.string.falha_comunicar_servidor);
 		}
 	}
 	
@@ -71,7 +72,7 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 			out.writeObject(atirar);
 			out.flush();
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			activity.reportarErroFatal(R.string.falha_comunicar_servidor);
 		}
 	}
 	
@@ -183,6 +184,27 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+	}
+
+	@Override
+	public void enviarFimDeJogo(Long idJogador) {
+		try {
+			ReqCliente reqCliente = new ReqCliente(ReqCliente.FIM_DE_JOGO);
+			
+			out.writeObject(reqCliente);
+			out.flush();
+		} catch (IOException e) {
+			activity.reportarErroFatal(R.string.falha_comunicar_servidor);
+		}
+	}
+
+	@Override
+	public void enviarAbandonoDeJogo(Long idJogador) throws IOException {
+		ReqCliente reqCliente = new ReqCliente(ReqCliente.ABANDONAR_JOGO);
+		
+		out.writeObject(reqCliente);
+		out.flush();
 		
 	}
 

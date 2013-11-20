@@ -22,5 +22,7 @@ public interface ProxyServidor {
 	public void navesPosicionadas(NavesPosicionadas navesPosicionadas);
 	
 	public void atirar(Tiro tiro);
+	
+	public void abandonarJogo();
 
 }

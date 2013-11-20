@@ -17,9 +17,11 @@
     <string name="aguardando_adversario">Aguardando adversário</string>
     <string name="aguardando_jogada_adversario">Aguardando jogada do adversário</string>
     <string name="aguardando_inicio">Aguardando inicio</string>
-    <string name="voce_venceu">Você venceu a batalha</string>
-    <string name="voce_perdeu">Você foi derrotado</string>
+    <string name="voce_venceu">Você venceu a batalha. Deseja jogar novamente?</string>
+    <string name="voce_perdeu">Você foi derrotado. Deseja jogar novamente?</string>
     <string name="nao_conectar_servidor">Não foi possível conectar ao servidor.</string>
     <string name="falha_comunicar_servidor">Falha de comunicação com o servidor.</string>
+    <string name="sim">Sim</string>
+    <string name="nao">Não</string>
 
 </resources>

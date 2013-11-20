@@ -28,15 +28,11 @@ public class ProxyServidorSocket implements Runnable, ProxyServidor{
 	private Jogador jogador;
 	private Controlador controlador;
 	
-	public ProxyServidorSocket(Socket socket){
+	public ProxyServidorSocket(Socket socket) throws IOException{
 		this.socket = socket;
-		try {
-			out = new ObjectOutputStream(socket.getOutputStream());
-			in = new ObjectInputStream(socket.getInputStream());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		
+		out = new ObjectOutputStream(socket.getOutputStream());
+		in = new ObjectInputStream(socket.getInputStream());
 		
 	}
 	
@@ -74,9 +70,10 @@ public class ProxyServidorSocket implements Runnable, ProxyServidor{
 				jogador.setProxyServidor(this);
 				controlador.entrarPartida(jogador);
 			
-			
-				reqCliente = (ReqCliente)in.readObject();
-				while(reqCliente != null){
+				boolean conectado = true;
+				
+				while(conectado &&
+						((reqCliente = (ReqCliente)in.readObject()) != null)){
 					
 					if(reqCliente.getTipo() == ReqCliente.NAVES_POSICIONADAS){
 						NavesPosicionadas navesPosicionadas = (NavesPosicionadas) reqCliente;
@@ -86,8 +83,13 @@ public class ProxyServidorSocket implements Runnable, ProxyServidor{
 						Atirar atirar = (Atirar)reqCliente;
 						atirar(atirar.getTiro());
 					}
-					
-					reqCliente = (ReqCliente)in.readObject();
+					else if(reqCliente.getTipo() == ReqCliente.FIM_DE_JOGO){
+						conectado = false;
+					}
+					else if(reqCliente.getTipo() == ReqCliente.ABANDONAR_JOGO){
+						abandonarJogo();
+						conectado = false;
+					}
 				}
 			}
 			
@@ -96,9 +98,9 @@ public class ProxyServidorSocket implements Runnable, ProxyServidor{
 			
 			
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
+			System.out.println("fechando");
 			close();
 		}
 		
@@ -110,7 +112,6 @@ public class ProxyServidorSocket implements Runnable, ProxyServidor{
 			in.close();
 			socket.close();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -166,6 +167,12 @@ public class ProxyServidorSocket implements Runnable, ProxyServidor{
 	public void atirar(Tiro tiro) {
 		Partida partida = jogador.getPartida();
 		partida.atirar(jogador, tiro);
+	}
+	
+	@Override
+	public void abandonarJogo() {
+		Partida partida = jogador.getPartida();
+		partida.abandonarJogo(jogador);
 	}
 	
 	
