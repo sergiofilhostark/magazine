@@ -12,13 +12,41 @@ public class Partida {
 	
 	private List<Jogador> jogadores;
 
-	
-	
-	
+	private Long id;
+	private boolean aguardandoJogador;
 
+	public boolean isAguardandoJogador() {
+		return aguardandoJogador;
+	}
 
-	public Partida(){
+	public void setAguardandoJogador(boolean aguardandoJogador) {
+		this.aguardandoJogador = aguardandoJogador;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Partida other = (Partida) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
+	public Partida(Long id){
+		this.id = id;
 		jogadores = new ArrayList<Jogador>();
+	}
+
+	public Long getId() {
+		return id;
 	}
 	
 	public synchronized void entrar(Jogador jogador){

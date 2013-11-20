@@ -89,6 +89,7 @@ public class ProxyServidorSocket implements Runnable, ProxyServidor{
 					}
 					else if(reqCliente.getTipo() == ReqCliente.ABANDONAR_JOGO){
 						abandonarJogo();
+						controlador.removerPardidaAguardando(jogador);
 						conectado = false;
 					}
 				}
