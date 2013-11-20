@@ -2,7 +2,7 @@ package com.summercrow.spacetip.to;
 
 import java.io.Serializable;
 
-public class ReqServidor implements Serializable{
+public abstract class ReqServidor implements Serializable{
 	
 	private static final long serialVersionUID = 1L;
 	

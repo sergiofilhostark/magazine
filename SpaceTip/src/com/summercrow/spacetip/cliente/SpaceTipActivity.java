@@ -231,7 +231,7 @@ public class SpaceTipActivity extends Activity {
 	
 	private void encerrar(){
 		if(estado != FIM_DE_JOGO){
-			enviarAbandonoDeJogo();
+			enviarAbandonarJogo();
 		}
 		proxyCliente.desconectar();
 		finish();
@@ -296,9 +296,9 @@ public class SpaceTipActivity extends Activity {
 		proxyCliente.enviarFimDeJogo(idJogador);
 	}
 	
-	private void enviarAbandonoDeJogo() {
+	private void enviarAbandonarJogo() {
 		try {
-			proxyCliente.enviarAbandonoDeJogo(idJogador);
+			proxyCliente.enviarAbandonarJogo(idJogador);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

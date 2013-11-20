@@ -9,7 +9,9 @@ import com.summercrow.spacetip.R;
 import com.summercrow.spacetip.cliente.PropertiesSpaceTip;
 import com.summercrow.spacetip.cliente.SpaceTipActivity;
 import com.summercrow.spacetip.cliente.proxy.ProxyCliente;
+import com.summercrow.spacetip.to.AbandonarJogo;
 import com.summercrow.spacetip.to.Atirar;
+import com.summercrow.spacetip.to.FimDeJogo;
 import com.summercrow.spacetip.to.InicioDeJogo;
 import com.summercrow.spacetip.to.Login;
 import com.summercrow.spacetip.to.LoginEfetuado;
@@ -143,17 +145,17 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 	@Override
 	public void enviarFimDeJogo(Long idJogador) {
 		
-			ReqCliente reqCliente = new ReqCliente(ReqCliente.FIM_DE_JOGO);
+			FimDeJogo fimDeJogo = new FimDeJogo();
 			
-			writeReqCliente(reqCliente);
+			writeReqCliente(fimDeJogo);
 		
 	}
 
 	@Override
-	public void enviarAbandonoDeJogo(Long idJogador) throws IOException {
-		ReqCliente reqCliente = new ReqCliente(ReqCliente.ABANDONAR_JOGO);
+	public void enviarAbandonarJogo(Long idJogador) throws IOException {
+		AbandonarJogo abandonarJogo = new AbandonarJogo();
 		
-		writeReqCliente(reqCliente);
+		writeReqCliente(abandonarJogo);
 		
 	}
 

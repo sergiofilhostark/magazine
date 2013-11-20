@@ -15,7 +15,7 @@ public interface ProxyCliente {
 
 	public void enviarFimDeJogo(Long idJogador);
 	
-	public void enviarAbandonoDeJogo(Long idJogador) throws IOException;
+	public void enviarAbandonarJogo(Long idJogador) throws IOException;
 	
 
 	public void desconectar();

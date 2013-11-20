@@ -11,6 +11,7 @@ import com.summercrow.spacetip.servidor.Partida;
 import com.summercrow.spacetip.servidor.proxy.ProxyServidor;
 import com.summercrow.spacetip.to.Atirar;
 import com.summercrow.spacetip.to.InicioDeJogo;
+import com.summercrow.spacetip.to.JogoAbandonado;
 import com.summercrow.spacetip.to.Login;
 import com.summercrow.spacetip.to.LoginEfetuado;
 import com.summercrow.spacetip.to.NavesPosicionadas;
@@ -89,7 +90,7 @@ public class ProxyServidorSocket implements Runnable, ProxyServidor{
 					}
 					else if(reqCliente.getTipo() == ReqCliente.ABANDONAR_JOGO){
 						abandonarJogo();
-						controlador.removerPardidaAguardando(jogador);
+						
 						conectado = false;
 					}
 				}
@@ -170,12 +171,13 @@ public class ProxyServidorSocket implements Runnable, ProxyServidor{
 	public void abandonarJogo() {
 		Partida partida = jogador.getPartida();
 		partida.abandonarJogo(jogador);
+		controlador.removerPardidaAguardando(jogador);
 	}
 
 	@Override
 	public void enviarJogoAbandonado() {
-		ReqServidor reqServidor = new ReqServidor(ReqServidor.JOGO_ABANDONADO);
-		enviarReqServidor(reqServidor);
+		JogoAbandonado jogoAbandonado = new JogoAbandonado();
+		enviarReqServidor(jogoAbandonado);
 	}
 	
 	

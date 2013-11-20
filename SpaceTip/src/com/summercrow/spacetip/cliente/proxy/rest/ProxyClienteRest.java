@@ -21,7 +21,9 @@ import com.summercrow.spacetip.R;
 import com.summercrow.spacetip.cliente.PropertiesSpaceTip;
 import com.summercrow.spacetip.cliente.SpaceTipActivity;
 import com.summercrow.spacetip.cliente.proxy.ProxyCliente;
+import com.summercrow.spacetip.to.AbandonarJogo;
 import com.summercrow.spacetip.to.Atirar;
+import com.summercrow.spacetip.to.FimDeJogo;
 import com.summercrow.spacetip.to.InicioDeJogo;
 import com.summercrow.spacetip.to.Login;
 import com.summercrow.spacetip.to.LoginEfetuado;
@@ -129,7 +131,7 @@ public class ProxyClienteRest implements ProxyCliente, Runnable{
 							activity.resultadoTiro(resultadoTiro);
 							break;
 						case ReqServidor.JOGO_ABANDONADO:
-							//TODO	IMPLEMENTAR JOGO ABANDONADO
+							activity.jogoAbandonado();
 							break;
 	
 						default:
@@ -220,21 +222,38 @@ public class ProxyClienteRest implements ProxyCliente, Runnable{
 	}
 
 	@Override
-	public void enviarFimDeJogo(Long idJogador) {
-		// TODO Auto-generated method stub
+	public void enviarFimDeJogo(final Long idJogador) {
+		Thread thread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				FimDeJogo fimDeJogo = new FimDeJogo();
+				fimDeJogo.setIdJogador(idJogador);
+				
+				enviarReqCliente(fimDeJogo, "fim_de_jogo");
+			}
+		});
 		
+		thread.start();
 	}
 
 	@Override
-	public void enviarAbandonoDeJogo(Long idJogador) {
-		// TODO Auto-generated method stub
+	public void enviarAbandonarJogo(final Long idJogador) {
+		Thread thread = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				AbandonarJogo abandarJogo = new AbandonarJogo();
+				abandarJogo.setIdJogador(idJogador);
+				
+				enviarReqCliente(abandarJogo, "abandonar_jogo");
+			}
+		});
 		
+		thread.start();
 	}
 
 	@Override
 	public void desconectar() {
-		// TODO Auto-generated method stub
-		
+		verificarCliente = false;
 	}
 	
 

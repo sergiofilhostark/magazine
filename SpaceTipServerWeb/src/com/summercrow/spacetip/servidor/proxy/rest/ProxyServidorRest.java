@@ -7,6 +7,7 @@ import com.summercrow.spacetip.servidor.Jogador;
 import com.summercrow.spacetip.servidor.Partida;
 import com.summercrow.spacetip.servidor.proxy.ProxyServidor;
 import com.summercrow.spacetip.to.InicioDeJogo;
+import com.summercrow.spacetip.to.JogoAbandonado;
 import com.summercrow.spacetip.to.LoginEfetuado;
 import com.summercrow.spacetip.to.NavesPosicionadas;
 import com.summercrow.spacetip.to.PedirPosicionamento;
@@ -82,14 +83,14 @@ public class ProxyServidorRest implements ProxyServidor{
 
 	@Override
 	public void abandonarJogo() {
-		// TODO Auto-generated method stub
-		
+		Partida partida = jogador.getPartida();
+		partida.abandonarJogo(jogador);
 	}
 
 	@Override
 	public void enviarJogoAbandonado() {
-		// TODO Auto-generated method stub
-		
+		JogoAbandonado jogoAbandonado = new JogoAbandonado();
+		addRequisicao(jogoAbandonado);
 	}
 
 }
