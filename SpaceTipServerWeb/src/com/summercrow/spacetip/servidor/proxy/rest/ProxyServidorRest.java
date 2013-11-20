@@ -3,7 +3,6 @@ package com.summercrow.spacetip.servidor.proxy.rest;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.summercrow.spacetip.servidor.Controlador;
 import com.summercrow.spacetip.servidor.Jogador;
 import com.summercrow.spacetip.servidor.Partida;
 import com.summercrow.spacetip.servidor.proxy.ProxyServidor;
@@ -11,7 +10,6 @@ import com.summercrow.spacetip.to.InicioDeJogo;
 import com.summercrow.spacetip.to.LoginEfetuado;
 import com.summercrow.spacetip.to.NavesPosicionadas;
 import com.summercrow.spacetip.to.PedirPosicionamento;
-import com.summercrow.spacetip.to.ReqCliente;
 import com.summercrow.spacetip.to.ReqServidor;
 import com.summercrow.spacetip.to.ResultadoTiro;
 import com.summercrow.spacetip.to.Tiro;
@@ -41,8 +39,6 @@ public class ProxyServidorRest implements ProxyServidor{
 		}
 		return requisicoes.remove(0);
 	}
-
-	// A maioria dos metodos nao precisa receber jogador, acho que ne precisa guardar como atributos
 	
 	@Override
 	public void enviarPedidoPosicionamento() {
@@ -71,11 +67,6 @@ public class ProxyServidorRest implements ProxyServidor{
 	
 	
 	
-	@Override
-	public void login(String nome) {
-		// TODO Auto-generated method stub
-		
-	}
 	
 	@Override
 	public void navesPosicionadas(NavesPosicionadas navesPosicionadas) {
@@ -91,6 +82,12 @@ public class ProxyServidorRest implements ProxyServidor{
 
 	@Override
 	public void abandonarJogo() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void enviarJogoAbandonado() {
 		// TODO Auto-generated method stub
 		
 	}

@@ -112,21 +112,24 @@ public class ProxyClienteRest implements ProxyCliente, Runnable{
 					switch (tipo) {
 						case ReqServidor.LOGIN_EFETUADO:
 							LoginEfetuado login = mapper.readValue(json, LoginEfetuado.class);
-							loginEfetuado(login.getId(), login.getPosicao());
+							activity.loginEfetuado(login.getId(), login.getPosicao());
 							break;
 						
 						case ReqServidor.PEDIR_POSICIONAMENTO:
-							pedirPosicionamento();
+							activity.pedirPosicionamento();
 							break;
 							
 						case ReqServidor.INICIO_DE_JOGO:
 							InicioDeJogo inicioDeJogo = mapper.readValue(json, InicioDeJogo.class);
-							inicioDeJogo(inicioDeJogo);
+							activity.inicioDeJogo(inicioDeJogo);
 							break;
 							
 						case ReqServidor.RESULTADO_TIRO:
 							ResultadoTiro resultadoTiro = mapper.readValue(json, ResultadoTiro.class);
-							resultadoTiro(resultadoTiro);
+							activity.resultadoTiro(resultadoTiro);
+							break;
+						case ReqServidor.JOGO_ABANDONADO:
+							//TODO	IMPLEMENTAR JOGO ABANDONADO
 							break;
 	
 						default:
@@ -215,48 +218,6 @@ public class ProxyClienteRest implements ProxyCliente, Runnable{
 		
 		thread.start();
 	}
-	
-	
-
-	@Override
-	public void loginEfetuado(final Long id, final int posicao) {
-		activity.runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				activity.loginEfetuado(id, posicao);
-			}
-		});
-	}
-
-	@Override
-	public void pedirPosicionamento() {
-		activity.runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				activity.pedirPosicionamento();
-			}
-		});
-	}
-
-	@Override
-	public void inicioDeJogo(final InicioDeJogo inicioDeJogo) {
-		activity.runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				activity.inicioDeJogo(inicioDeJogo);
-			}
-		});
-	}
-
-	@Override
-	public void resultadoTiro(final ResultadoTiro resultadoTiro) {
-		activity.runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				activity.resultadoTiro(resultadoTiro);
-			}
-		});
-	}
 
 	@Override
 	public void enviarFimDeJogo(Long idJogador) {
@@ -266,6 +227,12 @@ public class ProxyClienteRest implements ProxyCliente, Runnable{
 
 	@Override
 	public void enviarAbandonoDeJogo(Long idJogador) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void desconectar() {
 		// TODO Auto-generated method stub
 		
 	}

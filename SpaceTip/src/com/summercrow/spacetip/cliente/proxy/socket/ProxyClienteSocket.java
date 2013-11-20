@@ -29,93 +29,38 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 	
 	private ObjectOutputStream out;
 	
+	private boolean conectado;
+	
 	
 	public ProxyClienteSocket(SpaceTipActivity activity){
 		this.activity = activity;
 		
 		Thread thread = new Thread(this);
 		thread.start();
-		
-		
 	}
 
 	@Override
 	public void enviarLogin(String nome) {
-		try {
-			Login login = new Login();
-			login.setNome(nome);
-			
-			out.writeObject(login);
-			out.flush();
-		} catch (IOException e) {
-			activity.reportarErroFatal(R.string.falha_comunicar_servidor);
-		}
+		
+		Login login = new Login();
+		login.setNome(nome);
+		
+		writeReqCliente(login);
 	}
 	
 	@Override
 	public void enviarNavesPosicionadas(NavesPosicionadas navesPosicionadas) {
-		try {
-			out.writeObject(navesPosicionadas);
-			out.flush();
-		} catch (IOException e) {
-			activity.reportarErroFatal(R.string.falha_comunicar_servidor);
-		}
+		writeReqCliente(navesPosicionadas);
 	}
 	
 	@Override
 	public void enviarAtirar(Tiro tiro, Long idJogador) {
-		try {
-			Atirar atirar = new Atirar();
-			atirar.setTiro(tiro);
-			atirar.setIdJogador(idJogador);
-			
-			out.writeObject(atirar);
-			out.flush();
-		} catch (IOException e) {
-			activity.reportarErroFatal(R.string.falha_comunicar_servidor);
-		}
-	}
-	
-	
-
-	@Override
-	public void loginEfetuado(final Long id, final int posicao) {
-		activity.runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				activity.loginEfetuado(id, posicao);
-			}
-		});
-	}
-
-	@Override
-	public void pedirPosicionamento() {
-		activity.runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				activity.pedirPosicionamento();
-			}
-		});
-	}
-
-	@Override
-	public void inicioDeJogo(final InicioDeJogo inicioDeJogo) {
-		activity.runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				activity.inicioDeJogo(inicioDeJogo);
-			}
-		});
-	}
-
-	@Override
-	public void resultadoTiro(final ResultadoTiro resultadoTiro) {
-		activity.runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				activity.resultadoTiro(resultadoTiro);
-			}
-		});
+		
+		Atirar atirar = new Atirar();
+		atirar.setTiro(tiro);
+		atirar.setIdJogador(idJogador);
+		
+		writeReqCliente(atirar);
 	}
 
 	@Override
@@ -133,6 +78,8 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 		
 			in = new ObjectInputStream(socket.getInputStream());
 			
+			conectado = true;
+			
 			activity.exibirLogin();
 			
 		} catch (Exception e) {
@@ -149,33 +96,39 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 	private void esperarResposta() {
 		ReqServidor reqServidor;
 		try {
+			
 			reqServidor = (ReqServidor)in.readObject();
 			while(reqServidor != null){
 				if(reqServidor.getTipo() == ReqServidor.LOGIN_EFETUADO ){
 					LoginEfetuado loginEfetuado = (LoginEfetuado) reqServidor;
-					loginEfetuado(loginEfetuado.getId(), loginEfetuado.getPosicao());
+					activity.loginEfetuado(loginEfetuado.getId(), loginEfetuado.getPosicao());
 				} 
 				else if(reqServidor.getTipo() == ReqServidor.PEDIR_POSICIONAMENTO){
-					pedirPosicionamento();
+					activity.pedirPosicionamento();
 				} 
 				else if(reqServidor.getTipo() == ReqServidor.INICIO_DE_JOGO){
 					InicioDeJogo inicioDeJogo = (InicioDeJogo)reqServidor;
-					inicioDeJogo(inicioDeJogo);
+					activity.inicioDeJogo(inicioDeJogo);
 				}
 				else if(reqServidor.getTipo() == ReqServidor.RESULTADO_TIRO){
 					ResultadoTiro resultadoTiro = (ResultadoTiro)reqServidor;
-					resultadoTiro(resultadoTiro);
+					activity.resultadoTiro(resultadoTiro);
+				}
+				else if(reqServidor.getTipo() == ReqServidor.JOGO_ABANDONADO){
+					activity.jogoAbandonado();
 				}
 				reqServidor = (ReqServidor)in.readObject();
 			}
 		} catch (Exception e) {
-			activity.reportarErroFatal(R.string.falha_comunicar_servidor);
+			if(conectado){
+				activity.reportarErroFatal(R.string.falha_comunicar_servidor);
+			}
 			e.printStackTrace();
 		} finally {
 			close();
 		}
 	}
-	
+
 	private void close(){
 		try {
 			out.close();
@@ -189,23 +142,38 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 
 	@Override
 	public void enviarFimDeJogo(Long idJogador) {
-		try {
+		
 			ReqCliente reqCliente = new ReqCliente(ReqCliente.FIM_DE_JOGO);
 			
-			out.writeObject(reqCliente);
-			out.flush();
-		} catch (IOException e) {
-			activity.reportarErroFatal(R.string.falha_comunicar_servidor);
-		}
+			writeReqCliente(reqCliente);
+		
 	}
 
 	@Override
 	public void enviarAbandonoDeJogo(Long idJogador) throws IOException {
 		ReqCliente reqCliente = new ReqCliente(ReqCliente.ABANDONAR_JOGO);
 		
-		out.writeObject(reqCliente);
-		out.flush();
+		writeReqCliente(reqCliente);
 		
+	}
+
+	private void writeReqCliente(ReqCliente reqCliente) {
+		if(conectado){
+			try {
+				out.writeObject(reqCliente);
+				out.flush();
+			} catch (IOException e) {
+				activity.reportarErroFatal(R.string.falha_comunicar_servidor);
+			}
+		}
+	}
+
+	@Override
+	public void desconectar() {
+		if(conectado){
+			conectado = false;
+			close();
+		}
 	}
 
 }

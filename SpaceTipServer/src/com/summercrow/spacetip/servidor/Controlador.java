@@ -21,7 +21,6 @@ public class Controlador {
 		return jogador;
 	}
 	
-	//TODO verificar a necessidade desse metodo
 	public void entrarPartida(Jogador jogador) {
 		Partida partida = jogador.getPartida();
 		partida.entrar(jogador);

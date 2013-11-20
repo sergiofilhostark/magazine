@@ -15,9 +15,8 @@ public interface ProxyServidor {
 
 	public void enviarResultadoTiro(ResultadoTiro resultadoTiro);
 	
+	public void enviarJogoAbandonado();
 	
-	
-	public void login(String nome);
 	
 	public void navesPosicionadas(NavesPosicionadas navesPosicionadas);
 	

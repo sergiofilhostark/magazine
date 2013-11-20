@@ -1,47 +1,24 @@
 package com.summercrow.spacetip.servidor;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
-import com.summercrow.spacetip.servidor.proxy.ProxyServidor;
 import com.summercrow.spacetip.to.DadosNave;
 import com.summercrow.spacetip.to.InicioDeJogo;
-import com.summercrow.spacetip.to.ReqServidor;
 import com.summercrow.spacetip.to.ResultadoTiro;
 import com.summercrow.spacetip.to.Tiro;
 
 public class Partida {
 	
 	private List<Jogador> jogadores;
-	private int turno;
-	//TODO ver a necessidade desse mapa
-	private Map<Long, Jogador> jogadoresId;
+
 	
-	//TODO colocar numa enum??
-	private final int POSICIONANDO = 1;
-	private final int AGUARDANDO_INICIO = 2;
-	private final int JOGO_INICIOU = 3;
-	private final int SUA_VEZ = 4;
-	private final int JOGO_ACABOU = 4;
 	
-	private final int ENTROU = 1;
-	private final int POSICIONOU = 2;
-	private final int POSICIONOU_TODOS = 3;
-	
-	private final int OK = 1;
-	private final int NOK = 2;
-	
-	private final int NUMERO_NAVES = 4;
 	
 
 
 	public Partida(){
 		jogadores = new ArrayList<Jogador>();
-		jogadoresId = new HashMap<Long, Jogador>();
-		turno = -1;
 	}
 	
 	public synchronized void entrar(Jogador jogador){
@@ -50,21 +27,12 @@ public class Partida {
 		
 		jogador.getProxyServidor().enviarLoginEfetuado();
 		
-		//REMOVER
-//		if(jogador.getId().longValue() > 1){
-//			return;
-//		}
 		
 		
 		if(jogadores.size() > 1){
 			pedirPosicionamento();
 		}
 		
-//		if(jogadores.size() == 1){
-//			proxyServidor.enviarAguardar(jogador);
-//		} else {
-//			pedirPosicionamento();
-//		}
 	}
 	
 	private void pedirPosicionamento() {
@@ -73,24 +41,7 @@ public class Partida {
 		}
 	}
 
-	
-//	public Resposta posicionarNave(Long id, long x, long y, long altura, long largura){
-//		
-//		Jogador jogador = jogadoresId.get(id);
-//		
-//		Nave nave = new Nave(x, y, largura, altura);
-//		jogador.addNave(nave);
-//		
-//		int idResposta = POSICIONOU;
-//		if (idResposta == NUMERO_NAVES){
-//			idResposta = POSICIONOU_TODOS;
-//		}
-//		
-//		Resposta resposta = new Resposta();
-//		resposta.setId(idResposta);
-//		resposta.setStatus(OK);
-//		return resposta;
-//	}
+
 
 	public void navesPosicionadas(Jogador jogador, List<DadosNave> dadosNaves) {
 		for (DadosNave dadosNave : dadosNaves) {
@@ -112,8 +63,6 @@ public class Partida {
 			
 			enviarInicioDeJogo(jogador1, true, jogador2);
 			enviarInicioDeJogo(jogador2, false, jogador1);
-			
-			turno = 0;
 		}
 	}
 
@@ -162,6 +111,9 @@ public class Partida {
 	}
 
 	private Jogador getAdversario(Jogador jogador) {
+		if(jogadores.size() <=1){
+			return null;
+		}
 		int posicao = jogador.getPosicao();
 		Jogador adversario;
 		if(posicao == 0){
@@ -187,40 +139,9 @@ public class Partida {
 
 	public void abandonarJogo(Jogador jogador) {
 		Jogador adversario = getAdversario(jogador);
+		if(adversario != null){
+			adversario.getProxyServidor().enviarJogoAbandonado();
+		}
 	}
-	
-	
-	/**
-	 * Problemas:
-	 * pool eh ineficiente (e sincrono)
-	 * sincronia impossibilita de mandar mensagens aleatorias para todos os usuarios
-	 * seguranca dos dados (id do usuario pode ser alterado)
-	 * sincronizacao dos metodos!! (cuidado com deadlock)
-	 * travar o cliente para multiplos toques. esperar o resultado antes de aceitar outro toque
-	 * 
-	 * a resposta pode ser generica, entao nao compensa criar um protocolo assincrono
-	 * 
-	 * turno em variaves locais, ruim mas necessario
-	 * MVC (todos os dados no cliente e pacote sendo enviado sempre, embora seja dificil de fazer aqui)
-	 * 
-	 * conversao das dimensoes para valores relativos (ver se isso eh mesmo necessario pois as vezes as dimensoes 
-	 * ja sao relativas (ou tem algo que faz isso)
-	 * 
-	 * verificacoes no lado cliente para saber se o turno é dele mesmo (nao estao feitas ainda)
-	 * 
-	 * protocolo de mensagens para o cliente e trantamento de excessao
-	 * 
-	 * Projetos referenciar projetos no Android
-	 * 
-	 * metodos do proxy nao precisam mais incluir o jogador pois o proxy agora é do jogador
-	 * 
-	 * discutir sobre sistema de seguranca, um id ou um token ja é o bastante (alem de https, quando for http)
-	 * 
-	 * tratamento de excessoes
-	 * 
-	 * falta corrigir os servidores para nao ter que reiniciar toda vez
-	 * corrigir os clientes para poder para o jogo e sair da aplicacao
-	 * 
-	 */
 
 }

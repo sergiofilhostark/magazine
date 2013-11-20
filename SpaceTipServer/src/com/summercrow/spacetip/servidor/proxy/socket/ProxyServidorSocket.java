@@ -27,8 +27,10 @@ public class ProxyServidorSocket implements Runnable, ProxyServidor{
 	private ObjectOutputStream out;
 	private Jogador jogador;
 	private Controlador controlador;
+	private boolean conectado;
 	
 	public ProxyServidorSocket(Socket socket) throws IOException{
+		conectado = true;
 		this.socket = socket;
 		
 		out = new ObjectOutputStream(socket.getOutputStream());
@@ -55,7 +57,6 @@ public class ProxyServidorSocket implements Runnable, ProxyServidor{
 	public void run() {
 		
 		try {
-		
 			
 			ReqCliente reqCliente = (ReqCliente)in.readObject();
 			
@@ -70,7 +71,7 @@ public class ProxyServidorSocket implements Runnable, ProxyServidor{
 				jogador.setProxyServidor(this);
 				controlador.entrarPartida(jogador);
 			
-				boolean conectado = true;
+				
 				
 				while(conectado &&
 						((reqCliente = (ReqCliente)in.readObject()) != null)){
@@ -98,6 +99,7 @@ public class ProxyServidorSocket implements Runnable, ProxyServidor{
 			
 			
 		} catch (Exception e) {
+			abandonarJogo();
 			e.printStackTrace();
 		} finally {
 			System.out.println("fechando");
@@ -142,19 +144,13 @@ public class ProxyServidorSocket implements Runnable, ProxyServidor{
 
 	private void enviarReqServidor(ReqServidor resposta) {
 		try {
-			out.writeObject(resposta);
-			out.flush();
+			if(conectado){
+				out.writeObject(resposta);
+				out.flush();
+			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	}
-	
-	
-	@Override
-	public void login(String nome) {
-		// TODO Verificar a utilidade desse metoddo
-		
 	}
 	
 	@Override
@@ -173,6 +169,12 @@ public class ProxyServidorSocket implements Runnable, ProxyServidor{
 	public void abandonarJogo() {
 		Partida partida = jogador.getPartida();
 		partida.abandonarJogo(jogador);
+	}
+
+	@Override
+	public void enviarJogoAbandonado() {
+		ReqServidor reqServidor = new ReqServidor(ReqServidor.JOGO_ABANDONADO);
+		enviarReqServidor(reqServidor);
 	}
 	
 	

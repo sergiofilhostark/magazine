@@ -23,5 +23,6 @@
     <string name="falha_comunicar_servidor">Falha de comunicação com o servidor.</string>
     <string name="sim">Sim</string>
     <string name="nao">Não</string>
+    <string name="adversario_abandonou">Seu Adversário abandonou a partida. Deseja jogar novamente?</string>
 
 </resources>
