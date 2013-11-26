@@ -1,7 +1,5 @@
 package com.summercrow.spacetip.cliente.proxy;
 
-import java.io.IOException;
-
 import com.summercrow.spacetip.to.NavesPosicionadas;
 import com.summercrow.spacetip.to.Tiro;
 
