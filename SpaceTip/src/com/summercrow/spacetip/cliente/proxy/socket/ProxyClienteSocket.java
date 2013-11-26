@@ -152,7 +152,7 @@ public class ProxyClienteSocket implements ProxyCliente, Runnable{
 	}
 
 	@Override
-	public void enviarAbandonarJogo(Long idJogador) throws IOException {
+	public void enviarAbandonarJogo(Long idJogador) {
 		AbandonarJogo abandonarJogo = new AbandonarJogo();
 		
 		writeReqCliente(abandonarJogo);
